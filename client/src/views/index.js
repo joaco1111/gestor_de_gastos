@@ -1,6 +1,7 @@
-import Collaboration from './Collaboration/Collaboration';
-import Form from './Form/Form';
-import Home from './Home/Home';
-import Landing from './Landing/Landing';
+import Collaboration from './Collaboration/Collaboration'
+import Loggin from './Loggin/Loggin'
+import Log from './Log/Log'
+import Home from './Home/Home'
+import Landing from './Landing/Landing'
 
-export { Collaboration, Form, Home, Landing };
+export { Collaboration, Loggin, Log, Home, Landing };
