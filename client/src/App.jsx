@@ -1,4 +1,4 @@
-import { Collaboration, Form, Home, Landing } from './views'
+import { Collaboration, Loggin, Log, Home, Landing } from './views'
 import { Route, Routes } from 'react-router-dom'
 
 function App() {
@@ -6,7 +6,8 @@ function App() {
         <div>
             <Routes>
                 <Route path='/collaboration' element={<Collaboration />}/>
-                <Route path='/loggin' element={<Form />}/>
+                <Route path='/loggin' element={<Loggin />}/>
+                <Route path='/log' element={<Log />}/>
                 <Route path='/home' element={<Home />}/>
                 <Route path='/' element={<Landing />}/>
             </Routes>
