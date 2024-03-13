@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useCategories from './useCategories'; // Uso el hook
+import styles from './ExpenseForm.module.css'; // Importa los estilos CSS modules
 
 const ExpenseForm = () => {
   const { categories, addCategory } = useCategories();
@@ -23,19 +24,21 @@ const ExpenseForm = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Gasto</h2>
-      <div>
-        <label>Monto:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Monto:</label>
         <input
+          className={styles.textInput}
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <div>
-        <label>Categoría:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Categoría:</label>
         <select
+          className={styles.selectInput}
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
@@ -45,16 +48,18 @@ const ExpenseForm = () => {
           ))}
         </select>
         <input
+          className={styles.textInput}
           type="text"
           placeholder="Nueva categoría"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
-        <button onClick={() => addCategory(newCategory)}>Agregar Categoría</button>
+        <button className={styles.addButton} onClick={() => addCategory(newCategory)}>Agregar Categoría</button>
       </div>
-      <div>
-        <label>Forma de Pago:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Forma de Pago:</label>
         <select
+          className={styles.selectInput}
           value={paymentMethod}
           onChange={(e) => setPaymentMethod(e.target.value)}
         >
@@ -65,22 +70,24 @@ const ExpenseForm = () => {
           <option value="Transferencia">Transferencia</option>
         </select>
       </div>
-      <div>
-        <label>Fecha:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Fecha:</label>
         <input
+          className={styles.textInput}
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
       </div>
-      <div>
-        <label>Comentario (opcional):</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Comentario (opcional):</label>
         <textarea
+          className={styles.textInput}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <button onClick={handleAddExpense}>Añadir</button>
+      <button className={styles.addButton} onClick={handleAddExpense}>Añadir</button>
     </div>
   );
 };

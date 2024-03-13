@@ -15,12 +15,13 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    /* justify-content: space-between; */
-    /* margin-bottom: 40px; */
+    justify-content:space-around;
+    
+    margin-bottom: 40px;
 }
 
 .chartSection {
     display: flex;
     justify-content: center;
-    /* justify-content: space-between; */
+    justify-content: space-around;
 }

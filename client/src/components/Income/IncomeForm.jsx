@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import useIncomeCategories from './useIncomeCategories'; 
+import useIncomeCategories from './useIncomeCategories';
+import styles from './IncomeForm.module.css'; // Importa los estilos CSS modules
 
 const IncomeForm = () => {
   const { incomeCategories, addIncomeCategory } = useIncomeCategories();
@@ -23,19 +24,21 @@ const IncomeForm = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Ingreso</h2>
-      <div>
-        <label>Monto:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Monto:</label>
         <input
+          className={styles.textInput}
           type="number"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
       </div>
-      <div>
-        <label>Categoría:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Categoría:</label>
         <select
+          className={styles.selectInput}
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
@@ -45,16 +48,18 @@ const IncomeForm = () => {
           ))}
         </select>
         <input
+          className={styles.textInput}
           type="text"
           placeholder="Nueva categoría"
           value={newCategory}
           onChange={(e) => setNewCategory(e.target.value)}
         />
-        <button onClick={() => addIncomeCategory(newCategory)}>Agregar Categoría</button>
+        <button className={styles.addButton} onClick={() => addIncomeCategory(newCategory)}>Agregar Categoría</button>
       </div>
-      <div>
-        <label>Cómo te pagan:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Cómo te pagan:</label>
         <select
+          className={styles.selectInput}
           value={paymentMethod}
           onChange={(e) => setPaymentMethod(e.target.value)}
         >
@@ -65,23 +70,24 @@ const IncomeForm = () => {
           <option value="Transferencia">Transferencia</option>
         </select>
       </div>
-      <div>
-        <label>Fecha:</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Fecha:</label>
         <input
+          className={styles.textInput}
           type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
         />
       </div>
-      
-      <div>
-        <label>Comentario (opcional):</label>
+      <div className={styles.inputContainer}>
+        <label className={styles.label}>Comentario (opcional):</label>
         <textarea
+          className={styles.textInput}
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
       </div>
-      <button onClick={handleAddIncome}>Añadir</button>
+      <button className={styles.addButton} onClick={handleAddIncome}>Añadir</button>
     </div>
   );
 };
