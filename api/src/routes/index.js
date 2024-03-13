@@ -3,6 +3,18 @@ const { users } = require('../../users.json');
 
 const router = Router();
 
+router.get('/users', (req, res) => {
+    return res.send(users)
+})
+
+//traigo mis rutas
+
+const authRouter = require('./authRoute')
+
+//hago el enrutado
+
+router.use('/auth', authRouter)
+
 
 module.exports = router
 
