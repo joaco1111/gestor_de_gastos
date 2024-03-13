@@ -1,0 +1,27 @@
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .inputContainer {
+    margin-bottom: 10px;
+  }
+  
+  .label {
+    margin-bottom: 5px;
+  }
+  
+  .textInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .selectInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  

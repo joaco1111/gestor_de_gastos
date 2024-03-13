@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import useCategories from './useCategories'; //Uso el hook
+import useCategories from './useCategories'; // Uso el hook
 
 const ExpenseForm = () => {
   const { categories, addCategory } = useCategories();
@@ -9,16 +9,17 @@ const ExpenseForm = () => {
   const [newCategory, setNewCategory] = useState('');
   const [date, setDate] = useState('');
   const [comment, setComment] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState(''); 
 
   const handleAddExpense = () => {
-   
     const expenseData = {
       amount,
       category: selectedCategory || newCategory,
       date,
-      comment
+      comment,
+      paymentMethod
     };
-    console.log(expenseData); 
+    // console.log(expenseData);
   };
 
   return (
@@ -50,6 +51,19 @@ const ExpenseForm = () => {
           onChange={(e) => setNewCategory(e.target.value)}
         />
         <button onClick={() => addCategory(newCategory)}>Agregar Categoría</button>
+      </div>
+      <div>
+        <label>Forma de Pago:</label>
+        <select
+          value={paymentMethod}
+          onChange={(e) => setPaymentMethod(e.target.value)}
+        >
+          <option value="">Seleccionar forma de pago</option>
+          <option value="Efectivo">Efectivo</option>
+          <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+          <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+          <option value="Transferencia">Transferencia</option>
+        </select>
       </div>
       <div>
         <label>Fecha:</label>
