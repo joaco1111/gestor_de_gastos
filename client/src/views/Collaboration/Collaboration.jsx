@@ -1,9 +1,15 @@
+import React from 'react';
+import DonationForm from './DonationForm';
+import DonationInfo from './DonationInfo';
+import './styles.css';
+
 const Collaboration = () => {
-    return(
-        <div>
-            <h1>Vista para donaciones</h1>
-        </div>
-    )
+  return (
+    <div className="collaboration-container">
+      <DonationForm />
+      <DonationInfo />
+    </div>
+  );
 };
 
 export default Collaboration;
