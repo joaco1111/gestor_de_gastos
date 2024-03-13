@@ -1,10 +1,10 @@
-// DonationForm.js
 import React from 'react';
+import styles from '../../views/Collaboration/Collaboration.module.css';
 
 const DonationForm = () => {
   return (
-    <div className="donation-form">
-      <h2>¡Haz tu donación!</h2>
+    <div className={styles['donation-form']}>
+      <h2>Espacio para colaboradores.</h2>
       <form>
         <label htmlFor="amount">Cantidad:</label>
         <input type="text" id="amount" name="amount" placeholder="Ingrese la cantidad a donar" />
