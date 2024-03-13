@@ -1,11 +1,13 @@
 const { Router } = require('express');
-const { users } = require('../../users.json');
+const update = require('../controllers/update_user/Update');
+
 
 const router = Router();
 
-router.get('/users', (req, res) => {
-    return res.send(users)
-})
+//Ruta actualziar datos del usuario
+router.put('/user/:id', update)
+
+
 
 
 module.exports = router
