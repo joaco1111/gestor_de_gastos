@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { validate } from '../../utils'
+import { useState } from 'react';
+import { validate } from '../../utils';
+import axios from 'axios';
 
 const Log = () => {
     const[form, setForm] = useState({
@@ -21,8 +22,22 @@ const Log = () => {
         setForm({ ...form, [property]: value });
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        
+        const newUser = {
+            name: form.name,
+            email: form.email,
+            password: form.password,
+        }
+        //Aquí se crea el usuario, una vez se defina la URL para el post desde el back
+        axios.post('URL que me entrega el back', newUser)                      //Como segundo parámetro del .post() va el usuario a crear
+        .then(res => alert('Successfully created user'))
+        .catch(err => alert(err));
+    };
+
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <h1>Log</h1>
             <div>
                 <label>Name: </label>
@@ -39,7 +54,7 @@ const Log = () => {
                 <input type='password' value={form.password} onChange={handleChange} name='password'></input>
                 {errors.password && <span>{errors.password}</span>}
             </div>
-            <button type='submit'>Create User</button>
+            <button type='submit' disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
         </form>
     )
 };
