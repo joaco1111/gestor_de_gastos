@@ -4,7 +4,7 @@
     "gastos": [
       "compras", "alimentos", "telefonica", "entretenimiento",
       "educacion", "salud", "deportes", "transporte", "ropa",
-      "viajes", "hijos", "verduras y frutas", "auto", "hogar",
+      "viajes", "hijos", "verduras", "frutas", "auto", "hogar",
       "mascota", "reparaciones"
     ]
   }
