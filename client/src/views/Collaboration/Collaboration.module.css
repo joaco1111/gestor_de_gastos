@@ -1,33 +1,80 @@
 .collaboration-container {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .donation-form,
-  .donation-info {
-    width: 45%;
-  }
-  
-  .donation-form form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .donation-form label,
-  .donation-form input {
-    margin-bottom: 10px;
-  }
-  
-  .donation-form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .donation-form button:hover {
-    background-color: #0056b3;
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #bbff00;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.donation-form,
+.donation-info {
+  width: 45%;
+}
+
+.donation-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.donation-form label,
+.donation-form input {
+  margin-bottom: 10px;
+}
+
+.donation-form button {
+  padding: 10px 20px;
+  background-color: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.donation-form button:hover {
+  background-color: #000000;
+}
+
+.donation-info {
+  text-align: center;
+}
+
+.donation-info h2 {
+  margin-bottom: 10px;
+}
+
+.donation-info p {
+  font-style: italic;
+}
+
+/*________________________________PUBLICIDAD_____________________________________*/
+.publicidad-container {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.publicidad-container img {
+  max-width: 300px;
+  margin-right: 10px;
+}
+
+/*________________________________VOLVER AL INICIO________________________________*/
+.inicio-container button {
+  background-color: #000000;
+  color: #fff;
+  border: none; 
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inicio-container {
+  display: flex;
+  justify-content: center;
+}
