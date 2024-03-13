@@ -1,0 +1,63 @@
+{
+    "users" : [
+    {
+        "id": 1,
+        "name": "Marisol",
+        "email": "ma1234@gmail.com",
+        "password": "12345"
+    },
+    {
+        "id": 2,
+        "name": "Jaime",
+        "email": "Jaime24@gmail.com",
+        "password": "Jaime1234"
+    },
+    {
+        "id": 3,
+        "name": "Pedro",
+        "email": "pe_antonio@gmail.com",
+        "password": "pedro987"
+    },
+    {
+        "id": 4,
+        "name": "Maria",
+        "email": "maria_lopez12@gmail.com",
+        "password": "lopezMaria123"
+    },
+    {
+        "id": 5,
+        "name": "Jorge",
+        "email": "j_a_s_12@gmail.com",
+        "password": "lalo123"
+    },
+    {
+        "id": 6,
+        "name": "Marta",
+        "email": "Martina30@gmail.com",
+        "password": "MartinaPoderosa"
+    },
+    {
+        "id": 7,
+        "name": "Marcos",
+        "email": "marcos_gutierrez@gmail.com",
+        "password": "marcosG12"
+    },
+    {
+        "id": 8,
+        "name": "Lucho",
+        "email": "luchon23@gmail.com",
+        "password": "456123"
+    },
+    {
+        "id": 9,
+        "name": "Lian",
+        "email": "Lian_Martinez@yahoo.com",
+        "password": ""
+    },
+    {
+        "id": 10,
+        "name": "Victor",
+        "email": "victor_las_marias@gmail.com",
+        "password": "victor123456"
+    }
+]}
