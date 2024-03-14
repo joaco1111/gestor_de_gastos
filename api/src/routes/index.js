@@ -21,7 +21,7 @@ router.put('/user/:id', update)
 //Ruta crear una Actions
 router.post('/actions', createActions)
 //Ruta obtener los datos de la Actions
-router.get('/.actions', getActions)
+router.get('/actions', getActions)
 //Ruta actualizar los datos de la Actions
 router.put('/actions/:id', updateAction)
 //Ruta eliminar algun dato de la Actions
