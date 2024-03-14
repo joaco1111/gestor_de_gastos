@@ -3,20 +3,16 @@ const { DataTypes } = require('sequelize')
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
 
-  sequelize.define('notification', {
+  sequelize.define('category_bills', {
     id: {
         type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        allowNull: false,
     },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    }, // ?
-    message: {
+    name: {
         type: DataTypes.STRING,
-        allowNull: false
-    } 
+        allowNull: false,
+    }
 }, { timestamps: false })
 }

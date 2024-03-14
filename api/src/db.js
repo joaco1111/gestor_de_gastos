@@ -9,6 +9,7 @@ const {
 const sequelize = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/gestor_de_gastos`, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  
 });
 const basename = path.basename(__filename);
 
@@ -25,17 +26,22 @@ fs.readdirSync(path.join(__dirname, '/models'))
   let entries = Object.entries(sequelize.models);
   let capsEntries = entries.map((entry) => [entry[0][0].toUpperCase() + entry[0].slice(1), entry[1]]);
   sequelize.models = Object.fromEntries(capsEntries);
+  
 //Hacer destructuring de los models  const {} = sequelize.models
-const {Action, Category, Notification, Review, User} = sequelize.models;
+const {Action, Notification, Review, User, Category_income, Category_bills} = sequelize.models;
 
 //Hacer las relaciones
 // -------------relacion de user-action
 User.hasMany(Action, { foreignKey: 'id_usuario', sourceKey: "id"});
 Action.belongsTo(User, { foreignKey: 'id_usuario', targetId: "id" });
 
-//---------relacion de action-category 
-Action.belongsTo(Category, { foreignKey: 'id_categoria' });
-Category.hasMany(Action, { foreignKey: 'id_categoria' });
+//---------relacion de action-category_insome & category_bills
+Action.belongsTo(Category_bills, { foreignKey: 'id_categoria_bills' });
+Category_bills.hasMany(Action, { foreignKey: 'id_categoria_bills' });
+
+Action.belongsTo(Category_income, { foreignKey: 'id_categoria_income' });
+Category_income.hasMany(Action, { foreignKey: 'id_categoria_income' });
+
 
 //---------relacion USER-REVIEW ------
 User.hasMany(Review, { foreignKey: 'id_usuario' });
