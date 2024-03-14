@@ -1,7 +1,10 @@
+import LandingPage from "../../components/LandingPage/LandingPage";
+
+
 const Landing = () => {
     return(
         <div>
-            <h1>Vista de presentación</h1>
+            <LandingPage/>
         </div>
     )
 };
