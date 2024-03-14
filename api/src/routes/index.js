@@ -1,12 +1,21 @@
 const { Router } = require('express');
 const update = require('../controllers/update_user/Update');
+const {createActions,
+       getActions,
+        updateAction,
+    deleteAction} = require('../controllers/Actions/actionsControllers')
 
 
 const router = Router();
 
 //Ruta actualziar datos del usuario
+
 router.put('/user/:id', update)
 
+router.post('/actions', createActions)
+router.get('/.actions', getActions)
+router.put('/actions/:id', updateAction)
+router.delete('/action/:id', deleteAction)
 
 
 //traigo mis rutas
