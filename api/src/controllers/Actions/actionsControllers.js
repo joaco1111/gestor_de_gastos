@@ -5,16 +5,24 @@ const createActions = async (req, res) => {
   try {
     const { type, quantity, date, category } = req.body
     
+    //en caso de no tener datos completos 
     if (!type || !date || !quantity || !category) {
       return res.status(400).send('Completar los campos obligatorios')
     }
+
+    //en caso de ser diferente el tipo de ingreso y gasto, se envia un mensaje de error
     if (type !== 'ingresos' && type !== 'gastos') {
       return res.status(400).json({ error: 'Tipo de acción no válido' })
     }
+
+    //en caso de incluir otro tipo de categoria---- mensaje de error
     if (!allowedCategories[type].includes(category)) {
       return res.status(400).json({ error: 'Categoría no válida para el tipo de acción' })
     }
+
+
     let categories = await Category.findOne({ where: { name: category } })
+    
     if (!categories) {
       categories = await Category.create({ name: category })
     }
@@ -42,6 +50,8 @@ const getActions = async (req, res) => {
       res.status(500).json({ error: 'Error al obtener las acciones' })
     }
   };
+
+
   const updateAction = async (req, res) => {
     try {
       const { id } = req.params
@@ -74,6 +84,7 @@ const getActions = async (req, res) => {
     }
   }
 
+  
   const deleteAction = async (req, res) => {
     try {
       const { id } = req.params;

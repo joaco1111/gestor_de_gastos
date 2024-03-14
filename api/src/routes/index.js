@@ -7,6 +7,7 @@ const router = Router();
 
 //Ruta actualziar datos del usuario
 router.put('/user/:id', update)
+//Ruta crear una Actions 
 router.post('/actions', createActions)
 
 
