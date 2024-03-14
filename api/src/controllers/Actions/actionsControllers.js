@@ -1,12 +1,12 @@
-const { Action, Category } = require('../../db.js');
+const { Action, Category, User } = require('../../db.js');
 const allowedCategories = require('../../../categories.json');
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, category } = req.body
+    const { user, type, quantity, date, category } = req.body
     
     //en caso de no tener datos completos 
-    if (!type || !date || !quantity || !category) {
+    if (!type || !date || !quantity || !category || !user) {
       return res.status(400).send('Completar los campos obligatorios')
     }
 
@@ -34,12 +34,16 @@ const createActions = async (req, res) => {
     });
 
     await newAction.setCategory(categories)
+    await newAction.setUser(user)
+    await 
     res.status(201).json({ mensaje: 'Acción creada exitosamente', newAction })
+
   } catch (error) {
     console.error('Error al crear la acción:', error)
     res.status(500).json({ error: 'Error al crear la acción' })
   }
 };
+
 
 const getActions = async (req, res) => {
     try {
@@ -112,4 +116,6 @@ const getActions = async (req, res) => {
 module.exports = { 
     createActions, 
     getActions,
-    updateAction };
+    updateAction,
+    deleteAction
+  };
