@@ -1,7 +1,14 @@
-const Landing = () => {
+import Loggin from '../../components/Loggin/Loggin';
+
+import LandingPage from "../../components/LandingPage/LandingPage";
+
+
+const Landing = ({ login }) => {
     return(
         <div>
-            <h1>Vista de presentación</h1>
+            <LandingPage/>
+
+            <Loggin login={ login } />
         </div>
     )
 };

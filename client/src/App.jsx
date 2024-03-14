@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Collaboration, Loggin, Log, Home, Landing } from './views';
+import { Collaboration, Log, Home, Landing } from './views';
 
 function App() {
     const navigate = useNavigate();
@@ -14,8 +14,8 @@ function App() {
         }
     };
 
-    useEffect(() => {                                                                     // useEffect maneja el efecto secundario que me permite, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (access) {                                                                     // Me dirige a /home con el 1er click en el botón Loggin
+    useEffect(() => {                                                                           // useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
+        if (access) {                                                                           // Me dirige a /home con el 1er click en el botón Loggin
             navigate('/home');
         }
     }, [access, navigate]);
@@ -24,10 +24,9 @@ function App() {
         <div>
             <Routes>
                 <Route path='/collaboration' element={<Collaboration />}/>
-                <Route path='/loggin' element={<Loggin login={ login }/>}/>
                 <Route path='/log' element={<Log />}/>
-                <Route path='/home' element={<Home />}/>
-                <Route path='/' element={<Landing />}/>
+                <Route path='/home' element={access ? <Home />: <Landing login={login}/>}/>     {/*Si tengo acceso renderizo /home, de lo contrario muestro Landing*/}
+                <Route path='/' element={<Landing login={login}/>}/>
             </Routes>
         </div>
     )

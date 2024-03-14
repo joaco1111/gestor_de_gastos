@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { validate } from '../../utils';
 import axios from 'axios';
+import style from './Log.module.css';
 
 const Log = () => {
     const[form, setForm] = useState({
@@ -37,7 +38,7 @@ const Log = () => {
     };
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={style['login-container']}>
             <h1>Log</h1>
             <div>
                 <label>Name: </label>

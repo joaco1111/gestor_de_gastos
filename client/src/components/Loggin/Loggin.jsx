@@ -3,6 +3,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { getUsers } from '../../redux/actions';
 import { validate } from '../../utils';
+import style from './Loggin.module.css';
 
 const Loggin = ({ login }) => {
     const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const Loggin = ({ login }) => {
     };
 
     return(
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className={style['login-container']}>
             <h1>Loggin</h1>
             <div>
                 <label>Email: </label>
