@@ -1,20 +1,28 @@
-const { Action, Category } = require('../../db.js');
+const { Action, Category, User } = require('../../db.js');
 const allowedCategories = require('../../../categories.json');
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, category } = req.body
+    const { user, type, quantity, date, category } = req.body
     
-    if (!type || !date || !quantity || !category) {
+    //en caso de no tener datos completos 
+    if (!type || !date || !quantity || !category || !user) {
       return res.status(400).send('Completar los campos obligatorios')
     }
+
+    //en caso de ser diferente el tipo de ingreso y gasto, se envia un mensaje de error
     if (type !== 'ingresos' && type !== 'gastos') {
       return res.status(400).json({ error: 'Tipo de acción no válido' })
     }
+
+    //en caso de incluir otro tipo de categoria---- mensaje de error
     if (!allowedCategories[type].includes(category)) {
       return res.status(400).json({ error: 'Categoría no válida para el tipo de acción' })
     }
+
+
     let categories = await Category.findOne({ where: { name: category } })
+    
     if (!categories) {
       categories = await Category.create({ name: category })
     }
@@ -26,12 +34,16 @@ const createActions = async (req, res) => {
     });
 
     await newAction.setCategory(categories)
+    await newAction.setUser(user)
+    await 
     res.status(201).json({ mensaje: 'Acción creada exitosamente', newAction })
+
   } catch (error) {
     console.error('Error al crear la acción:', error)
     res.status(500).json({ error: 'Error al crear la acción' })
   }
 };
+
 
 const getActions = async (req, res) => {
     try {
@@ -42,6 +54,8 @@ const getActions = async (req, res) => {
       res.status(500).json({ error: 'Error al obtener las acciones' })
     }
   };
+
+
   const updateAction = async (req, res) => {
     try {
       const { id } = req.params
@@ -74,6 +88,7 @@ const getActions = async (req, res) => {
     }
   }
 
+  
   const deleteAction = async (req, res) => {
     try {
       const { id } = req.params;
@@ -101,4 +116,6 @@ const getActions = async (req, res) => {
 module.exports = { 
     createActions, 
     getActions,
-    updateAction };
+    updateAction,
+    deleteAction
+  };
