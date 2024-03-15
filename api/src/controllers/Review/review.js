@@ -1,4 +1,5 @@
 const { Review, User} = require('../../db');
+require('dotenv').config();
 
 const create_review = async(req, res) => {
     try {
@@ -29,6 +30,10 @@ const create_review = async(req, res) => {
 }
 
 const get_review = async(req, res) => {
+
+    //muestra el id pasado por tokens
+    console.log(req.userID);
+
     try {
         const reviews = await Review.findAll({
             include: User
