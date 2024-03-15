@@ -37,12 +37,11 @@ const filters = async(req, res) => {
             if(type === "ingresos"){
                 where.id_categoria_income = category; 
              }
-         }
-         else{
-            if(category){
+             else{
                 where.id_categoria_bills = category; 
-             }
+            }
          }
+         
 
          console.log(where);
         const result_filter = await Action.findAndCountAll({where, include: [{model: Category_bills}, {model: Category_income}]});
