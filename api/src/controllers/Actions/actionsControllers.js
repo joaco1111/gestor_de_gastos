@@ -103,6 +103,7 @@ const getActions = async (req, res) => {
 
 const updateAction = async (req, res) => {
     try {
+      //id de actions a modificar
       const { id } = req.params;
 
       const action = await Action.findByPk(id)
@@ -112,7 +113,6 @@ const updateAction = async (req, res) => {
       }
 
       const type = action.dataValues.type;
-
       //condiciones para saber en que caso modificar un ingreso o un gasto cuando haya un id_category
       if(type === "ingresos"){
         if(req.body?.id_category ){

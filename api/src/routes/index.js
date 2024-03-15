@@ -8,6 +8,7 @@ const {create_review, get_review, update_review, delete_review} = require('../co
 
 //traigo mis rutas
 const authRouter = require('./authRoute');
+const { filters } = require('../controllers/Filtres/Filters');
 
 const router = Router();
 
@@ -39,6 +40,9 @@ router.delete('/review/:id', delete_review);
 
 //hago el enrutado
 router.use('/auth', authRouter)
+
+//FILTROS 
+router.get('/filters', filters)
 
 
 module.exports = router
