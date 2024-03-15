@@ -5,7 +5,6 @@ const useIncomeCategories = () => {
     'Salario',
     'Ventas',
     'Bonificaciones',
-    'Inversiones',
     'Regalías',
     'Otros'
   ]);

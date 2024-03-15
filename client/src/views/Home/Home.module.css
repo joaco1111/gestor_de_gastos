@@ -1,0 +1,27 @@
+
+.homeContainer {
+
+    width: 100%;
+    height: max-content;
+    min-height: 100vh;
+}
+
+h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.formSection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-content:space-around;
+    
+    margin-bottom: 40px;
+}
+
+.chartSection {
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
+}
