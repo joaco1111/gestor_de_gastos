@@ -1,4 +1,4 @@
-const { Action, Category_bills, Category_income, User } = require('../../db.js');
+const { Action, Category_bills, Category_income} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
@@ -32,6 +32,7 @@ const createActions = async (req, res) => {
     }
 
     else{
+      
       const category_bills = await Category_bills.findOne({where: {id: id_category}});
       
       //en caso de no encontrar dicha categoria
@@ -51,21 +52,6 @@ const createActions = async (req, res) => {
 
     //LUEGO LO REFACTORIZAMOS BIEN :)
 
-
-    // let categories = await Category.findOne({ where: { name: category } })
-    
-    // if (!categories) {
-    //   categories = await Category.create({ name: category })
-    // }
-
-    // const newAction = await Action.create({
-    //   type,
-    //   date,
-    //   quantity
-    // });
-
-    
-    // res.status(201).json({ mensaje: 'Acción creada exitosamente', newAction })
 
   } catch (error) {
     console.error('Error al crear la acción:', error)

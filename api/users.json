@@ -4,60 +4,80 @@
         "id": 1,
         "name": "Marisol",
         "email": "ma1234@gmail.com",
-        "password": "12345"
+        "password": "12345",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 2,
         "name": "Jaime",
         "email": "Jaime24@gmail.com",
-        "password": "Jaime1234"
+        "password": "Jaime1234",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 3,
         "name": "Pedro",
         "email": "pe_antonio@gmail.com",
-        "password": "pedro987"
+        "password": "pedro987",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 4,
         "name": "Maria",
         "email": "maria_lopez12@gmail.com",
-        "password": "lopezMaria123"
+        "password": "lopezMaria123",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 5,
         "name": "Jorge",
         "email": "j_a_s_12@gmail.com",
-        "password": "lalo123"
+        "password": "lalo123",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 6,
         "name": "Marta",
         "email": "Martina30@gmail.com",
-        "password": "MartinaPoderosa"
+        "password": "MartinaPoderosa",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 7,
         "name": "Marcos",
         "email": "marcos_gutierrez@gmail.com",
-        "password": "marcosG12"
+        "password": "marcosG12",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 8,
         "name": "Lucho",
         "email": "luchon23@gmail.com",
-        "password": "456123"
+        "password": "456123",
+        "access": "2",
+        "activated": true
     },
     {
         "id": 9,
         "name": "Lian",
         "email": "Lian_Martinez@yahoo.com",
-        "password": ""
+        "password": "1234",
+        "access": "2",
+        "activated": false
     },
     {
         "id": 10,
         "name": "Victor",
-        "email": "victor_las_marias@gmail.com",
-        "password": "victor123456"
+        "email": "admin@gmail.com",
+        "password": "admin",
+        "access": "1",
+        "activated": true
     }
 ]}
