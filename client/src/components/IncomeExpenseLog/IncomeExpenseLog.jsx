@@ -25,8 +25,8 @@ const IncomeExpenseLog = () => {
             <p>Tipo: {action.type}</p>
             <p>Fecha: {action.date}</p>
             <p>Cantidad: {action.quantity}</p>
-            <p>Categoría de facturas: {action.Category_bills.name}</p>
-            <p>Categoría de ingresos: {action.Category_income.name}</p>
+            <p>Categoría de Gastos: {action.Category_bills.name}</p>
+            <p>Categoría de Ingresos: {action.Category_income.name}</p>
           </div>
         ))
       ) : (

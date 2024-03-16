@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Collaboration, Log, Home, Landing } from './views';
+import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 
 function App() {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ function App() {
             <Routes>
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
+                <Route path='/detailsLog' element={<IncomeExpenseView />}/>
                 <Route path='/home' element={access ? <Home />: <Landing login={login}/>}/>     {/*Si tengo acceso renderizo /home, de lo contrario muestro Landing*/}
                 <Route path='/' element={<Landing login={login}/>}/>
             </Routes>
