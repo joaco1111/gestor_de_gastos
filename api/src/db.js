@@ -28,32 +28,32 @@ fs.readdirSync(path.join(__dirname, '/models'))
   sequelize.models = Object.fromEntries(capsEntries);
   
 //Hacer destructuring de los models  const {} = sequelize.models
-const {Action, Notification, Review, User, Category_income, Category_bills, Access} = sequelize.models;
+const {Action, Notification, Review, User, CategoryIncome, CategoryBills, Access} = sequelize.models;
 
 //Hacer las relaciones
 // -------------relacion de user-action
-User.hasMany(Action, { foreignKey: 'id_usuario', sourceKey: "id"});
-Action.belongsTo(User, { foreignKey: 'id_usuario', targetId: "id" });
+User.hasMany(Action, { foreignKey: 'idUser', sourceKey: "id"});
+Action.belongsTo(User, { foreignKey: 'idUser', targetId: "id" });
 
 //------------relacion de user-access
-Access.hasMany(User, { foreignKey: 'id_access', sourceKey: "id"})
-User.belongsTo(Access, { foreignKey: 'id_access', targetId: "id"})
+Access.hasMany(User, { foreignKey: 'idAccess', sourceKey: "id"})
+User.belongsTo(Access, { foreignKey: 'idAccess', targetId: "id"})
 
 //---------relacion de action-category_insome & category_bills
-Action.belongsTo(Category_bills, { foreignKey: 'id_categoria_bills' });
-Category_bills.hasMany(Action, { foreignKey: 'id_categoria_bills' });
+Action.belongsTo(CategoryBills, { foreignKey: 'idCategoryBills' });
+CategoryBills.hasMany(Action, { foreignKey: 'idCategoryBills' });
 
-Action.belongsTo(Category_income, { foreignKey: 'id_categoria_income' });
-Category_income.hasMany(Action, { foreignKey: 'id_categoria_income' });
+Action.belongsTo(CategoryIncome, { foreignKey: 'idCategoryIncome' });
+CategoryIncome.hasMany(Action, { foreignKey: 'idCategoryIncome' });
 
 
 //---------relacion USER-REVIEW ------
-User.hasMany(Review, { foreignKey: 'id_usuario' });
-Review.belongsTo(User, { foreignKey: 'id_usuario' });
+User.hasMany(Review, { foreignKey: 'idUser' });
+Review.belongsTo(User, { foreignKey: 'idUser' });
 
 //-----------relacion de USER-NOTIFICATION
-User.hasMany(Notification, { foreignKey: 'id_usuario' });
-Notification.belongsTo(User, { foreignKey: 'id_usuario' });
+User.hasMany(Notification, { foreignKey: 'idUser' });
+Notification.belongsTo(User, { foreignKey: 'idUser' });
 
 
 

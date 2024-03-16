@@ -1,7 +1,7 @@
 const { Review, User} = require('../../db');
 require('dotenv').config();
 
-const create_review = async(req, res) => {
+const createReview = async(req, res) => {
     try {
         const {ranking, comment, user} = req.body;
 
@@ -12,15 +12,15 @@ const create_review = async(req, res) => {
         //Limitamos el numero de caracteres en comment 
         if(comment.length > 255) return res.status(400).send("Haz excedido el limite de caracteres")
 
-        const user_exists = await User.findOne({where: {id: user}});
+        const userExists = await User.findOne({where: {id: user}});
         
         //verificamos que exista el usuario 
-        if(!user_exists) return res.status(400).send("Usuario no existente");
+        if(!userExists) return res.status(400).send("Usuario no existente");
 
         await Review.create({
             ranking,
             comment,
-            id_usuario: user
+            idUser: user
         })
 
         return res.status(200).send("Tu reseña fue creada con exito..!");
@@ -29,7 +29,7 @@ const create_review = async(req, res) => {
     }
 }
 
-const get_review = async(req, res) => {
+const getReview = async(req, res) => {
 
     //muestra el id pasado por tokens
     console.log(req.userID);
@@ -47,7 +47,7 @@ const get_review = async(req, res) => {
     }
 }
 
-const update_review = async(req, res) => {
+const updateReview = async(req, res) => {
     try {
         const {id} = req.params;
 
@@ -66,7 +66,7 @@ const update_review = async(req, res) => {
         return res.status(500).send(error.message);
     }
 }
-const delete_review = async(req, res) => {
+const deleteReview = async(req, res) => {
     try {
         const {id} = req.params;
         const review = await Review.findOne({where: {id}});
@@ -83,8 +83,8 @@ const delete_review = async(req, res) => {
 }
 
 module.exports = {
-    create_review,
-    get_review,
-    update_review,
-    delete_review
+    createReview,
+    getReview,
+    updateReview,
+    deleteReview
 };
