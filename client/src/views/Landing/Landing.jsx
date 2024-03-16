@@ -8,7 +8,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Landing = ({ login }) => {
     return(
-        <div class="container-fluid overflow-hidden" style={{ backgroundColor: '#ffb703', height: 'auto' }}>
+        <div className="container-fluid overflow-hidden" style={{ backgroundColor: '#ffb703', height: 'auto' }}>
             <div className="row" >
                 <div className="col-sm-12 col-md-12 col-lg-12 my-3">
                     <h1 className="text-center">TE AYUDAMOS CON TU ECONOMIA</h1>

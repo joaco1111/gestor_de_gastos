@@ -26,7 +26,7 @@ function App() {
             <Routes>
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
-                <Route path='/detailsLog' element={<IncomeExpenseView />}/>
+                <Route path='/detailsLog' element={<IncomeExpenseView/>}/>
                 <Route path='/home' element={access ? <Home />: <Landing login={login}/>}/>     {/*Si tengo acceso renderizo /home, de lo contrario muestro Landing*/}
                 <Route path='/' element={<Landing login={login}/>}/>
             </Routes>
