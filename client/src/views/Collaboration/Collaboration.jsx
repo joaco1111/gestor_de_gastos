@@ -1,4 +1,4 @@
-import "./Donar.css"
+// import "./Donar.css"
 
 const Donacion = () => {
     return (
