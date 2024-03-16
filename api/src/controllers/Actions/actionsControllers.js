@@ -1,11 +1,11 @@
-const { Action, Category_bills, Category_income} = require('../../db.js');
+const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { id_user, type, quantity, date, id_category } = req.body;
+    const { idUser, type, quantity, date, idCategory } = req.body;
     
     //en caso de no tener datos completos 
-    if (!type || !date || !quantity || !id_category  || !id_user) {
+    if (!type || !date || !quantity || !idCategory  || !idUser) {
       return res.status(400).send('Completar los campos obligatorios')
     }
 
@@ -15,38 +15,38 @@ const createActions = async (req, res) => {
     }
 
     if(type === "ingresos"){
-      const category_income = await Category_income.findOne({where: {id: id_category}});
+      const categoryIncome = await CategoryIncome.findOne({where: {id: idCategory}});
       
       //en caso de no encontrar dicha categoria
-      if(!category_income) return res.status(400).send("No coinciden los datos");
+      if(!categoryIncome) return res.status(400).send("No coinciden los datos");
 
-      const new_action = await Action.create({
+      const newAction = await Action.create({
         type, 
         date, 
         quantity, 
-        id_categoria_income: id_category,
-        id_usuario: id_user
+        idCategoryIncome: idCategory,
+        idUser: idUser
       })
 
-      return res.status(200).json(new_action);
+      return res.status(200).json(newAction);
     }
 
     else{
       
-      const category_bills = await Category_bills.findOne({where: {id: id_category}});
+      const categoryBills = await CategoryBills.findOne({where: {id: idCategory}});
       
       //en caso de no encontrar dicha categoria
-      if(!category_bills) return res.status(400).send("No coinciden los datos");
+      if(!categoryBills) return res.status(400).send("No coinciden los datos");
 
-      const new_action = await Action.create({
+      const newAction = await Action.create({
         type, 
         date, 
         quantity, 
-        id_categoria_bills: id_category,
-        id_usuario: id_user
+        idCategoryBills: idCategory,
+        idUser: idUser
       })
 
-      return res.status(200).json(new_action);
+      return res.status(200).json(newAction);
     }
 
 
