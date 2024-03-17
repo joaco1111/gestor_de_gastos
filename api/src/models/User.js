@@ -30,8 +30,15 @@ module.exports = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    images: {
+      type: DataTypes.STRING,
+      
+    }
  
 }, {
+  //Se Agrega la propiedad images para albergar la url de la imagen de cloudinary
+  
+
   //no poner timestamp, porque paranoid necesita esos datos 
   paranoid: true,  //columna borrador logico
 })

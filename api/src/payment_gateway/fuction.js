@@ -1,41 +1,41 @@
-const express = require("express");
-const app = express();
-const cors = require("cors");
-const mercadopago = require("mercadopago");
+// const express = require("express");
+// const app = express();
+// const cors = require("cors");
+// const mercadopago = require("mercadopago");
 
-app.use(express.json());
-app.use(cors());
+// app.use(express.json());
+// app.use(cors());
 
-mercadopago.configure({
-	access_token: "",
-});
+// mercadopago.configure({
+// 	access_token: "",
+// });
 
-app.post("/create_preference", (req, res) => {
+// app.post("/create_preference", (req, res) => {
 
-	let preference = {
-		items: [
-			{
-				title: req.body.description,
-				unit_price: Number(req.body.price),
-				quantity: Number(req.body.quantity),
-			}
-		],
-		back_urls: {
-			"success": "",//solo si fue extioso el  pago
-			"failure": "",//solo cuando alla un error en la compra
-		},
-		auto_return: "approved",
-	};
+// 	let preference = {
+// 		items: [
+// 			{
+// 				title: req.body.description,
+// 				unit_price: Number(req.body.price),
+// 				quantity: Number(req.body.quantity),
+// 			}
+// 		],
+// 		back_urls: {
+// 			"success": "",//solo si fue extioso el  pago
+// 			"failure": "",//solo cuando alla un error en la compra
+// 		},
+// 		auto_return: "approved",
+// 	};
 
-	mercadopago.preferences.create(preference)
-		.then(function (response) {
-			res.json({
-				id: response.body.id
-			});
-		}).catch(function (error) {
-			console.log(error);
-		});
-});
+// 	mercadopago.preferences.create(preference)
+// 		.then(function (response) {
+// 			res.json({
+// 				id: response.body.id
+// 			});
+// 		}).catch(function (error) {
+// 			console.log(error);
+// 		});
+// });
 
 /*
     COSAS QUE ME FALTAN
