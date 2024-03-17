@@ -1,14 +1,13 @@
-import Loggin from '../../components/Loggin/Loggin';
-
+import Login from '../../components/Login/Login';
 import LandingPage from "../../components/LandingPage/LandingPage";
 
 
-const Landing = ({ login }) => {
+const Landing = ({ loggin }) => {
     return(
         <div>
             <LandingPage/>
 
-            <Loggin login={ login } />
+            <Login loggin={ loggin } />
         </div>
     )
 };

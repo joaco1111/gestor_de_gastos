@@ -1,27 +1,38 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getUsers } from '../../redux/actions';
+import { getUsers, login } from '../../redux/actions';
 import { validate } from '../../utils';
-import style from './Loggin.module.css';
+import style from './Login.module.css';
 
-const Loggin = ({ login }) => {
+const Login = ({ loggin }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(getUsers());
     }, []);
 
+    //Este useEffect me sirve únicamente para leer la localStorage(revisar si está bien)
+    useEffect(() => {                                                         
+        const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+        if(loggedUserJSON) {
+            const user = JSON.parse(loggedUserJSON);
+            dispatch(login(user));
+        }
+    }, []);
+
     const users = useSelector(state => state.users);
 
     const [userData, setUserData] = useState({
         email: '',
-        password: ''
+        password: '',
+        user: null
     });
 
     const [errors, setErrors] = useState({
         email: '',
-        password: ''
+        password: '',
+        user: ''
     });
 
     const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
@@ -31,14 +42,27 @@ const Loggin = ({ login }) => {
         setUserData({ ...userData, [property]: value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
-        login(userData, users);
+        try {                                                                  //Como la fn es asyn hay que poner try - catch
+            const credentials = {
+                email: userData.email,
+                password: userData.password
+            };
+            const user = await loggin(credentials/*userData, users*/);         //En este user me llega el token desde el back, como la demás info del user
+
+            //Para guardar el TOKEN en la localStorage
+            window.localStorage.setItem(
+                'loggedNoteAppUser', JSON.stringify(user)
+            );
+        } catch (error) {
+            setErrors((errors) => ({ ...errors, password: 'Wrong credentials', email: 'Wrong credentials' }));
+        }
     };
 
     return(
         <form onSubmit={handleSubmit} className={style['login-container']}>
-            <h1>Loggin</h1>
+            <h1>Login</h1>
             <div>
                 <label>Email: </label>
                 <input type='email' value={userData.email} onChange={handleChange} name='email'></input>
@@ -49,7 +73,7 @@ const Loggin = ({ login }) => {
                 <input type='password' value={userData.password} onChange={handleChange} name='password'></input>
                 {errors.password && <span>{errors.password}</span>}
             </div>
-            <button type='submit'>Loggin</button>
+            <button type='submit'>Login</button>
             <div>
                 <Link>¿Forgot password?</Link>
                 <br />
@@ -59,4 +83,4 @@ const Loggin = ({ login }) => {
     )
 };
 
-export default Loggin;
+export default Login;

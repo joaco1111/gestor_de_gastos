@@ -1,15 +1,23 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Collaboration, Log, Home, Landing } from './views';
+import { login } from './redux/actions';
 
 function App() {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [access, setAccess] = useState(false);
 
-    const login = (obj, arr) => {
-        const element = arr.find((user) => user.email === obj.email && user.phone === obj.password);
-        if(element) {
+    const loggin = (/*obj, arr*/credentials) => {
+        // const element = arr.find((user) => user.email === obj.email && user.phone === obj.password);
+        // if(element) {
+        //     setAccess(true);
+        // }
+        dispatch(login(credentials));
+        const user = useSelector(state => state.login); 
+        if(user) {
             setAccess(true);
         }
     };
@@ -25,8 +33,8 @@ function App() {
             <Routes>
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
-                <Route path='/home' element={access ? <Home />: <Landing login={login}/>}/>     {/*Si tengo acceso renderizo /home, de lo contrario muestro Landing*/}
-                <Route path='/' element={<Landing login={login}/>}/>
+                <Route path='/home' element={access ? <Home />: <Landing loggin={loggin}/>}/>     {/*Si tengo acceso renderizo /home, de lo contrario muestro Landing*/}
+                <Route path='/' element={<Landing loggin={loggin}/>}/>
             </Routes>
         </div>
     )

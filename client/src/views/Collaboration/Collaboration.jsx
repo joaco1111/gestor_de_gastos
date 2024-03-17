@@ -1,5 +1,3 @@
-import "./Donar.css"
-
 const Donacion = () => {
     return (
         <div className="card-donacion-container">
@@ -16,4 +14,4 @@ const Donacion = () => {
     )
 }
 
-export default Donacion
+export default Donacion;
