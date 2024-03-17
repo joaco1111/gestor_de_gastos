@@ -1,41 +1,36 @@
-// const { User } = require('../db')
-// const bcrypt = require('bcrypt')
-// require('dotenv').config();
-// const { SECRET_KEY } = process.env
-// const jwt = require('jsonwebtoken')
+const { User } = require('../db');
+const bcrypt = require('bcrypt');
+require('dotenv').config();
+const { SECRET_KEY } = process.env;
+const jwt = require('jsonwebtoken');
 
-// // mi funcion "validate" le llega por parametros un email y una passw
+const validate = async (email, password) => {
+    try {
+        const user = await User.findOne({ where: { email } })
 
-// const validate = async (email,password) => {
+        if (!user) {
+            return false // Usuario no encontrado
+        }
 
+        const passwordMatch = await bcrypt.compare(password, user.password)
 
-// // busco en la db si hay un correo que coincida con el me llego y si coincide guardo
-// // la informacion del usuario en mi variable "user"
+        if (passwordMatch) {
+            const userForToken = {
+                id: user.id,
+                email: user.email
+            }
 
-//     const user = await User.findOne({where: {email}})
+            const token = jwt.sign(userForToken, SECRET_KEY)
+            return token
+        } else {
+            return false // Contraseña incorrecta
+        }
+    } catch (error) {
+        console.error('Error en la validación:', error)
+        return false // Error en la validación
+    }
+}
 
-// // en la informacion almacenada en user verifico si la passowrd coincide con la que me llego
-// // en parametros y retorno true o false dependiendo si coincide o no.
-
-//     const passowrdCompare = user === null ? false : await bcrypt.compare(password, user.password)
-
-//     if(passowrdCompare){
-
-// // se crea un token con la informacion del user
-
-//         const userForToken = {
-//             id: user.id,
-//             name: user.name
-//         }
-
-//         const token = jwt.sign(userForToken, SECRET_KEY)
-//         return token
-
-//     } else {
-//         return false
-//     }
-// }
-
-// module.exports = {
-//     validate
-// }
+module.exports = {
+    validate
+}

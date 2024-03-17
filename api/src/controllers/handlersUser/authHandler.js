@@ -33,7 +33,7 @@ const registerHandler = async (req, res) => {
 // Se trae del front name,email y password
 
         const { name, email, password, } = req.body
-      
+
 // Se comprueba que los campos esten llenos
 
         if (!name || !email || !password ) {
@@ -82,7 +82,7 @@ const updateHandler =  async(req, res) => {
     try {
         //id del usuario por token
         const id_user = req.userID
-        const user_exists = await User.findOne({where: {id: id_user}});
+        const userExists = await User.findOne({where: {id: id_user}});
 
         //validamos que si exista el usuario
         if(!userExists) return res.status(400).send("Usuario no existente...!");
@@ -112,9 +112,7 @@ const updateHandler =  async(req, res) => {
 
         const passwordHash = await bcrypt.hash(password, 10)
 
-        user_exists.set({name,email,password: passwordHash})
-
-
+        userExists.set({name,email,password: passwordHash})
 
         //user_exists.set(req.query);
         //los guardamos 
