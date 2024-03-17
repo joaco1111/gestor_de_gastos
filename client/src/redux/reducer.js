@@ -1,7 +1,9 @@
-import { GET_USERS } from "./action-types";
+import { GET_USERS, ADD_EXPENSE, GET_CATEGORIES } from "./action-types";
 
 const initialState = {
-    users: []
+    users: [],
+    expenses: [],
+    categories: []
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -10,6 +12,18 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state, users: action.payload
             }
+        case ADD_EXPENSE:
+            return {
+                ...state,
+                expenses: [...state.expenses, action.payload]
+            }
+
+        case GET_CATEGORIES: 
+            return {
+                ...state,
+                categories: action.payload
+            };
+        
         default:
             return {
                 ...state
