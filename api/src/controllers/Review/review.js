@@ -31,9 +31,6 @@ const createReview = async(req, res) => {
 
 const getReview = async(req, res) => {
 
-    //muestra el id pasado por tokens
-    console.log(req.userID);
-
     try {
         const reviews = await Review.findAll({
             include: User
