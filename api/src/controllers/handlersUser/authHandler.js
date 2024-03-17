@@ -66,14 +66,29 @@ const registerHandler = async (req, res) => {
     }
 }
 
+const getUsers = async(req, res) => {
+    try {
+        const {page = 1, limit = 10} = req.query;
+        const offset = (page - 1) * limit;
+
+        const users = await User.findAndCountAll({where: {idAccess: 2}, limit, offset});
+        
+        if(!users) return res.status(400).send("No existen usuarios.");
+        
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).send('Error al leer los usuarios: ',error.message)
+    }
+}
+
 const updateHandler =  async(req, res) => {
     try {
         //id del usuario por parametro 
-        const id_user = req.params.id;
-        const user_exists = await User.findOne({where: {id: id_user}});
+        const idUser = req.params.id;
+        const userExists = await User.findOne({where: {id: idUser}});
 
         //validamos que si exista el usuario
-        if(!user_exists) return res.status(400).send("El usuario no existe.");
+        if(!userExists) return res.status(400).send("Usuario no existente...!");
         
 
         // //info a actualizar
@@ -94,23 +109,11 @@ const updateHandler =  async(req, res) => {
         // });
 
         //FORMA MAS RAPIDA :)
-    
-        //integracion CLOUDINARY
-        //Verificamos si hay una imagen recibida
-        //la extraemos
-        if (req.files && req.files.image) {
-            const image = req.files.image;
+        //actualizamos los datos
 
-            // Subimos  la imagen a Cloudinary
-            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
-
-            // se guarda la URL de la imagen en la base de datos
-            user_exists.photoProfile = imageUploadResult.secure_url;
-        }
-            //actualizamos los datos
-        user_exists.set(req.query);
+        userExists.set(req.query);
         //los guardamos 
-        await user_exists.save();
+        await userExists.save();
         
         return res.status(200).send("Datos actualizados correctamente.");
         
@@ -122,5 +125,6 @@ const updateHandler =  async(req, res) => {
 module.exports = {
     loginHandler,
     registerHandler,
-    updateHandler
+    updateHandler,
+    getUsers
 }
