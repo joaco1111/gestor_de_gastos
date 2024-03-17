@@ -33,7 +33,7 @@ const registerHandler = async (req, res) => {
 // Se trae del front name,email y password
 
         const { name, email, password, } = req.body
-      
+
 // Se comprueba que los campos esten llenos
 
         if (!name || !email || !password ) {
@@ -51,13 +51,10 @@ const registerHandler = async (req, res) => {
 // Se hashea la contraseña 
 
         const passwordHash = await bcrypt.hash(password, 10)
-        console.log(passwordHash);
 
-//
+// creo el registro en db
 
-// Se crea el registro en db
-
-        await User.create({ name, email, password: passwordHash })
+        await User.create({ name, email, password: passwordHash, idAccess: 2 })
 
         res.status(201).json({ name, email })
 
@@ -77,15 +74,15 @@ const getUsers = async(req, res) => {
         
         return res.status(200).json(users);
     } catch (error) {
-        return res.status(500).send('Error al leer los usuarios: ',error.message)
+        res.status(400).json({ error: error.message })
     }
 }
 
 const updateHandler =  async(req, res) => {
     try {
-        //id del usuario por parametro 
-        const idUser = req.params.id;
-        const userExists = await User.findOne({where: {id: idUser}});
+        //id del usuario por token
+        const id_user = req.userID
+        const userExists = await User.findOne({where: {id: id_user}});
 
         //validamos que si exista el usuario
         if(!userExists) return res.status(400).send("Usuario no existente...!");
@@ -111,7 +108,13 @@ const updateHandler =  async(req, res) => {
         //FORMA MAS RAPIDA :)
         //actualizamos los datos
 
-        userExists.set(req.query);
+        const { name, email, password } = req.body
+
+        const passwordHash = await bcrypt.hash(password, 10)
+
+        userExists.set({name,email,password: passwordHash})
+
+        //user_exists.set(req.query);
         //los guardamos 
         await userExists.save();
         

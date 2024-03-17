@@ -20,17 +20,17 @@ router.get('/categoryIncome', getCategoryIncomes);
 
 //ACTIONS
 //Ruta crear una Actions
-router.post('/actions', createActions)
+router.post('/actions', userExtractor, createActions)
 //Ruta obtener los datos de la Actions
-router.get('/actions', getActions)
+router.get('/actions', userExtractor, getActions)
 //Ruta actualizar los datos de la Actions
-router.put('/actions/:id', updateAction)
+router.put('/actions/:id', userExtractor, updateAction)
 //Ruta eliminar algun dato de la Actions
-router.delete('/action/:id', deleteAction)
+router.delete('/action/:id', userExtractor, deleteAction)
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas
-router.get('/review', userExtractor, getReview) // ruta de como funcionaria jwt
+router.get('/review', getReview) // ruta de como funcionaria jwt
 //Ruta para crear una reseña
 // router.post('/review', createReview);
 //Ruta para actualizar la reseña
