@@ -9,6 +9,6 @@ const { loginHandler,registerHandler, updateHandler } = require('../controllers/
 
 authRouter.post('/login', loginHandler)
 authRouter.post('/register', registerHandler)
-authRouter.post('/userUpdate', updateHandler)
+authRouter.put('/userUpdate/:id', updateHandler)
 
 module.exports = authRouter

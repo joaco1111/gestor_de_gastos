@@ -26,7 +26,7 @@ router.delete('/action/:id', deleteAction)
 //Ruta para obtener las reseñas
 router.get('/review', userExtractor, getReview) // ruta de como funcionaria jwt
 //Ruta para crear una reseña
-router.post('/review', createReview);
+// router.post('/review', createReview);
 //Ruta para actualizar la reseña
 router.put('/review/:id', updateReview);
 //Ruta para eliminar una reseña
