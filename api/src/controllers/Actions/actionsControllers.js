@@ -2,7 +2,9 @@ const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { idUser, type, quantity, date, idCategory } = req.body;
+    const { type, quantity, date, idCategory } = req.body;
+
+    const idUser = req.userID
     
     //en caso de no tener datos completos 
     if (!type || !date || !quantity || !idCategory  || !idUser) {
@@ -110,7 +112,7 @@ const updateAction = async (req, res) => {
           const data = { idCategoryIncome: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await CategoryIncome.findOne({where: {id: idCategory}})
+          const category = await CategoryIncome.findOne({where: {id: id_category}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
