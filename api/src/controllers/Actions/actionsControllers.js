@@ -67,10 +67,10 @@ const getActions = async (req, res) => {
 
         include:[
         {
-          model: Category_bills,
+          model: CategoryBills,
           attributes: ["name"]
         },{
-          model: Category_income,
+          model: CategoryIncome,
           attributes: ["name"]
         }]});
 
@@ -101,35 +101,35 @@ const updateAction = async (req, res) => {
       const type = action.dataValues.type;
       //condiciones para saber en que caso modificar un ingreso o un gasto cuando haya un id_category
       if(type === "ingresos"){
-        if(req.body?.id_category ){
-          const id_category = req.body.id_category;
-          const data = { id_categoria_income: id_category , ...req.body}
+        if(req.body?.idCategory ){
+          const idCategory = req.body.idCategory;
+          const data = { idCategoryIncome: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await Category_income.findOne({where: {id: id_category}})
+          const category = await CategoryIncome.findOne({where: {id: idCategory}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
 
-          const update_actions = await action.update(data)
+          const updateActions = await action.update(data)
 
-          return res.status(200).json(update_actions);
+          return res.status(200).json(updateActions);
         }
       }
       else{
-        if(req.body?.id_category ){
-          const id_category = req.body.id_category;
-          const data = { id_categoria_bills: id_category , ...req.body}
+        if(req.body?.idCategory ){
+          const idCategory = req.body.idCategory;
+          const data = { idCategoryBills: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await Category_bills.findOne({where: {id: id_category}})
+          const category = await CategoryBills.findOne({where: {id: idCategory}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
 
-          const update_actions = await action.update(data)
+          const updateActions = await action.update(data)
 
-          return res.status(200).json(update_actions);
+          return res.status(200).json(updateActions);
         }
       }
       

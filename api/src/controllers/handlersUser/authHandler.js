@@ -66,11 +66,11 @@ const registerHandler = async (req, res) => {
 const updateHandler =  async(req, res) => {
     try {
         //id del usuario por parametro 
-        const id_user = req.params.id;
-        const user_exists = await User.findOne({where: {id: id_user}});
+        const idUser = req.params.id;
+        const userExists = await User.findOne({where: {id: idUser}});
 
         //validamos que si exista el usuario
-        if(!user_exists) return res.status(400).send("Usuario no existente...!");
+        if(!userExists) return res.status(400).send("Usuario no existente...!");
         
 
         // //info a actualizar
@@ -92,9 +92,10 @@ const updateHandler =  async(req, res) => {
 
         //FORMA MAS RAPIDA :)
         //actualizamos los datos
-        user_exists.set(req.query);
+
+        userExists.set(req.query);
         //los guardamos 
-        await user_exists.save();
+        await userExists.save();
         
         return res.status(200).send("Datos actualizados correctamente");
         

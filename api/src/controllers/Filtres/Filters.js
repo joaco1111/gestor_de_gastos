@@ -1,4 +1,5 @@
-const {User, Action, Category_bills, Category_income} = require('../../db');
+const {User, Action, CategoryBills, CategoryIncome} = require('../../db');
+const { Op } = require('sequelize'); 
 
 /* 
 1- searchs -> ?
@@ -11,17 +12,19 @@ const {User, Action, Category_bills, Category_income} = require('../../db');
 const filters = async(req, res) => {
 
     try {
-        const {id_user, data , type, category} = req.body;
+        const {idUser, data , type, category, page = 1, limit = 10} = req.body;
+
+        const offset = (page - 1) * limit;
         //en caso de no existir id del usuario
-        if(!id_user) return res.status(400).send("Dato incompleto");
+        if(!idUser) return res.status(400).send("Dato incompleto");
 
         //veirificamos existencia del usuario 
-        const user_exists = await User.findOne({where: {id: id_user}});
-        if(!user_exists) return res.status(400).send("Los datos no coinciden");
+        const userExists = await User.findOne({where: {id: idUser}});
+        if(!userExists) return res.status(400).send("Los datos no coinciden");
 
         //creamos el objeto condicional que si o si debe de tener el id del usuario para buscar solo las actions con ese id
         const where = {
-           "id_usuario":  id_user
+           "idUser":  idUser,
         };
 
         //si hay fecha la agrega al objeto condicional
@@ -35,19 +38,25 @@ const filters = async(req, res) => {
          //si hay categoria la agrega al objeto condicional
          if(category){
             if(type === "ingresos"){
-                where.id_categoria_income = category; 
+                where.idCategoryIncome = category; 
              }
              else{
-                where.id_categoria_bills = category; 
+                where.idCategoryBills = category; 
             }
          }
-         
 
          console.log(where);
-        const result_filter = await Action.findAndCountAll({where, include: [{model: Category_bills}, {model: Category_income}]});
+         
+        const resultFilter = await Action.findAndCountAll({
+            where: {...where},
+            limit,
+            offset, 
+            include: [{model: CategoryBills}, {model: CategoryIncome}],
+            
+        });
 
 
-        return res.status(200).json(result_filter)
+        return res.status(200).json(resultFilter)
     } catch (error) {
         return res.status(500).send(error.message);
     }

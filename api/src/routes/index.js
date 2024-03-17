@@ -9,8 +9,14 @@ const {createReview, getReview, updateReview, deleteReview} = require('../contro
 const authRouter = require('./authRoute');
 const userExtractor = require('../middleware/userExtractor')
 const { filters } = require('../controllers/Filtres/Filters');
+const { getCategoryBills, getCategoryIncomes } = require('../controllers/Categories/Category');
 
 const router = Router();
+
+//CATEGORIAS BILLS
+router.get('/categoryBills', getCategoryBills);
+//CATEGORIAS INCOME
+router.get('/categoryIncome', getCategoryIncomes);
 
 //ACTIONS
 //Ruta crear una Actions
