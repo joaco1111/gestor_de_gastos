@@ -62,9 +62,13 @@ const createActions = async (req, res) => {
 
 const getActions = async (req, res) => {
     try {
-      const actions = await Action.findAll({
-        attributes: ["id","type", "date", "quantity"], 
+      const {page = 1, limit = 10} = req.query;
+      const offset = (page - 1) * limit; 
 
+      const actions = await Action.findAndCountAll({
+        attributes: ["id","type", "date", "quantity"], 
+        offset,
+        limit,
         include:[
         {
           model: CategoryBills,

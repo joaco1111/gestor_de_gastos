@@ -42,8 +42,9 @@ router.delete('/review/:id', deleteReview);
 /*ruta para 
 1. logiar
 2. registrar
-3. actualizar
-4. eliminar
+3. leer users
+4. actualizar
+5. eliminar
 */
 router.use('/auth', authRouter)
 

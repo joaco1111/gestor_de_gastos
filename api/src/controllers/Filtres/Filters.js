@@ -12,9 +12,11 @@ const { Op } = require('sequelize');
 const filters = async(req, res) => {
 
     try {
-        const {idUser, data , type, category, page = 1, limit = 10} = req.body;
+        const { page = 1, limit = 10} = req.query;
+        const {idUser, data , type, category} = req.body;
 
-        const offset = (page - 1) * limit;
+        const offset = (page - 1) * limit; //desde donde inicia el paginado
+
         //en caso de no existir id del usuario
         if(!idUser) return res.status(400).send("Dato incompleto");
 
@@ -44,8 +46,6 @@ const filters = async(req, res) => {
                 where.idCategoryBills = category; 
             }
          }
-
-         console.log(where);
          
         const resultFilter = await Action.findAndCountAll({
             where: {...where},

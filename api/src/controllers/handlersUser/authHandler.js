@@ -66,6 +66,21 @@ const registerHandler = async (req, res) => {
     }
 }
 
+const getUsers = async(req, res) => {
+    try {
+        const {page = 1, limit = 10} = req.query;
+        const offset = (page - 1) * limit;
+
+        const users = await User.findAndCountAll({where: {idAccess: 2}, limit, offset});
+        
+        if(!users) return res.status(400).send("No existen usuarios.");
+        
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).send('Error al leer los usuarios: ',error.message)
+    }
+}
+
 const updateHandler =  async(req, res) => {
     try {
         //id del usuario por parametro 
@@ -110,5 +125,6 @@ const updateHandler =  async(req, res) => {
 module.exports = {
     loginHandler,
     registerHandler,
-    updateHandler
+    updateHandler,
+    getUsers
 }
