@@ -1,4 +1,4 @@
-import { GET_USERS, ADD_EXPENSE, GET_CATEGORIES} from './action-types';
+import { GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME} from './action-types';
 import axios from 'axios';
 
 export const getUsers = () => {
@@ -8,7 +8,7 @@ export const getUsers = () => {
     }
 };
 
-export const addExpense = (payload) => {
+export const addExpenseIncome = (payload) => {
     return async (dispatch) => {
         try {
             const apiData = await axios.post("http://localhost:3001/actions", payload)
@@ -17,7 +17,7 @@ export const addExpense = (payload) => {
             alert("Exito")
 
             return dispatch({
-                type: ADD_EXPENSE,
+                type: ADD_EXPENSE_INCOME,
                 payload: expense,
 
             })
@@ -30,12 +30,27 @@ export const addExpense = (payload) => {
     }
 }
 
-export const getCategories = () => {
+export const getCategoryExpense = () => {
     return async function(dispatch) {
         try {
-            const categories = (await axios.get('http://localhost:3001/categories')).data;
+            const categories = (await axios.get('http://localhost:3001/categoryBills')).data;
             dispatch({
-                 type: GET_CATEGORIES,
+                 type: GET_CATEGORIES_EXPENSE,
+                  payload: categories 
+                });
+        } catch (error) {
+            alert("Ocurrió un error al obtener las categorías");
+            throw error;
+        }
+    }
+};
+
+export const getCategoryIncome = () => {
+    return async function(dispatch) {
+        try {
+            const categories = (await axios.get('http://localhost:3001/categoryIncome')).data;
+            dispatch({
+                 type: GET_CATEGORIES_INCOME,
                   payload: categories 
                 });
         } catch (error) {
