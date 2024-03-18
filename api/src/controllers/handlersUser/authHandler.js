@@ -33,7 +33,7 @@ const registerHandler = async (req, res) => {
 // Se trae del front name,email y password
 
         const { name, email, password, } = req.body
-
+      
 // Se comprueba que los campos esten llenos
 
         if (!name || !email || !password ) {
@@ -113,6 +113,20 @@ const updateHandler =  async(req, res) => {
         const passwordHash = await bcrypt.hash(password, 10)
 
         userExists.set({name,email,password: passwordHash})
+
+
+       //integracion CLOUDINARY
+        //Verificamos si hay una imagen recibida
+        //la extraemos
+        if (req.files && req.files.image) {
+            const image = req.files.image;
+
+            // Subimos  la imagen a Cloudinary
+            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
+
+            // se guarda la URL de la imagen en la base de datos
+            userExists.photoProfile = imageUploadResult.secure_url;
+        }
 
         //user_exists.set(req.query);
         //los guardamos 
