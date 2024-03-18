@@ -33,7 +33,7 @@ const registerHandler = async (req, res) => {
 // Se trae del front name,email y password
 
         const { name, email, password, } = req.body
-
+      
 // Se comprueba que los campos esten llenos
 
         if (!name || !email || !password ) {
@@ -83,27 +83,41 @@ const updateHandler =  async(req, res) => {
         //id del usuario por token
         const idUser = req.userID
         const userExists = await User.findOne({where: {id: idUser}});
-        console.log(userExists120);
-        let passwordHash = '';
+        let updateData = {}
+
         //validamos que si exista el usuario
         if(!userExists) return res.status(400).send("Usuario no existente.!");
-        
 
-        //actualizamos los datos
+        //si existe password la hasheamos y almacenamos los datos en updateData
         if(req.body?.password) {
-            passwordHash = await bcrypt.hash(password, 10)
+            const {password} = req.body;
+            const passwordHash = await bcrypt.hash(password, 10)
+
+            for (let element in req.body) {
+                if(element === "password") updateData[element] = passwordHash;
+                if(element !== "password") updateData[element] = req.body[element];
+            }
+        }else{
+            updateData = {...req.body};
         }
 
-        for (let element in req.body){
-            console.log(element);
+       //integracion CLOUDINARY
+        //Verificamos si hay una imagen recibida
+        //la extraemos
+        if (req.files && req.files.image) {
+            const image = req.files.image;
+
+            // Subimos  la imagen a Cloudinary
+            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
+
+            // se guarda la URL de la imagen en la base de datos
+            updateData["photoProfile"] = imageUploadResult.secure_url;
         }
 
-        // userExists.set({name,email,password: passwordHash})
 
-        //los guardamos 
-        // await userExists.save();
+        userExists.update(updateData);
         
-        return res.status(200).sen7d("Datos actualizados correctamente.");
+        return res.status(200).send("Datos actualizados correctamente.");
         
     } catch (error) {
         return res.status(500).send('Error al actualizar: ',error.message)
