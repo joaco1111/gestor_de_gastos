@@ -1,11 +1,11 @@
 const { SECRET_KEY } = process.env
 const jwt = require('jsonwebtoken')
 
-module.exports = (req, res, next) => {
+module.exports = async(req, res, next) => {
 
 // en authorization almaceno la cabecera que me manda el front que contiene el token
+    const authorization = req.get('authorization');
 
-    const authorization = req.get('authorization')
     let token = ''
 
 // verifico que el token tenga el esquema 'bearer'
@@ -22,7 +22,8 @@ module.exports = (req, res, next) => {
 
     try {
 
-        decodedToken = jwt.verify(token, SECRET_KEY)
+        
+        decodedToken = await jwt.verify(token, SECRET_KEY)
 
     } catch (error) {
     }

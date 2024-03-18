@@ -8,8 +8,10 @@ const { loginHandler,registerHandler, updateHandler, getUsers } = require('../co
 
 // rutas
 
+authRouter.get('/users', getUsers)
 authRouter.post('/login', loginHandler)
 authRouter.post('/register', registerHandler)
-authRouter.post('/userUpdate', userExtractor, updateHandler)
+authRouter.put('/userUpdate', userExtractor, updateHandler)
+
 
 module.exports = authRouter

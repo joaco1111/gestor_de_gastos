@@ -30,7 +30,7 @@ router.delete('/action/:id', userExtractor, deleteAction)
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas
-router.get('/review', getReview) // ruta de como funcionaria jwt
+router.get('/review', getReview)
 //Ruta para crear una reseña
 // router.post('/review', createReview);
 //Ruta para actualizar la reseña
@@ -49,7 +49,7 @@ router.delete('/review/:id', deleteReview);
 router.use('/auth', authRouter)
 
 //FILTROS 
-router.get('/filters', filters)
+router.get('/filters', userExtractor, filters)
 
 
 module.exports = router

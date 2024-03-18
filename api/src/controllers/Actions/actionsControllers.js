@@ -3,8 +3,9 @@ const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 const createActions = async (req, res) => {
   try {
     const { type, quantity, date, idCategory } = req.body;
+    const idUser = req.userID;
+    const typeCategory = {}
 
-    const idUser = req.userID
     
     //en caso de no tener datos completos 
     if (!type || !date || !quantity || !idCategory  || !idUser) {
@@ -22,15 +23,8 @@ const createActions = async (req, res) => {
       //en caso de no encontrar dicha categoria
       if(!categoryIncome) return res.status(400).send("No coinciden los datos");
 
-      const newAction = await Action.create({
-        type, 
-        date, 
-        quantity, 
-        idCategoryIncome: idCategory,
-        idUser: idUser
-      })
-
-      return res.status(200).json(newAction);
+      typeCategory['idCategoryIncome'] = idCategory;
+      
     }
 
     else{
@@ -40,19 +34,18 @@ const createActions = async (req, res) => {
       //en caso de no encontrar dicha categoria
       if(!categoryBills) return res.status(400).send("No coinciden los datos");
 
-      const newAction = await Action.create({
-        type, 
-        date, 
-        quantity, 
-        idCategoryBills: idCategory,
-        idUser: idUser
-      })
-
-      return res.status(200).json(newAction);
+      typeCategory['idCategoryBills'] = idCategory;
     }
 
+    const newAction = await Action.create({
+      type, 
+      date, 
+      quantity, 
+      ...typeCategory,
+      idUser: idUser
+    })
 
-    //LUEGO LO REFACTORIZAMOS BIEN :)
+    return res.status(200).json(newAction);
 
 
   } catch (error) {
