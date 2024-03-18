@@ -114,7 +114,8 @@ const updateHandler =  async(req, res) => {
 
         userExists.set({name,email,password: passwordHash})
 
-                //integracion CLOUDINARY
+
+       //integracion CLOUDINARY
         //Verificamos si hay una imagen recibida
         //la extraemos
         if (req.files && req.files.image) {
@@ -126,7 +127,6 @@ const updateHandler =  async(req, res) => {
             // se guarda la URL de la imagen en la base de datos
             userExists.photoProfile = imageUploadResult.secure_url;
         }
-
 
         //user_exists.set(req.query);
         //los guardamos 

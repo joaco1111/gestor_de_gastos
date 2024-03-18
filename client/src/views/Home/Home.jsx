@@ -1,9 +1,10 @@
-import ExpenseForm from "../../components/Expense/ExpenseForm";
+// import ExpenseForm from "../../components/Expense/ExpenseForm";
 import IncomeForm from "../../components/Income/IncomeForm";
 import PieChartsExpense from "../../components/Charts/PieChartsExpense";
 import PieChartsIncome from "../../components/Charts/PieChartsIncome";
 import style from './Home.module.css'
 import NavBar from "../../components/NavBar/NavBar";
+import ExpenseIncomeForm from "../../components/ExpenseIncome/ExpenseIncomeForm";
 // import FinanceSummary from "../../components/FinanceSummary/FinanceSummary";
 
 const Home = () => {
@@ -12,7 +13,7 @@ const Home = () => {
             <NavBar/>
             <h1>Home</h1>
             <div className={style.formSection}>
-                <ExpenseForm/>
+                <ExpenseIncomeForm/>
                 <IncomeForm/>
             </div>
             {/* <FinanceSummary/> */}
