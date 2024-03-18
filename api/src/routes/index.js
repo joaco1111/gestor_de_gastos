@@ -37,6 +37,7 @@ router.put('/review/:id', update_review);
 //Ruta para eliminar una reseña
 router.delete('/review/:id', delete_review);
 
+
 //hago el enrutado
 router.use('/auth', authRouter)
 
