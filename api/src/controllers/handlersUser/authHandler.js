@@ -1,27 +1,28 @@
 const { User } = require('../../db')
 const { validate } = require('../../validations/validationAuthController')
 const bcrypt = require('bcrypt')
+const cloudinary = require('cloudinary')
 
 const loginHandler = async (req, res) => {
 
-    // traigo del front email/passw
+    // Se trae del front email/passw
 
     const { email, password } = req.body
 
     try {
 
-        // con mi funcion "validate" verifico si esta registrado o no pasandole por 
-        // parametros el email y la passw del front y envio un token con informacion del user
+        // con la funcion "validate" se verifica si esta registrado o no, pasando por 
+        // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
         const token = await validate(email, password)
 
         if(token){
             res.status(200).json({ tokenUser: token })
         }else{
-            res.status(200).json({ access: 'Usuario o contraseña incorrecta' })
+            res.status(400).send('Usuario o contraseña incorrecta' )
         }
     }catch(error){
-        res.status(400).json({ error: error.message})
+        res.status(400).send('Error en el login', error.message)
     }
 }
 
@@ -29,35 +30,49 @@ const registerHandler = async (req, res) => {
 
     try {
 
-// traigo del front name,email y password
+// Se trae del front name,email y password
 
-        const { name, email, password } = req.body
+        const { name, email, password, } = req.body
 
-// compruebo que los campos esten llenos
+// Se comprueba que los campos esten llenos
 
-        if (!name || !email || !password) {
-            return res.status(200).json({ access: 'Datos incompletos' })
+        if (!name || !email || !password ) {
+            return res.status(400).send( 'Datos incompletos' )
         }
 
-// verifico si no existe otro gmail en mi db
+// Se verifica si no existe otro gmail en la db
 
         const verificateEmail = await User.findOne({ where: { email } })
 
         if (verificateEmail) {
-            return res.status(200).json({ access: 'Este correo ya existe' })
+            return res.send( 'Correo electronico existente')
         }
 
-// hasheo la contraseña 
+// Se hashea la contraseña 
 
         const passwordHash = await bcrypt.hash(password, 10)
-        console.log(passwordHash);
 
 // creo el registro en db
 
-        await User.create({ name, email, password: passwordHash })
+        await User.create({ name, email, password: passwordHash, idAccess: 2 })
 
-        res.status(200).json({ name, email })
+        res.status(201).json({ name, email })
 
+    } catch (error) {
+        res.status(400).send('Error al registrar en la Base de Datos: ',  error.message )
+    }
+}
+
+const getUsers = async(req, res) => {
+    try {
+        const {page = 1, limit = 10} = req.query;
+        const offset = (page - 1) * limit;
+
+        const users = await User.findAndCountAll({where: {idAccess: 2}, limit, offset});
+        
+        if(!users) return res.status(400).send("No existen usuarios.");
+        
+        return res.status(200).json(users);
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -65,12 +80,12 @@ const registerHandler = async (req, res) => {
 
 const updateHandler =  async(req, res) => {
     try {
-        //id del usuario por parametro 
-        const id_user = req.params.id;
-        const user_exists = await User.findOne({where: {id: id_user}});
+        //id del usuario por token
+        const id_user = req.userID
+        const userExists = await User.findOne({where: {id: id_user}});
 
         //validamos que si exista el usuario
-        if(!user_exists) return res.status(400).send("Usuario no existente...!");
+        if(!userExists) return res.status(400).send("Usuario no existente...!");
         
 
         // //info a actualizar
@@ -92,19 +107,27 @@ const updateHandler =  async(req, res) => {
 
         //FORMA MAS RAPIDA :)
         //actualizamos los datos
-        user_exists.set(req.query);
+
+        const { name, email, password } = req.body
+
+        const passwordHash = await bcrypt.hash(password, 10)
+
+        userExists.set({name,email,password: passwordHash})
+
+        //user_exists.set(req.query);
         //los guardamos 
-        await user_exists.save();
+        await userExists.save();
         
-        return res.status(200).send("Datos actualizados correctamente");
+        return res.status(200).send("Datos actualizados correctamente.");
         
     } catch (error) {
-        return res.status(500).send(error.message)
+        return res.status(500).send('Error al actualizar: ',error.message)
     }
 }
 
 module.exports = {
     loginHandler,
     registerHandler,
-    updateHandler
+    updateHandler,
+    getUsers
 }

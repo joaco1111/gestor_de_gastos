@@ -4,7 +4,7 @@ const { conn } = require('./src/db.js');
 const { users } = require('./users.json');
 const { ingresos, gastos} = require('./categories.json');
 //tabla User
-const {User, CategoryIncome, CategoryBills, Access} = require('./src/db.js');
+const {User, CategoryIncome, CategoryBills, Access, Action} = require('./src/db.js');
 
 //RANDOM PARA INGRESARLOS A LA BASE DE DATOS
 const typeAccess = ["admin", "user"];
@@ -26,6 +26,8 @@ conn.sync({ force: true }).then(async() => {
   typeAccess.forEach(async(element) => {
     await Access.findOrCreate({where: {name: element}})
   })
+
+  
   
   users.forEach(async(element) => {
     try {
@@ -37,7 +39,8 @@ conn.sync({ force: true }).then(async() => {
   })
   
   server.listen(3001, () => {
-    console.log('%s listening at 3001'); // eslint-disable-line no-console
+    console.log('%s listening at 3001');
+   // eslint-disable-line no-console
   });
 });
 

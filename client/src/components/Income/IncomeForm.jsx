@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import useIncomeCategories from './useIncomeCategories';
-import styles from './IncomeForm.module.css'; // Importa los estilos CSS modules
+import styles from './IncomeForm.module.css'; 
 
 const IncomeForm = () => {
   const { incomeCategories, addIncomeCategory } = useIncomeCategories();

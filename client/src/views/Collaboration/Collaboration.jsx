@@ -1,3 +1,5 @@
+// import "./Donar.css"
+
 const Donacion = () => {
     return (
         <div className="card-donacion-container">

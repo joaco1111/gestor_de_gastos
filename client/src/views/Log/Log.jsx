@@ -3,6 +3,8 @@ import { validate } from '../../utils';
 import axios from 'axios';
 import style from './Log.module.css';
 
+const baseURL = 'http://localhost:3001/auth';
+
 const Log = () => {
     const[form, setForm] = useState({
         name: '',
@@ -32,7 +34,7 @@ const Log = () => {
             password: form.password,
         }
         //Aquí se crea el usuario, una vez se defina la URL para el post desde el back
-        axios.post('URL que me entrega el back', newUser)                      //Como segundo parámetro del .post() va el usuario a crear
+        axios.post(`${baseURL}/register`, newUser)                             //Como segundo parámetro del .post() va el usuario a crear
         .then(res => alert('Successfully created user'))
         .catch(err => alert(err));
     };

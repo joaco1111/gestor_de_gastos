@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import useCategories from './useCategories'; // Uso el hook
-import styles from './ExpenseForm.module.css'; // Importa los estilos CSS modules
+import useCategories from './useCategories'; 
+import styles from './ExpenseForm.module.css';
+
 
 const ExpenseForm = () => {
   const { categories, addCategory } = useCategories();

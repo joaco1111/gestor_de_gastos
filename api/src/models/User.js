@@ -29,9 +29,10 @@ module.exports = (sequelize) => {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
+    }
  
 }, {
+  
   //no poner timestamp, porque paranoid necesita esos datos 
   paranoid: true,  //columna borrador logico
 })
