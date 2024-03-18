@@ -14,7 +14,7 @@ const loginHandler = async (req, res) => {
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const token = await validate(email, password)
+        const token = await validate(email, password); 
 
         if(token){
             res.status(200).json({ tokenUser: token })
@@ -81,39 +81,25 @@ const getUsers = async(req, res) => {
 const updateHandler =  async(req, res) => {
     try {
         //id del usuario por token
-        const id_user = req.userID
-        const userExists = await User.findOne({where: {id: id_user}});
+        const idUser = req.userID
+        const userExists = await User.findOne({where: {id: idUser}});
+        let updateData = {}
 
         //validamos que si exista el usuario
-        if(!userExists) return res.status(400).send("Usuario no existente...!");
-        
+        if(!userExists) return res.status(400).send("Usuario no existente.!");
 
-        // //info a actualizar
-        // const data_query = req.query;
-        // const access_property = ["name", "email", "password"];
-        // const data = {};
+        //si existe password la hasheamos y almacenamos los datos en updateData
+        if(req.body?.password) {
+            const {password} = req.body;
+            const passwordHash = await bcrypt.hash(password, 10)
 
-        // //validamos que las propiedades sean unicamente name, email y password, si llega otra propiedad no la tenemos en cuenta y modificaremos unicamente las que sean correctas
-        // for(let property in data_query){
-        //     access_property.forEach(element => {
-        //         if(element === property) data[property] = data_query[property];
-        //     })
-        // }
-
-        // //Actualizamos los datos en la tabla User
-        // const update_user = await User.update(data, {
-        //     where: {id: id_user}
-        // });
-
-        //FORMA MAS RAPIDA :)
-        //actualizamos los datos
-
-        const { name, email, password } = req.body
-
-        const passwordHash = await bcrypt.hash(password, 10)
-
-        userExists.set({name,email,password: passwordHash})
-
+            for (let element in req.body) {
+                if(element === "password") updateData[element] = passwordHash;
+                if(element !== "password") updateData[element] = req.body[element];
+            }
+        }else{
+            updateData = {...req.body};
+        }
 
        //integracion CLOUDINARY
         //Verificamos si hay una imagen recibida
@@ -125,12 +111,11 @@ const updateHandler =  async(req, res) => {
             const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
 
             // se guarda la URL de la imagen en la base de datos
-            userExists.photoProfile = imageUploadResult.secure_url;
+            updateData["photoProfile"] = imageUploadResult.secure_url;
         }
 
-        //user_exists.set(req.query);
-        //los guardamos 
-        await userExists.save();
+
+        userExists.update(updateData);
         
         return res.status(200).send("Datos actualizados correctamente.");
         

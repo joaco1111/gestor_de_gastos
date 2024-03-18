@@ -13,16 +13,10 @@ const filters = async(req, res) => {
 
     try {
         const { page = 1, limit = 10} = req.query;
-        const {idUser, data , type, category} = req.body;
+        const {data , type, category} = req.body;
+        const idUser = req.userID;
 
         const offset = (page - 1) * limit; //desde donde inicia el paginado
-
-        //en caso de no existir id del usuario
-        if(!idUser) return res.status(400).send("Dato incompleto");
-
-        //veirificamos existencia del usuario 
-        const userExists = await User.findOne({where: {id: idUser}});
-        if(!userExists) return res.status(400).send("Los datos no coinciden");
 
         //creamos el objeto condicional que si o si debe de tener el id del usuario para buscar solo las actions con ese id
         const where = {
