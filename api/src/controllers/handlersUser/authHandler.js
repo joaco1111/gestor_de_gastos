@@ -82,7 +82,7 @@ const updateHandler =  async(req, res) => {
     try {
         //id del usuario por token
         const id_user = req.userID
-        const user_exists = await User.findOne({where: {id: id_user}});
+        const userExists = await User.findOne({where: {id: id_user}});
 
         //validamos que si exista el usuario
         if(!userExists) return res.status(400).send("Usuario no existente...!");
@@ -112,8 +112,20 @@ const updateHandler =  async(req, res) => {
 
         const passwordHash = await bcrypt.hash(password, 10)
 
-        user_exists.set({name,email,password: passwordHash})
+        userExists.set({name,email,password: passwordHash})
 
+                //integracion CLOUDINARY
+        //Verificamos si hay una imagen recibida
+        //la extraemos
+        if (req.files && req.files.image) {
+            const image = req.files.image;
+
+            // Subimos  la imagen a Cloudinary
+            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
+
+            // se guarda la URL de la imagen en la base de datos
+            userExists.photoProfile = imageUploadResult.secure_url;
+        }
 
 
         //user_exists.set(req.query);
