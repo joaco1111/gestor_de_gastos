@@ -15,8 +15,8 @@ function App() {
         if (user.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
-            );
-        }                                                                                       
+            );                                                                                     
+        }
     }, [user]);
 
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
@@ -27,11 +27,11 @@ function App() {
             const user = JSON.parse(loggedUserJSON);
             console.log(user);
             const credentials = {
-                email: user.email,
-                password: user.password
+                email: user./*user.*/email,
+                password: user./*user.*/password
             };
             console.log(credentials);
-            if(user) dispatch(login(credentials));                                               //Actualizo el user del estado global
+            if(user.tokenUser) dispatch(login(credentials));                                               //Actualizo el user del estado global
         }
     }, []);
 
@@ -42,7 +42,7 @@ function App() {
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/detailsLog' element={<IncomeExpenseView/>}/>
-                <Route path='/home' element={user.tokenUser ? <Home /> : <Login />}/>
+                <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>

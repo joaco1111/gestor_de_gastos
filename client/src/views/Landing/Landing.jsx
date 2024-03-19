@@ -32,8 +32,8 @@ const Landing = () => {
                         <Login loggin={loggin} />
                     </div> */}
                 </div>
-                <button onClick={handleLogin}>LOGIN</button>
             </div>
+            <button onClick={handleLogin}>LOGIN</button>
             <div className="row hvr-grow" style={{color: 'white'}}>
                 <div className="col-sm-12 col-md-6 col-xl-6 d-flex flex-column justify-content-center" style={{maxWidth: '400px', height: '400px', margin: 'auto'}}>
                     <h2 style={{fontSize: '110%'}}>Registro de Ingresos y Gastos</h2>
