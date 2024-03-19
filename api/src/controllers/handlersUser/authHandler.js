@@ -13,12 +13,11 @@ const loginHandler = async (req, res) => {
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const token = await validate(email, password); 
+        const {token, user} = await validate(email, password); 
 
         if(token){
-            //respondemos con el token y el acceso
-            //res.status(200).json({ tokenUser: token, email: email, password: password }) 
-            res.header('token', token).json({access: true, token});
+            //respondemos con el token y el acceso 
+            res.header('token', token).json({access: true, token, user});
         }else{
             res.status(400).json({access: false , message: 'Usuario o contraseña incorrecta'} )
         }
@@ -125,9 +124,24 @@ const updateHandler =  async(req, res) => {
     }
 }
 
+const deleteUser = async(req, res) => {
+    try {
+        const idUser = req.params;
+        const user = await User.findOne({where: {id: idUser}});
+
+        if(!user) return res.status(400).send("No se encuentra el usuario.")
+
+        user.destroy();
+        return res.status(200).json({detroy: true, user});
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
+
 module.exports = {
     loginHandler,
     registerHandler,
     updateHandler,
-    getUsers
+    getUsers,
+    deleteUser
 }
