@@ -193,6 +193,5 @@ module.exports = {
     registerHandler,
     updateHandler,
     getUsers,
-    deleteUser,
     authenticationFromGoogle
 }
