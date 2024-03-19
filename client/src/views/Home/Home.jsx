@@ -8,6 +8,7 @@ import ExpenseIncomeForm from "../../components/ExpenseIncome/ExpenseIncomeForm"
 // import FinanceSummary from "../../components/FinanceSummary/FinanceSummary";
 
 const Home = () => {
+
     return(
         <div className={style.homeContainer}>
             <NavBar/>

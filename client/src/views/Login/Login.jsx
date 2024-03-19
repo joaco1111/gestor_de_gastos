@@ -1,27 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getUsers } from '../../redux/actions';
+import { login } from '../../redux/actions';
 import { validate } from '../../utils';
-import style from './Loggin.module.css';
+import style from './Login.module.css';
 
-const Loggin = ({ login }) => {
+const Login = () => {
     const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(getUsers());
-    }, []);
-
-    const users = useSelector(state => state.users);
 
     const [userData, setUserData] = useState({
         email: '',
-        password: ''
+        password: '',
     });
 
     const [errors, setErrors] = useState({
         email: '',
-        password: ''
+        password: '',
     });
 
     const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
@@ -31,14 +25,20 @@ const Loggin = ({ login }) => {
         setUserData({ ...userData, [property]: value });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
-        login(userData, users);
+    const handleSubmit = async(event) => {
+        event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados                                                           //Como la fn es asyn hay que poner try - catch
+
+        const credentials = {
+            email: userData.email,
+            password: userData.password
+        };
+        console.log(credentials);
+        await dispatch(login(credentials));
     };
 
     return(
         <form onSubmit={handleSubmit} className={style['login-container']}>
-            <h1>Loggin</h1>
+            <h1>Login</h1>
             <div>
                 <label>Email: </label>
                 <input type='email' value={userData.email} onChange={handleChange} name='email'></input>
@@ -49,7 +49,7 @@ const Loggin = ({ login }) => {
                 <input type='password' value={userData.password} onChange={handleChange} name='password'></input>
                 {errors.password && <span>{errors.password}</span>}
             </div>
-            <button type='submit'>Loggin</button>
+            <button type='submit'>Login</button>
             <div>
                 <Link>¿Forgot password?</Link>
                 <br />
@@ -59,4 +59,4 @@ const Loggin = ({ login }) => {
     )
 };
 
-export default Loggin;
+export default Login;

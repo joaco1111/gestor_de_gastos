@@ -52,7 +52,7 @@ const Log = () => {
             password: form.password,
         }
 
-        axios.post('http://localhost:3001/auth/register', newUser)
+        axios.post(`${baseURL}/register`, newUser)       
             .then(res => alert('Successfully created user'))
             .catch(err => alert(err));
 
