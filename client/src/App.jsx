@@ -8,10 +8,11 @@ function App() {
 
     const [access, setAccess] = useState(false);
 
-    const login = (accessData) => {
-        
-        if(accessData) {
+    const login = ({access, token}) => {
+        //si hay un acceso, cambiamos el estado a true para entrar al home guardando el token en el localStorage
+        if(access) {
             setAccess(true);
+            localStorage.setItem('token', JSON.stringify(token))
         }
     };
 

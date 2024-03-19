@@ -23,7 +23,15 @@ export const getUsers = () => {
 export const addExpenseIncome = (payload) => {
     return async (dispatch) => {
         try {
-            const apiData = await axios.post("http://localhost:3001/actions", payload)
+            //creamos la constante localToken para almacenar el token que esta en el localStorage
+            const localToken = await JSON.parse(localStorage.getItem('token'))
+            //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
+            const config = {
+                headers: {
+                    token: localToken,
+                }
+            }
+            const apiData = await axios.post("http://localhost:3001/actions", payload, config)
             const expense = apiData.data
 
             alert("Exito")

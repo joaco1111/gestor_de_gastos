@@ -33,9 +33,13 @@ const Loggin = ({ login }) => {
     };
 
     const handleSubmit = (event) => {
-        event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
+        //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
+        event.preventDefault();    
+
+        //hacemos la llamada al endpoint de login para verificar el usuario, en caso que todo este correcto llamamos a la función login pasandole la data, la cual sera la encargada de dirigirnos al home
         axios.post('http://localhost:3001/auth/login', userData)
-        .then(res => login(res.data.access));
+        .then(res => login(res.data))
+        .catch(err => console.log(err.message))
     };
 
     return(

@@ -3,9 +3,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = async(req, res, next) => {
 
-    console.log(req.query);
-    console.log(req.headers);
-// almacena el token que llega por la cookie
+// almacena el token que llega por headers
     const token = req.headers['token'];
 
     //si no existe un token, mandamos un error

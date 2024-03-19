@@ -4,6 +4,7 @@ const createActions = async (req, res) => {
   try {
     const { type, quantity, date, idCategory } = req.body;
     const idUser = req.userID;
+
     const typeCategory = {}
 
     
