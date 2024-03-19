@@ -1,33 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addExpenseIncome, getCategoryIncome } from '../../redux/actions'; 
+import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
 import PieCharts from '../Charts/PieCharts';
 import { Form, Button, Container } from 'react-bootstrap';
 
 // import styles from './ExpenseIncomeForm.module.css';
 
-const IncomeForm = () => {
+const ExpenseForm = () => {
   const dispatch = useDispatch();
   const [pieData, setPieData] = useState([]);
   const [formData, setFormData] = useState({
-    type: 'ingresos', // Cambia a 'ingresos'
+    type: 'gastos',
     quantity: '',
     date: '',
     idCategory: ''
   });
-  const categoriesIncome = useSelector(state => state.categorieIncome);
+  const categoriesExpense = useSelector(state => state.categorieExpense);
 
   useEffect(() => {
-    dispatch(getCategoryIncome());
+    dispatch(getCategoryExpense());
   }, [dispatch]);
 
   useEffect(() => {
-    const pieChartData = categoriesIncome.map(category => ({
+    const pieChartData = categoriesExpense.map(category => ({
       name: category.name,
       value: formData.idCategory === category.id ? Number(formData.quantity) : 0
     }));
     setPieData(pieChartData);
-  }, [formData, categoriesIncome]);
+  }, [formData, categoriesExpense]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +42,7 @@ const IncomeForm = () => {
     dispatch(addExpenseIncome(formData));
     
     setFormData({
-      type: 'ingresos', 
+      type: 'gastos',
       quantity: '',
       date: '',
       idCategory: ''
@@ -52,8 +52,8 @@ const IncomeForm = () => {
   return (
     <div >
       <Container>
-      <Form onSubmit={handleSubmit}>
-        <h2>Ingresos</h2>
+      <Form  onSubmit={handleSubmit}>
+        <h2>Gastos</h2>
         <Form.Group controlId="quantity">
           <Form.Label>Cantidad:</Form.Label>
           <Form.Control type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
@@ -67,7 +67,7 @@ const IncomeForm = () => {
         <Form.Group controlId="idCategory">
           <Form.Label>Categoría:</Form.Label>
           <Form.Control as="select" name="idCategory" value={formData.idCategory} onChange={handleChange}>
-            {categoriesIncome.map(category => (
+            {categoriesExpense.map(category => (
               <option key={category.id} value={category.id}>{category.name}</option>
             ))}
           </Form.Control>
@@ -81,4 +81,4 @@ const IncomeForm = () => {
   );
 };
 
-export default IncomeForm;
+export default ExpenseForm;

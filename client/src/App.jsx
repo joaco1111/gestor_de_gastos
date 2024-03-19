@@ -42,7 +42,7 @@ function App() {
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/detailsLog' element={<IncomeExpenseView/>}/>
-                <Route path='/home' element={user.tokenUser ? <Home /> : <Login />}/>
+                <Route path='/home' element={<Home/>}/>
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>

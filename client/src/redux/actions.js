@@ -24,6 +24,7 @@ export const addExpenseIncome = (payload) => {
         try {
             //creamos la constante localToken para almacenar el token que esta en el localStorage
             const localToken = await JSON.parse(localStorage.getItem('token'))
+            console.log(localToken, "Llega")
             //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
             const config = {
                 headers: {
