@@ -129,19 +129,6 @@ const updateHandler =  async(req, res) => {
     }
 }
 
-<<<<<<< Updated upstream
-const deleteUser = async(req, res) => {
-    try {
-        const idUser = req.params;
-        const user = await User.findOne({where: {id: idUser}});
-
-        if(!user) return res.status(400).send("No se encuentra el usuario.")
-
-        user.destroy();
-        return res.status(200).json({detroy: true, user});
-    } catch (error) {
-        return res.status(500).json({error: error.message})
-=======
 const authenticationFromGoogle = async (req,res) => {
     try{
         const { email,displayName,uid } = req.body
@@ -198,7 +185,6 @@ const authenticationFromGoogle = async (req,res) => {
 
     } catch(error){
         res.status(500).json({error: error.message})
->>>>>>> Stashed changes
     }
 }
 
@@ -207,9 +193,6 @@ module.exports = {
     registerHandler,
     updateHandler,
     getUsers,
-<<<<<<< Updated upstream
-    deleteUser
-=======
+    deleteUser,
     authenticationFromGoogle
->>>>>>> Stashed changes
 }
