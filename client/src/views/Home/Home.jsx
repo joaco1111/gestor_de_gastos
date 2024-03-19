@@ -14,7 +14,7 @@ const Home = () => {
             <h1>Home</h1>
             <div className={style.formSection}>
                 <ExpenseIncomeForm/>
-                <IncomeForm/>
+                {/* <IncomeForm/> */}
             </div>
             {/* <FinanceSummary/> */}
             <div className={style.chartSection}>
