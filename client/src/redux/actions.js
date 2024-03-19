@@ -1,5 +1,4 @@
-import { LOGIN } from './action-types';
-import { GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME} from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME} from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
