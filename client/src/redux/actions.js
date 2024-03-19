@@ -15,7 +15,7 @@ export const login = (credentials) => {
 
 export const getUsers = () => {
     return async function(dispatch) {
-        const users = (await axios.get('https://jsonplaceholder.typicode.com/users')).data;
+        const users = (await axios.get('http://localhost:3001/auth/users')).data;
         dispatch({ type: GET_USERS, payload: users});
     }
 };

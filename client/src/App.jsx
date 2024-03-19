@@ -8,9 +8,9 @@ function App() {
 
     const [access, setAccess] = useState(false);
 
-    const login = (obj, arr) => {
-        const element = arr.find((user) => user.email === obj.email && user.phone === obj.password);
-        if(element) {
+    const login = (accessData) => {
+        
+        if(accessData) {
             setAccess(true);
         }
     };

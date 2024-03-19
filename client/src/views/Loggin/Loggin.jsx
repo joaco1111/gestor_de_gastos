@@ -1,14 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login, getUsers } from '../../redux/actions';
+import { getUsers } from '../../redux/actions';
 import { validate } from '../../utils';
-import style from './Login.module.css';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import style from './Loggin.module.css';
 
-const auth = getAuth();
-
-const Login = () => {
+const Loggin = ({ login }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -27,37 +24,21 @@ const Login = () => {
         password: ''
     });
 
-    const handleChange = (event) => {
-        const property = event.target.name;
+    const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
+        const property = event.target.name;                                     
         const value = event.target.value;
-        validate({ ...userData, [property]: value }, setErrors, errors);
+        validate({ ...userData, [property]: value }, setErrors, errors);       //Quiero validar los datos ingresados al form, cada vez que ocurra un cambio en los inputs(Por esto llamo la fn validate dentro de handleOnChange). A validate NO le paso como parámetro el estado inicial(form) sino el estado modificado{ ...form, [property]: value }, esto se hace para evitar un "delete" en los valores registrados de los inputs 
         setUserData({ ...userData, [property]: value });
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const credentials = {
-            email: userData.email,
-            password: userData.password
-        };
-        await dispatch(login(credentials));
-    };
-
-    const handleGoogleSignIn = () => {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                const user = result.user;
-                console.log(user);
-                // Aquí puedes realizar acciones adicionales después del inicio de sesión con Google, como guardar el usuario en el estado o redirigir a otra página.
-            }).catch((error) => {
-                console.error(error);
-            });
+    const handleSubmit = (event) => {
+        event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
+        login(userData, users);
     };
 
     return(
         <form onSubmit={handleSubmit} className={style['login-container']}>
-            <h1>Login</h1>
+            <h1>Loggin</h1>
             <div>
                 <label>Email: </label>
                 <input type='email' value={userData.email} onChange={handleChange} name='email'></input>
@@ -68,10 +49,9 @@ const Login = () => {
                 <input type='password' value={userData.password} onChange={handleChange} name='password'></input>
                 {errors.password && <span>{errors.password}</span>}
             </div>
-            <button type='submit'>Login</button>
-            <button type='button' onClick={handleGoogleSignIn}>Login with Google</button>
+            <button type='submit'>Loggin</button>
             <div>
-                <Link to='/forgot-password'>Forgot password?</Link>
+                <Link>¿Forgot password?</Link>
                 <br />
                 <Link to='/log'>Log</Link>
             </div>
@@ -79,4 +59,4 @@ const Login = () => {
     )
 };
 
-export default Login;
+export default Loggin;

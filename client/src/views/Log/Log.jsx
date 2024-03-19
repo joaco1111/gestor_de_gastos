@@ -51,10 +51,11 @@ const Log = () => {
             email: form.email,
             password: form.password,
         }
-        //Aquí se crea el usuario, una vez se defina la URL para el post desde el back
-        axios.post(`${baseURL}/register`, newUser)                             //Como segundo parámetro del .post() va el usuario a crear
-        .then(res => alert('Successfully created user'))
-        .catch(err => alert(err));
+
+        axios.post('http://localhost:3001/auth/register', newUser)
+            .then(res => alert('Successfully created user'))
+            .catch(err => alert(err));
+
     };
 
     const handleGoogleSignIn = () => {
