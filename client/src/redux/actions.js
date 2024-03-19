@@ -98,7 +98,8 @@ export const fetchActions = (page = 1, limit = 10) => {
             // Realiza la solicitud
             const response = await axios.get(`http://localhost:3001/actions`, config);
 
-            const actions = response.data; // Aquí se accede a los datos de la respuesta
+            const actions = response.data.rows; // Accede a los datos de la respuesta
+            console.log(actions);
 
             dispatch({
                 type: GET_ACTIONS,
