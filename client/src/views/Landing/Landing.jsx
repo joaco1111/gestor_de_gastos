@@ -2,10 +2,15 @@ import { Link } from 'react-router-dom';
 //import Login from '../../components/Login/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import { useNavigate } from 'react-router-dom';
 // import LandingPage from "../../components/LandingPage/LandingPage";
 
 const Landing = () => {
+    const navigate = useNavigate();
+    const handleLogin = () => {
+        navigate('/login');
+    };
+
     return(
         <div className="container-fluid overflow-hidden" style={{ backgroundColor: '#ffb703', height: 'auto' }}>
             <div className="row" >
@@ -27,6 +32,7 @@ const Landing = () => {
                         <Login loggin={loggin} />
                     </div> */}
                 </div>
+                <button onClick={handleLogin}>LOGIN</button>
             </div>
             <div className="row hvr-grow" style={{color: 'white'}}>
                 <div className="col-sm-12 col-md-6 col-xl-6 d-flex flex-column justify-content-center" style={{maxWidth: '400px', height: '400px', margin: 'auto'}}>
