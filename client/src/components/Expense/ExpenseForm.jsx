@@ -45,7 +45,7 @@ const ExpenseForm = () => {
       type: 'gastos',
       quantity: '',
       date: '',
-      idCategory: ''
+      idCategory: 'entretenimiento'
     });
   };
 

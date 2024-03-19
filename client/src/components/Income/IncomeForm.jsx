@@ -16,6 +16,7 @@ const IncomeForm = () => {
     idCategory: ''
   });
   const categoriesIncome = useSelector(state => state.categorieIncome);
+  console.log(categoriesIncome)
 
   useEffect(() => {
     dispatch(getCategoryIncome());
@@ -35,6 +36,7 @@ const IncomeForm = () => {
       ...formData,
       [name]: value
     });
+    console.log(formData.idCategory)
   };
 
   const handleSubmit = (e) => {
@@ -45,7 +47,7 @@ const IncomeForm = () => {
       type: 'ingresos', 
       quantity: '',
       date: '',
-      idCategory: ''
+      idCategory: 'salario'
     });
   };
 
@@ -69,6 +71,7 @@ const IncomeForm = () => {
           <Form.Control as="select" name="idCategory" value={formData.idCategory} onChange={handleChange}>
             {categoriesIncome.map(category => (
               <option key={category.id} value={category.id}>{category.name}</option>
+              
             ))}
           </Form.Control>
         </Form.Group>
