@@ -6,22 +6,20 @@ import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 
 function App() {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.user);
     console.log(user);
 
-    useEffect(() => {   
-        if (user) {                                                                            // Me dirige a /home con el 1er click en el botón Loggin
+    useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
+        if (user.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
             );
-            navigate('/home');
-        }                                                                                       // useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-    }, [user, navigate]);
+        }                                                                                       
+    }, [user]);
 
-    //Voy a usar otro efecto que sólo sea para leer la localStorage
+    //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
         console.log(loggedUserJSON);
@@ -33,9 +31,9 @@ function App() {
                 password: user.password
             };
             console.log(credentials);
-            if(user.tokenUser) dispatch(login(credentials));
+            dispatch(login(credentials));                                                       //Actualizo el user del estado global
         }
-    }, [/*user, dispatch*/]);
+    }, []);
 
     return (
         <div>

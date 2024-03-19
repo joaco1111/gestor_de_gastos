@@ -3,17 +3,10 @@ import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions';
 import { validate } from '../../utils';
-//import { useNavigate } from 'react-router-dom';
 import style from './Login.module.css';
 
 const Login = () => {
     const dispatch = useDispatch();
-    //const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     // Actualizar el estado local cuando el token de Redux cambie
-    //     setCurrentToken(token);
-    // }, [token]);
 
     const [userData, setUserData] = useState({
         email: '',
@@ -34,25 +27,13 @@ const Login = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados                                                           //Como la fn es asyn hay que poner try - catch
-        //try {
-            const credentials = {
-                email: userData.email,
-                password: userData.password
-            };
-            console.log(credentials);
-            await dispatch(login(credentials));
 
-            // window.localStorage.setItem(
-            //     'loggedNoteAppUser', JSON.stringify(token)
-            // );
-            // if(typeof objToken !== 'string') {
-            //     navigate('/home');
-            // } else {
-            //     navigate('/');
-            // }
-        // } catch (error) {
-        //     setErrors({ ...errors, email: 'Wrong credentials', password: 'Wrong credentials'});
-        // }
+        const credentials = {
+            email: userData.email,
+            password: userData.password
+        };
+        console.log(credentials);
+        await dispatch(login(credentials));
     };
 
     return(

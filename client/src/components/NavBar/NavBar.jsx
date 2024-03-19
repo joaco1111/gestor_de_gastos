@@ -4,11 +4,12 @@ import MobileNavBar from "./MobileNavBar"
 import { useState, useEffect } from "react"
 import Hamburger from "../../assets/hamburger.png"
 import nav from "../../assets/nav.png"
-
-
+import { login } from '../../redux/actions';
+import { useDispatch } from "react-redux"
 
 const NavBar = () =>{
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const dispatch = useDispatch();
 
     //*Me almacena las dimensiones de la ventana
     const [windowDimensions, setWindowDimensions] = useState({
@@ -44,6 +45,15 @@ const NavBar = () =>{
       const { width, height } = windowDimensions;
   
       const isSizeLow = width < 800;
+    
+      //Función que maneja el botón Logout
+      const handleLogout = (event) => {
+        // dispatch(login({
+        //   email: '',
+        //   password: ''
+        // }));
+        window.localStorage.removeItem('loggedNoteAppUser');
+      };
 
     return (
         <div className={style.navContainer}>
@@ -52,7 +62,7 @@ const NavBar = () =>{
                 <img className={style.logo} src={nav} alt="" />
               </NavLink> 
           
-        
+            <button onClick={handleLogout}>Logout</button>
             {
                 !isSizeLow ? 
                 <div className={style.text}>
