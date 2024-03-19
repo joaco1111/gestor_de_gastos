@@ -8,13 +8,14 @@ export const login = (credentials) => {
     return async function(dispatch) {                                           
         const user = (await axios.post(`${baseURL}/login`, credentials)).data;        //Aquí(.data) estaría la info que nos interesa para la sesión del usuario
         console.log(user);
+        //const token = `Bearer ${user.tokenUser}`;
         dispatch({ type: LOGIN, payload: user });
     }
 };
 
 export const getUsers = () => {
     return async function(dispatch) {
-        const users = (await axios.get('https://jsonplaceholder.typicode.com/users')).data;
+        const users = (await axios.get('http://localhost:3001/auth/users')).data;
         dispatch({ type: GET_USERS, payload: users});
     }
 };
@@ -22,7 +23,15 @@ export const getUsers = () => {
 export const addExpenseIncome = (payload) => {
     return async (dispatch) => {
         try {
-            const apiData = await axios.post("http://localhost:3001/actions", payload)
+            //creamos la constante localToken para almacenar el token que esta en el localStorage
+            const localToken = await JSON.parse(localStorage.getItem('token'))
+            //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
+            const config = {
+                headers: {
+                    token: localToken,
+                }
+            }
+            const apiData = await axios.post("http://localhost:3001/actions", payload, config)
             const expense = apiData.data
 
             alert("Exito")
