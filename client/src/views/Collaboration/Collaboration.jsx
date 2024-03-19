@@ -16,4 +16,4 @@ const Donacion = () => {
     )
 }
 
-export default Donacion
+export default Donacion;
