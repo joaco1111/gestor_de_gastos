@@ -5,6 +5,7 @@ import style from './Log.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Navigate } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -21,9 +22,28 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+// firebase.auth().onAuthStateChanged(function(user) {
+// if (user) {
+//    var displayName = user.displayName;
+//     var email =  user.email;
+//     var emailVarified = user.emailVarified;
+//     var photoURL = user.photoURL;
+//     var isAnonymous = user.isAnonymous;
+//     var uid = user.uid;
+//     var providerData  = user.providerData;
+//     document.getElementById('log').innerHTML="Esta cuanta ya esta logueada..."
+// }else{
+
+// }
+// });
+
+
 const baseURL = 'http://localhost:3001/auth';
 
 const Log = () => {
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
     const[form, setForm] = useState({
         name: '',
         email: '',
@@ -60,18 +80,20 @@ const Log = () => {
 
     const handleGoogleSignIn = () => {
         signInWithPopup(auth, googleProvider)
-          .then((result) => {
-            // Aquí puedes acceder a la información del usuario que ha iniciado sesión con Google
-            const user = result.user;
-            console.log(user);
-          }).catch((error) => {
-            // Manejar errores si ocurre alguno durante el inicio de sesión con Google
-            console.error(error);
-          });
+            .then((result) => {
+                const user = result.user;
+                const { email, displayName, uid } = user; 
+                console.log(email, displayName, uid); 
+                setLoggedIn(true);
+            }).catch((error) => {
+                console.error(error);
+            });
     };
+    
 
     return (
         <Container>
+                    {loggedIn && <Navigate to="/home" />}
             <Row className={`justify-content-center align-items-center ${style['login-container']}`}>
                 <Col xs={12} md={6}>
                     <h1>Log</h1>

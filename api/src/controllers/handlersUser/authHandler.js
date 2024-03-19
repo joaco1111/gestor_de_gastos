@@ -8,6 +8,7 @@ const loginHandler = async (req, res) => {
     // Se trae del front email/passw
 
     const { email, password } = req.body
+
     try {
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
@@ -20,7 +21,7 @@ const loginHandler = async (req, res) => {
             res.status(200).json({ tokenUser: token, email: email, password: password }) 
             //res.header('token', token).json({access: true, token, user});
         }else{
-            res.status(400).json({access: false , message: 'Usuario o contraseña incorrecta'} )
+            res.status(400).send('Usuario o contraseña incorrecta' )
         }
     }catch(error){
         res.status(400).send('Error en el login', error.message)
