@@ -17,11 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage})
 // traigo los handlers
 
-<<<<<<< Updated upstream
-const { loginHandler,registerHandler, updateHandler, getUsers, deleteUser } = require('../controllers/handlersUser/authHandler')
-=======
-const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle } = require('../controllers/handlersUser/authHandler')
->>>>>>> Stashed changes
+const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle,deleteUser } = require('../controllers/handlersUser/authHandler')
 
 // rutas
 
