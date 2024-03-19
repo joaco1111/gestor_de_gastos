@@ -68,6 +68,7 @@ const NavBar = () =>{
                 <div className={style.text}>
                   <NavLink to="/home" className={style.navItem}>Home</NavLink>
                   <NavLink to="/collaboration"className={style.navItem} >Donar</NavLink>
+                  <NavLink to="/detailsLog"className={style.navItem} >Movimientos</NavLink>
                 </div>
             :
                 <img className={style.image} src={Hamburger} onClick={() => setIsMenuOpen(true)}/>
