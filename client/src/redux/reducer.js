@@ -1,11 +1,12 @@
-import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME } from './action-types';
+import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS } from './action-types';
 
 const initialState = {
     users: {},
     user: {},
     expenses: [],
     categorieExpense: [],
-    categorieIncome: []
+    categorieIncome: [],
+    actions: []
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -35,7 +36,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 categorieIncome: action.payload
             };
-        
+        case GET_ACTIONS:
+            return {
+                ...state,
+                actions: action.payload
+            };
         default:
             return {
                 ...state
