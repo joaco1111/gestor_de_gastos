@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME} from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS} from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -78,4 +78,35 @@ export const getCategoryIncome = () => {
             throw error;
         }
     }
+};
+
+
+export const fetchActions = (page = 1, limit = 10) => {
+    return async function(dispatch) {
+        try {
+            // Obtén el token del almacenamiento local
+            const localToken = await JSON.parse(localStorage.getItem('token'))
+
+            // Configura los headers de la solicitud
+            const config = {
+                headers: {
+                    token: localToken,
+                },
+                params: { page, limit }
+            };
+
+            // Realiza la solicitud
+            const response = await axios.get(`http://localhost:3001/actions`, config);
+
+            const actions = response.data; // Aquí se accede a los datos de la respuesta
+
+            dispatch({
+                type: GET_ACTIONS,
+                payload: actions
+            });
+        } catch (error) {
+            console.error('Error al obtener las acciones:', error);
+            // Aquí podrías manejar el error de acuerdo a tus necesidades
+        }
+    };
 };
