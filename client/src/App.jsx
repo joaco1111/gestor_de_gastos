@@ -8,11 +8,14 @@ function App() {
 
     const [access, setAccess] = useState(false);
 
-    const login = ({access, token}) => {
+    const login = ({access, token, user}) => {
         //si hay un acceso, cambiamos el estado a true para entrar al home guardando el token en el localStorage
         if(access) {
-            setAccess(true);
-            localStorage.setItem('token', JSON.stringify(token))
+            if(user.deletedAt === null) {
+                setAccess(true);
+                localStorage.setItem('token', JSON.stringify(token))
+            }
+            alert('Prohibido el ingreso.')
         }
     };
 
