@@ -1,7 +1,8 @@
-import { GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME } from "./action-types";
+import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME } from './action-types';
 
 const initialState = {
-    users: [],
+    users: {},
+    user: {},
     expenses: [],
     categorieExpense: [],
     categorieIncome: []
@@ -9,6 +10,10 @@ const initialState = {
 
 const rootReducer = (state = initialState, action) => {
     switch(action.type) {
+        case LOGIN:
+            return {
+                ...state, user: action.payload
+            }
         case GET_USERS:
             return {
                 ...state, users: action.payload

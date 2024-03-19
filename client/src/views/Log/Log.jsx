@@ -21,6 +21,22 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
+// firebase.auth().onAuthStateChanged(function(user) {
+// if (user) {
+//    var displayName = user.displayName;
+//     var email =  user.email;
+//     var emailVarified = user.emailVarified;
+//     var photoURL = user.photoURL;
+//     var isAnonymous = user.isAnonymous;
+//     var uid = user.uid;
+//     var providerData  = user.providerData;
+//     document.getElementById('log').innerHTML="Esta cuanta ya esta logueada..."
+// }else{
+
+// }
+// });
+
+
 const baseURL = 'http://localhost:3001/auth';
 
 const Log = () => {
@@ -51,23 +67,23 @@ const Log = () => {
             email: form.email,
             password: form.password,
         }
-        //Aquí se crea el usuario, una vez se defina la URL para el post desde el back
-        axios.post(`${baseURL}/register`, newUser)                             //Como segundo parámetro del .post() va el usuario a crear
-        .then(res => alert('Successfully created user'))
-        .catch(err => alert(err));
+
+        axios.post(`${baseURL}/register`, newUser)       
+            .then(res => alert('Successfully created user'))
+            .catch(err => alert(err));
+
     };
 
     const handleGoogleSignIn = () => {
-        signInWithPopup(auth, googleProvider)
-          .then((result) => {
-            // Aquí puedes acceder a la información del usuario que ha iniciado sesión con Google
+    signInWithPopup(auth, googleProvider)
+        .then((result) => {
             const user = result.user;
-            console.log(user);
-          }).catch((error) => {
-            // Manejar errores si ocurre alguno durante el inicio de sesión con Google
+            const { email, displayName, uid } = user; 
+            console.log(email, displayName, uid); 
+        }).catch((error) => {
             console.error(error);
-          });
-    };
+        });
+}
 
     return (
         <Container>
@@ -93,6 +109,7 @@ const Log = () => {
                         <button type='submit' className="btn btn-primary" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
                     </form>
                     <button onClick={handleGoogleSignIn} className="btn btn-danger mt-3">Sign in with Google</button>
+
                 </Col>
             </Row>
         </Container>
