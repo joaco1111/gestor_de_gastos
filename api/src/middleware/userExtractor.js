@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken')
 module.exports = async(req, res, next) => {
 
 // en authorization almaceno la cabecera que me manda el front que contiene el token
-    const authorization = req.get('authorization');
+
+    const authorization = req.cookie.token;
+    console.log(authorization);
+    // const authorization = req.get('authorization');
 
     let token = ''
 
