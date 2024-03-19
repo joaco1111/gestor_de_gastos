@@ -46,6 +46,7 @@ router.delete('/review/:id', deleteReview);
 4. actualizar
 5. eliminar
 */
+
 router.use('/auth', authRouter)
 
 //FILTROS 
