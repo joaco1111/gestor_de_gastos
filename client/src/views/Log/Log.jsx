@@ -5,6 +5,7 @@ import style from './Log.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Navigate } from 'react-router-dom';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -40,6 +41,9 @@ const googleProvider = new GoogleAuthProvider();
 const baseURL = 'http://localhost:3001/auth';
 
 const Log = () => {
+
+    const [loggedIn, setLoggedIn] = useState(false);
+
     const[form, setForm] = useState({
         name: '',
         email: '',
@@ -75,18 +79,21 @@ const Log = () => {
     };
 
     const handleGoogleSignIn = () => {
-    signInWithPopup(auth, googleProvider)
-        .then((result) => {
-            const user = result.user;
-            const { email, displayName, uid } = user; 
-            console.log(email, displayName, uid); 
-        }).catch((error) => {
-            console.error(error);
-        });
-}
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                const user = result.user;
+                const { email, displayName, uid } = user; 
+                console.log(email, displayName, uid); 
+                setLoggedIn(true);
+            }).catch((error) => {
+                console.error(error);
+            });
+    };
+    
 
     return (
         <Container>
+                    {loggedIn && <Navigate to="/home" />}
             <Row className={`justify-content-center align-items-center ${style['login-container']}`}>
                 <Col xs={12} md={6}>
                     <h1>Log</h1>
@@ -109,7 +116,6 @@ const Log = () => {
                         <button type='submit' className="btn btn-primary" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
                     </form>
                     <button onClick={handleGoogleSignIn} className="btn btn-danger mt-3">Sign in with Google</button>
-
                 </Col>
             </Row>
         </Container>
