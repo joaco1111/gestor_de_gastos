@@ -18,7 +18,8 @@ const loginHandler = async (req, res) => {
         if(token){
             //respondemos con el token y el acceso
             //res.status(200).json({ tokenUser: token, email: email, password: password }) 
-            res.header('token', token).json({access: true, token});
+            res.status(200).json({ tokenUser: token, email: email, password: password })
+            // res.header('token', token).json({access: true, token});
         }else{
             res.status(400).json({access: false , message: 'Usuario o contraseña incorrecta'} )
         }
