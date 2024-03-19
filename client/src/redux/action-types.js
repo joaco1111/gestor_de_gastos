@@ -1,3 +1,4 @@
+export const LOGIN = 'LOGIN';
 export const GET_USERS = 'GET_USERS';
 export const ADD_EXPENSE_INCOME = 'ADD_EXPENSE_INCOME'
 export const GET_CATEGORIES_EXPENSE = 'GET_CATEGORIES_EXPENSE'
