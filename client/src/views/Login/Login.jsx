@@ -1,36 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-//import { login } from '../../redux/actions';
+import { login } from '../../redux/actions';
 import { validate } from '../../utils';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import style from './Login.module.css';
-//import axios from 'axios';
 
-//const baseURL = 'http://localhost:3001/auth';
-
-const Login = ({ loggin, token }) => {
-    //const dispatch = useDispatch();
+const Login = () => {
+    const dispatch = useDispatch();
     //const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     // Actualizar el estado local cuando el token de Redux cambie
+    //     setCurrentToken(token);
+    // }, [token]);
 
     const [userData, setUserData] = useState({
         email: '',
         password: '',
     });
 
-    useEffect(() => {
-        console.log(token);
-    }, []);
-
     const [errors, setErrors] = useState({
         email: '',
         password: '',
     });
-
-    //const token = useSelector(state => state.token);
-    console.log(token);
-
-    //const [token, setToken] = useState(null);
 
     const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
         const property = event.target.name;                                     
@@ -46,7 +39,12 @@ const Login = ({ loggin, token }) => {
                 email: userData.email,
                 password: userData.password
             };
-            await loggin(credentials);
+            console.log(credentials);
+            await dispatch(login(credentials));
+
+            // window.localStorage.setItem(
+            //     'loggedNoteAppUser', JSON.stringify(token)
+            // );
             // if(typeof objToken !== 'string') {
             //     navigate('/home');
             // } else {
@@ -55,7 +53,6 @@ const Login = ({ loggin, token }) => {
         // } catch (error) {
         //     setErrors({ ...errors, email: 'Wrong credentials', password: 'Wrong credentials'});
         // }
-  
     };
 
     return(

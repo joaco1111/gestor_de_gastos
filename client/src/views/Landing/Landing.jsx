@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import Login from '../../components/Login/Login';
+//import Login from '../../components/Login/Login';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // import LandingPage from "../../components/LandingPage/LandingPage";
 
-const Landing = ({ loggin, token }) => {
+const Landing = () => {
     return(
         <div className="container-fluid overflow-hidden" style={{ backgroundColor: '#ffb703', height: 'auto' }}>
             <div className="row" >
@@ -23,9 +23,9 @@ const Landing = ({ loggin, token }) => {
                             <Link to="log"><button type="button" class="btn btn-dark">Sign up</button></Link>
                         </div>
                     </div>
-                    <div className="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center" style={{maxWidth: '500px', margin: 'auto', padding: '20px'}}>
-                        <Login loggin={loggin} token={token}/>
-                    </div>
+                    {/* <div className="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center" style={{maxWidth: '500px', margin: 'auto', padding: '20px'}}>
+                        <Login loggin={loggin} />
+                    </div> */}
                 </div>
             </div>
             <div className="row hvr-grow" style={{color: 'white'}}>

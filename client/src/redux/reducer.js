@@ -1,14 +1,14 @@
-import { SAVE_TOKEN } from './action-types';
+import { LOGIN } from './action-types';
 
 const initialState = {
-    token: '',
+    user: {},
 };
 
 const rootReducer = (state = initialState, action) => {
     switch(action.type) {
-        case SAVE_TOKEN:
+        case LOGIN:
             return {
-                ...state, token: action.payload
+                ...state, user: action.payload
             }
         default:
             return {
