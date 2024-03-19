@@ -16,8 +16,7 @@ const loginHandler = async (req, res) => {
         const token = await validate(email, password); 
 
         if(token){
-            res.cookie('token', token);
-            res.status(200).json({ access: true })
+            res.header('token', token).json({access: true});
         }else{
             res.status(400).send('Usuario o contraseña incorrecta' )
         }

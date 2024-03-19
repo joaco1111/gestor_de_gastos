@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { getUsers } from '../../redux/actions';
 import { validate } from '../../utils';
 import style from './Loggin.module.css';
+import axios from 'axios';
 
 const Loggin = ({ login }) => {
     const dispatch = useDispatch();
@@ -33,7 +34,8 @@ const Loggin = ({ login }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados
-        login(userData, users);
+        axios.post('http://localhost:3001/auth/login', userData)
+        .then(res => login(res.data.access));
     };
 
     return(

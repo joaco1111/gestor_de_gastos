@@ -105,7 +105,7 @@ const updateAction = async (req, res) => {
           const data = { idCategoryIncome: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await CategoryIncome.findOne({where: {id: id_category}})
+          const category = await CategoryIncome.findOne({where: {id: idCategory}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
