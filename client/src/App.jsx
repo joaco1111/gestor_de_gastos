@@ -31,7 +31,7 @@ function App() {
                 password: user.password
             };
             console.log(credentials);
-            dispatch(login(credentials));                                                       //Actualizo el user del estado global
+            if(user) dispatch(login(credentials));                                               //Actualizo el user del estado global
         }
     }, []);
 

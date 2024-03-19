@@ -1,6 +1,7 @@
 import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME } from './action-types';
 
 const initialState = {
+    users: {},
     user: {},
     expenses: [],
     categorieExpense: [],
