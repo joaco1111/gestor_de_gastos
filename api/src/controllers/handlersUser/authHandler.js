@@ -129,7 +129,6 @@ const updateHandler =  async(req, res) => {
     }
 }
 
-<<<<<<< Updated upstream
 const deleteUser = async(req, res) => {
     try {
         const idUser = req.params;
@@ -141,7 +140,10 @@ const deleteUser = async(req, res) => {
         return res.status(200).json({detroy: true, user});
     } catch (error) {
         return res.status(500).json({error: error.message})
-=======
+    }
+
+}
+
 const authenticationFromGoogle = async (req,res) => {
     try{
         const { email,displayName,uid } = req.body
@@ -198,7 +200,6 @@ const authenticationFromGoogle = async (req,res) => {
 
     } catch(error){
         res.status(500).json({error: error.message})
->>>>>>> Stashed changes
     }
 }
 
@@ -207,9 +208,6 @@ module.exports = {
     registerHandler,
     updateHandler,
     getUsers,
-<<<<<<< Updated upstream
+    authenticationFromGoogle,
     deleteUser
-=======
-    authenticationFromGoogle
->>>>>>> Stashed changes
 }
