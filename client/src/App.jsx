@@ -20,7 +20,7 @@ function App() {
             navigate('/home');                                                                              
         }
     }, [user]);
-
+    //
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
