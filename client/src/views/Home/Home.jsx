@@ -20,8 +20,8 @@ const Home = () => {
             </div>
             {/* <FinanceSummary/> */}
             <div className={style.chartSection}>
-                <PieChartsExpense/>
-                <PieChartsIncome/>
+                {/* <PieChartsExpense/>
+                <PieChartsIncome/> */}
             </div>
         </div>
     )

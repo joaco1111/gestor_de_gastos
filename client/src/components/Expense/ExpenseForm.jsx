@@ -39,14 +39,17 @@ const ExpenseForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addExpenseIncome(formData));
-    
-    setFormData({
-      type: 'gastos',
-      quantity: '',
-      date: '',
-      idCategory: 'entretenimiento'
-    });
+    if (formData.quantity && formData.date && formData.idCategory) {
+      dispatch(addExpenseIncome(formData));
+      setFormData({
+        type: 'gastos', 
+        quantity: '',
+        date: '',
+        idCategory: ''
+      });
+    } else {
+      alert('Por favor, complete todos los campos.');
+    }
   };
 
   return (
@@ -67,6 +70,7 @@ const ExpenseForm = () => {
         <Form.Group controlId="idCategory">
           <Form.Label>Categoría:</Form.Label>
           <Form.Control as="select" name="idCategory" value={formData.idCategory} onChange={handleChange}>
+          <option value="">Seleccionar categoría</option>
             {categoriesExpense.map(category => (
               <option key={category.id} value={category.id}>{category.name}</option>
             ))}
@@ -75,7 +79,7 @@ const ExpenseForm = () => {
 
         <Button variant="primary" size="sm" type="submit">Añadir</Button>
       </Form>
-      <PieCharts data={pieData} />
+      {/* <PieCharts data={pieData} /> */}
       </Container>
     </div>
   );
