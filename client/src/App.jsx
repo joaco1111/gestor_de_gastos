@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Collaboration, Log, Login, Home, Landing } from './views';
@@ -49,6 +49,6 @@ function App() {
             </Routes>
         </div>
     )
-};
+}
 
 export default App;
