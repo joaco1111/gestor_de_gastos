@@ -7,6 +7,7 @@ import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 
 function App() {
     const dispatch = useDispatch();
+    const navigate = useNavigate()
 
     const user = useSelector(state => state.user);
     console.log(user);
@@ -15,22 +16,23 @@ function App() {
         if (user.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
-            );                                                                                     
+            );    
+            
+            navigate('/home');
         }
     }, [user]);
 
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-        console.log(loggedUserJSON);
         if(loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
-            console.log(user);
+            
             const credentials = {
                 email: user./*user.*/email,
                 password: user./*user.*/password
             };
-            console.log(credentials);
+            
             if(user.tokenUser) dispatch(login(credentials));                                               //Actualizo el user del estado global
         }
     }, []);
