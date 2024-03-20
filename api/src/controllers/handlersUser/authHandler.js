@@ -2,12 +2,15 @@ const { User } = require('../../db')
 const { validate } = require('../../validations/validationAuthController')
 const bcrypt = require('bcrypt')
 const cloudinary = require('cloudinary')
+const { SECRET_KEY } = process.env;
+const jwt = require('jsonwebtoken');
 
 const loginHandler = async (req, res) => {
 
     // Se trae del front email/passw
 
     const { email, password } = req.body
+
     try {
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
@@ -18,9 +21,9 @@ const loginHandler = async (req, res) => {
         if(token){
             //respondemos con el token y el acceso
             res.status(200).json({ tokenUser: token, email: email, password: password }) 
-            // res.header('token', token).json({access: true, token});
+            //res.header('token', token).json({access: true, token, user});
         }else{
-            res.status(400).json({access: false , message: 'Usuario o contraseña incorrecta'} )
+            res.status(400).send('Usuario o contraseña incorrecta' )
         }
     }catch(error){
         res.status(400).send('Error en el login', error.message)
@@ -44,6 +47,7 @@ const registerHandler = async (req, res) => {
 // Se verifica si no existe otro gmail en la db
 
         const verificateEmail = await User.findOne({ where: { email } })
+        
 
         if (verificateEmail) {
             return res.send( 'Correo electronico existente')
@@ -137,6 +141,66 @@ const deleteUser = async(req, res) => {
     } catch (error) {
         return res.status(500).json({error: error.message})
     }
+
+}
+
+const authenticationFromGoogle = async (req,res) => {
+    try{
+        const { email,displayName,uid } = req.body
+
+        if( !email || !uid || !displayName ) {
+            return res.status(400).send( 'Datos incompletos' )
+        }
+
+        const user = await User.findOne({ where: { email } })
+
+        if(user){
+
+            const passwordMatch = await bcrypt.compare(uid, user.password)
+            
+            if(passwordMatch){
+
+                let userForToken = {
+                    id: user.id,
+                    email: user.email
+                }
+
+                let token = jwt.sign(userForToken, SECRET_KEY)
+
+                if(token){
+                    res.cookie('token', token);
+                    res.status(200).json({ access: true })
+                }
+            } else {
+                return res.status(400).send('Este usuario ya se encuentra registrado en la aplicacion')
+            }
+
+        } else {
+            try{
+                
+                const passwordHash = await bcrypt.hash(uid, 10)
+                const data = await User.create({ name:displayName, email, password: passwordHash, idAccess: 2 })
+
+                let userForToken = {
+                    id: data.id,
+                    email: data.email
+                }
+
+                let token = jwt.sign(userForToken, SECRET_KEY)
+
+                if(token){
+                    res.cookie('token', token);
+                    res.status(200).json({ access: true })
+                }
+
+            } catch(error){
+                res.status(400).send('Error al registrar en la Base de Datos: ' + error.message)
+            }
+        }
+
+    } catch(error){
+        res.status(500).json({error: error.message})
+    }
 }
 
 module.exports = {
@@ -144,5 +208,6 @@ module.exports = {
     registerHandler,
     updateHandler,
     getUsers,
+    authenticationFromGoogle,
     deleteUser
 }

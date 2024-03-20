@@ -1,4 +1,4 @@
-import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS } from './action-types';
+import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER } from './action-types';
 
 const initialState = {
     users: {},
@@ -41,6 +41,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 actions: action.payload
             };
+        case CLEAN_USER:
+            return {
+                ...state, user: action.payload
+
+            }
         default:
             return {
                 ...state

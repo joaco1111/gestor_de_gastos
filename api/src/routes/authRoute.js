@@ -17,13 +17,15 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage})
 // traigo los handlers
 
-const { loginHandler,registerHandler, updateHandler, getUsers, deleteUser } = require('../controllers/handlersUser/authHandler')
+
+const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle,deleteUser } = require('../controllers/handlersUser/authHandler')
 
 // rutas
 
 authRouter.get('/users', getUsers)
 authRouter.post('/login', loginHandler)
 authRouter.post('/register', registerHandler)
+authRouter.post('/fromGoogle', authenticationFromGoogle)
 authRouter.post('/userUpdate', userExtractor, upload.single('image'), updateHandler)
 authRouter.delete('/user/:id', deleteUser)
 
