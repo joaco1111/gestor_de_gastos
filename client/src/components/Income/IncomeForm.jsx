@@ -39,14 +39,17 @@ const IncomeForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addExpenseIncome(formData));
-    
-    setFormData({
-      type: 'ingresos', 
-      quantity: '',
-      date: '',
-      idCategory: ''
-    });
+    if (formData.quantity && formData.date && formData.idCategory) {
+      dispatch(addExpenseIncome(formData));
+      setFormData({
+        type: 'ingresos', 
+        quantity: '',
+        date: '',
+        idCategory: ''
+      });
+    } else {
+      alert('Por favor, complete todos los campos.');
+    }
   };
 
   return (
@@ -67,6 +70,7 @@ const IncomeForm = () => {
         <Form.Group controlId="idCategory">
           <Form.Label>Categoría:</Form.Label>
           <Form.Control as="select" name="idCategory" value={formData.idCategory} onChange={handleChange}>
+            <option value="">Seleccionar categoría</option>
             {categoriesIncome.map(category => (
               <option key={category.id} value={category.id}>{category.name}</option>
             ))}

@@ -19,10 +19,10 @@ const Home = () => {
                 <IncomeForm/>
             </div>
             {/* <FinanceSummary/> */}
-            <div className={style.chartSection}>
+            {/* <div className={style.chartSection}>
                 <PieChartsExpense/>
                 <PieChartsIncome/>
-            </div>
+            </div> */}
         </div>
     )
 };
