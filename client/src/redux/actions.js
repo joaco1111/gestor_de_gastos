@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS} from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -110,4 +110,8 @@ export const fetchActions = (page = 1, limit = 10) => {
             // Aquí podrías manejar el error de acuerdo a tus necesidades
         }
     };
+};
+
+export const cleanUser = (emptyUser) => {
+    return { type: CLEAN_USER, payload: emptyUser }
 };

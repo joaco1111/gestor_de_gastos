@@ -43,7 +43,7 @@ function App() {
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
-                <Route path='/detailsLog' element={<IncomeExpenseView/>}/>
+                <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
                 <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/' element={<Landing />}/>
             </Routes>
