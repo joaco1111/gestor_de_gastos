@@ -8,6 +8,19 @@ module.exports = async(req, res, next) => {
 
     //si no existe un token, mandamos un error
     if (!token) {
+console.log(req);
+
+    const authorization = req.cookie.token;
+    console.log(authorization);
+    // const authorization = req.get('authorization');
+
+    let token = ''
+
+// verifico que el token tenga el esquema 'bearer'
+
+    if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+        token = authorization.substring(7)
+    } else {
         return res.status(401).json({error: "JsonWebTokenError: jwt malformed"})
     }
 
@@ -29,4 +42,4 @@ module.exports = async(req, res, next) => {
     next()
 }
 
-
+}

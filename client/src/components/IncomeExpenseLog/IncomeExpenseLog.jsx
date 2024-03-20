@@ -27,6 +27,14 @@ const IncomeExpenseLog = () => {
     }));
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Agrega un cero al principio si el mes es menor que 10
+    const day = String(date.getDate()).padStart(2, '0'); // Agrega un cero al principio si el día es menor que 10
+    return `${year}-${month}-${day}`;
+  };
+
   // Función para aplicar los filtros
   const applyFilters = (data, filters) => {
     // Si no hay ningún filtro aplicado, mostrar todos los datos
@@ -147,7 +155,7 @@ const IncomeExpenseLog = () => {
                   <tr key={action.id}>
                     <td>{action.id}</td>
                     <td>{action.type}</td>
-                    <td>{action.date}</td>
+                    <td>{formatDate(action.date)}</td>
                     <td>{action.quantity}</td>
                     <td>{action.categoryBill ? action.categoryBill.name : '-'}</td>
                     <td>{action.categoryIncome ? action.categoryIncome.name : '-'}</td>

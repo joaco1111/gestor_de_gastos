@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-//import Login from '../../components/Login/Login';
+//import Login from '../Log/Log';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { useNavigate } from 'react-router-dom';
