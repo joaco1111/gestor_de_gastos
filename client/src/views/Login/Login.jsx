@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions';
 import { validate } from '../../utils';
 import style from './Login.module.css';
+import { Container, Form, Button } from 'react-bootstrap';
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -37,25 +38,33 @@ const Login = () => {
     };
 
     return(
-        <form onSubmit={handleSubmit} className={style['login-container']}>
-            <h1>Login</h1>
-            <div>
-                <label>Email: </label>
-                <input type='email' value={userData.email} onChange={handleChange} name='email'></input>
-                {errors.email && <span>{errors.email}</span>}
+        <Container fluid className={`d-flex justify-content-center align-items-center ${style['login-container']}`}>
+            <div className="w-50">
+                <h1 className="text-center">Login</h1>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Email:</Form.Label>
+                        <Form.Control type="email" value={userData.email} onChange={handleChange} name="email" />
+                        {errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password:</Form.Label>
+                        <Form.Control type="password" value={userData.password} onChange={handleChange} name="password" />
+                        {errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit">
+                        Login
+                    </Button>
+                </Form>
+
+                <div className="mt-3 text-center">
+                    <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
+                    <Link to="/log">Log</Link>
+                </div>
             </div>
-            <div>
-                <label>Password: </label>
-                <input type='password' value={userData.password} onChange={handleChange} name='password'></input>
-                {errors.password && <span>{errors.password}</span>}
-            </div>
-            <button type='submit'>Login</button>
-            <div>
-                <Link>¿Forgot password?</Link>
-                <br />
-                <Link to='/log'>Log</Link>
-            </div>
-        </form>
+        </Container>
     )
 };
 

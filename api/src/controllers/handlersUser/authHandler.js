@@ -129,19 +129,23 @@ const updateHandler = async (req, res) => {
     }
 }
 
-const deleteUser = async (req, res) => {
+const deleteUser = async(req, res) => {
     try {
-        const idUser = req.params.id; // Asegúrate de obtener el parámetro id correctamente
-        // Lógica para eliminar el usuario
-        return res.status(200).json({ detroy: true, user: idUser }); // Corregí "detroy" a "destroy"
+        const idUser = req.params;
+        const user = await User.findOne({where: {id: idUser}});
+
+        if(!user) return res.status(400).send("No se encuentra el usuario.")
+
+        user.destroy();
+        return res.status(200).json({detroy: true, user});
     } catch (error) {
-        return res.status(500).json({ error: error.message });
+        return res.status(500).json({error: error.message})
     }
 }
 
-const authenticationFromGoogle = async (req, res) => {
-    try {
-        const { email, displayName, uid } = req.body
+const authenticationFromGoogle = async (req,res) => {
+    try{
+        const { email,displayName,uid } = req.body
 
         if (!email || !uid || !displayName) {
             return res.status(400).send('Datos incompletos')
@@ -163,8 +167,7 @@ const authenticationFromGoogle = async (req, res) => {
                 let token = jwt.sign(userForToken, SECRET_KEY)
 
                 if (token) {
-                    res.cookie('token', token);
-                    res.status(200).json({ access: true })
+                    res.status(200).json({ access: true, tokenUser: token})
                 }
             } else {
                 return res.status(400).send('Este usuario ya se encuentra registrado en la aplicacion')
@@ -184,8 +187,7 @@ const authenticationFromGoogle = async (req, res) => {
                 let token = jwt.sign(userForToken, SECRET_KEY)
 
                 if (token) {
-                    res.cookie('token', token);
-                    res.status(200).json({ access: true })
+                    res.status(200).json({ access: true, tokenUser: token })
                 }
 
             } catch (error) {
@@ -193,8 +195,8 @@ const authenticationFromGoogle = async (req, res) => {
             }
         }
 
-    } catch (error) {
-        res.status(500).json({ error: error.message })
+    } catch(error){
+        res.status(500).json({error: error.message})
     }
 }
 
@@ -203,6 +205,7 @@ module.exports = {
     registerHandler,
     updateHandler,
     getUsers,
+    authenticationFromGoogle,
     authenticationFromGoogle,
     deleteUser
 }
