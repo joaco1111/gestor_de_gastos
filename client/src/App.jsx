@@ -7,6 +7,7 @@ import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 
 function App() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const user = useSelector(state => state.user);
     console.log(user);
@@ -15,7 +16,8 @@ function App() {
         if (user.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
-            );                                                                                     
+            );     
+            navigate('/home');                                                                              
         }
     }, [user]);
 
