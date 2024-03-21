@@ -7,21 +7,20 @@ import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 
 function App() {
     const dispatch = useDispatch();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const user = useSelector(state => state.user);
     console.log(user);
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (user.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
+        if (user?.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
-            );    
-            
-            navigate('/home');
+            );     
+            navigate('/home');                                                                              
         }
     }, [user]);
-
+    
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
@@ -43,8 +42,8 @@ function App() {
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
-                <Route path='/detailsLog' element={<IncomeExpenseView/>}/>
-                <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/detailsLog' element={user?.tokenUser ? <IncomeExpenseView /> : <Login />}/>
+                <Route path='/home' element={user?.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>

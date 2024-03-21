@@ -6,6 +6,7 @@ import Hamburger from "../../assets/hamburger.png"
 import nav from "../../assets/nav.png"
 import { login } from '../../redux/actions';
 import { useDispatch } from "react-redux"
+import { cleanUser } from "../../redux/actions"
 
 const NavBar = () =>{
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -48,11 +49,13 @@ const NavBar = () =>{
     
       //Función que maneja el botón Logout
       const handleLogout = (event) => {
-        // dispatch(login({
-        //   email: '',
-        //   password: ''
-        // }));
         window.localStorage.removeItem('loggedNoteAppUser');
+        const obj = {
+          tokenUser: '',
+          email: '',
+          password: ''
+        };
+        dispatch(cleanUser(obj));
       };
 
     return (

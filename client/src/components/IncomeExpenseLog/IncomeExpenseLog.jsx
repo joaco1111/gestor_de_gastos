@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions } from '../../redux/actions';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -13,10 +13,12 @@ const IncomeExpenseLog = () => {
     type: '',
     category: '',
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [actionsPerPage] = useState(10);
 
   useEffect(() => {
-    dispatch(fetchActions());
-  }, [dispatch]);
+    dispatch(fetchActions(currentPage, actionsPerPage));
+  }, [dispatch, currentPage, actionsPerPage]);
 
   // Función para manejar cambios en los filtros
   const handleFilterChange = (e) => {
@@ -96,6 +98,12 @@ const IncomeExpenseLog = () => {
     return Array.from(categoryOptionsSet); // Convertir el conjunto a un array para ser iterado en el renderizado
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const totalPages = Math.ceil(filteredActions.length / actionsPerPage);
+
   return (
     <div className='container'>
       <h2>Tus Movimientos</h2>
@@ -168,6 +176,24 @@ const IncomeExpenseLog = () => {
           )}
         </div>
       )}
+      <div className="pagination-container d-flex justify-content-center">
+        {/* Renderizado de los botones de paginación */}
+        <nav aria-label="Page navigation">
+          <ul className="pagination">
+            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Anterior</button>
+            </li>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
+                <button className="page-link" onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
+              </li>
+            ))}
+            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Siguiente</button>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </div>
   );
 };
