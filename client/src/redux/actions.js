@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED } from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, CLEAN_USER, LOGIN_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -90,34 +90,49 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 10) => {
     return async function(dispatch) {
         try {
-            console.log(page, limit);
-            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-            if(loggedUserJSON) {
-                // Obtén el token del almacenamiento local
-                const user = JSON.parse(loggedUserJSON);
-                const localToken = user.tokenUser;
-                console.log(localToken);
-                // Configura los headers de la solicitud
-                const config = {
-                    headers: {
-                        token: localToken,
-                    },
-                    params: { page, limit }
-                };
+            // Obtén el token del almacenamiento local
+            const localToken = await JSON.parse(localStorage.getItem('token'));
 
-                // Realiza la solicitud
-                const response = await axios.get(`http://localhost:3001/actions`, config);
+            // Configura los headers de la solicitud
+            const config = {
+                headers: {
+                    token: localToken,
+                },
+                params: { page, limit }
+            };
 
-                const actions = response.data.rows; // Accede a los datos de la respuesta
-                console.log(actions);
+            // Realiza la solicitud
+            const response = await axios.get(`http://localhost:3001/actions`, config);
+            console.log(response.data);
 
-                dispatch({
-                    type: GET_ACTIONS,
-                    payload: actions
-                });
-            }
+            const { rows, count } = response.data; // Accede a los datos de la respuesta
+
+            dispatch({
+                type: GET_ACTIONS,
+                payload: { actions: rows, totalCount: count } // Envía tanto las acciones como el recuento total de registros
+            });
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
+            // Aquí podrías manejar el error de acuerdo a tus necesidades
+        }
+    };
+};
+
+export const deleteAction = (id) => {
+    return async (dispatch) => {
+        try {
+            // Realiza la solicitud DELETE al servidor
+            await axios.delete(`http://localhost:3001/action/${id}`);
+
+            // Si la eliminación es exitosa, actualiza el estado de Redux para reflejar los cambios
+            dispatch({
+                type: DELETE_ACTION,
+                payload: id // Envía el ID de la acción eliminada al reducer
+            });
+
+            // Opcionalmente, puedes realizar otras acciones después de la eliminación, como mostrar un mensaje de éxito, etc.
+        } catch (error) {
+            console.error('Error al eliminar la acción:', error);
             // Aquí podrías manejar el error de acuerdo a tus necesidades
         }
     };
