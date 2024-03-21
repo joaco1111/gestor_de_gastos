@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Collaboration, Log, Login, Home, Landing } from './views';
 import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
+import UserList from './components/UserList/UserList';
 
 function App() {
     const dispatch = useDispatch();
@@ -46,8 +47,9 @@ function App() {
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
-                <Route path='/detailsLog' element={user?.tokenUser ? <IncomeExpenseView /> : <Login />}/>
-                <Route path='/home' element={user?.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
+                <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/users' element={<UserList />} />
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>

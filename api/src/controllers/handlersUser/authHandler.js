@@ -200,12 +200,31 @@ const authenticationFromGoogle = async (req,res) => {
     }
 }
 
+
+const restoreUser = async (req,res) => {
+    const {id} = req.params
+
+try {
+    const user = await User.findByPk(id, {paranoid: false})
+
+    if(!user || user.deleteAt) {
+        res.status(400).send('Usuario no encontrado ', error.message)
+    }
+
+    await user.restore()
+    
+    res.status(200).send('Usuario restaurado correctamente')
+} catch (error) {
+    res.status(500).send('Error al restaurar usuario: ', error.message)
+}
+}
+
 module.exports = {
     loginHandler,
     registerHandler,
     updateHandler,
     getUsers,
     authenticationFromGoogle,
-    authenticationFromGoogle,
-    deleteUser
+    deleteUser,
+    restoreUser
 }

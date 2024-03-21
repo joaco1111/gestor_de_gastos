@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions } from '../../redux/actions';
+import { deleteAction } from '../../redux/actions';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import ActionsPagination from '../Pagination/ActionsPagination';
 
 const IncomeExpenseLog = () => {
   const dispatch = useDispatch();
   const actions = useSelector(state => state.actions);
+  const { totalCount } = useSelector(state => state.actions);
+  const [page, setPage] = useState(1);
+  const limit = 10;
   const loading = useSelector(state => state.loading);
   const [filters, setFilters] = useState({
     date: '',
     type: '',
     category: '',
   });
-  const [currentPage, setCurrentPage] = useState(1);
-  const [actionsPerPage] = useState(10);
 
   useEffect(() => {
-    dispatch(fetchActions(currentPage, actionsPerPage));
-  }, [dispatch, currentPage, actionsPerPage]);
+    dispatch(fetchActions(page, limit));
+}, [dispatch, page, limit]);
 
   // Función para manejar cambios en los filtros
   const handleFilterChange = (e) => {
@@ -88,21 +91,24 @@ const IncomeExpenseLog = () => {
 
   const getCategoryOptions = (type) => {
     let categoryOptionsSet = new Set(['Todos']);
-    filteredActions.forEach(action => {
-      if (type === 'gastos' && action.categoryBill) {
+    actions.forEach(action => {
+      if (type === 'gastos' && action.type === 'gastos' && action.categoryBill) {
         categoryOptionsSet.add(action.categoryBill.name);
-      } else if (type === 'ingresos' && action.categoryIncome) {
+      } else if (type === 'ingresos' && action.type === 'ingresos' && action.categoryIncome) {
         categoryOptionsSet.add(action.categoryIncome.name);
       }
     });
     return Array.from(categoryOptionsSet); // Convertir el conjunto a un array para ser iterado en el renderizado
   };
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
   };
 
-  const totalPages = Math.ceil(filteredActions.length / actionsPerPage);
+  const handleDelete = (id) => {
+    // Llama a la acción deleteAction con el ID de la acción a eliminar
+    dispatch(deleteAction(id));
+  };
 
   return (
     <div className='container'>
@@ -124,7 +130,7 @@ const IncomeExpenseLog = () => {
           <label>
             Categoría de Gastos:
             <select name="category" value={filters.category} onChange={handleFilterChange}>
-              {getCategoryOptions(filteredActions, 'gastos').map((category, index) => (
+              {getCategoryOptions('gastos').map((category, index) => (
                 <option key={index} value={category}>{category}</option>
               ))}
             </select>
@@ -135,7 +141,7 @@ const IncomeExpenseLog = () => {
           <label>
             Categoría de Ingresos:
             <select name="category" value={filters.category} onChange={handleFilterChange}>
-              {getCategoryOptions(filteredActions, 'ingresos').map((category, index) => (
+              {getCategoryOptions('ingresos').map((category, index) => (
                 <option key={index} value={category}>{category}</option>
               ))}
             </select>
@@ -167,6 +173,7 @@ const IncomeExpenseLog = () => {
                     <td>{action.quantity}</td>
                     <td>{action.categoryBill ? action.categoryBill.name : '-'}</td>
                     <td>{action.categoryIncome ? action.categoryIncome.name : '-'}</td>
+                    <td><button onClick={() => handleDelete(action.id)}>Eliminar</button></td>
                   </tr>
                 ))}
               </tbody>
@@ -176,27 +183,11 @@ const IncomeExpenseLog = () => {
           )}
         </div>
       )}
-      <div className="pagination-container d-flex justify-content-center">
-        {/* Renderizado de los botones de paginación */}
-        <nav aria-label="Page navigation">
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage - 1)}>Anterior</button>
-            </li>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <li key={i} className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handlePageChange(i + 1)}>{i + 1}</button>
-              </li>
-            ))}
-            <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
-              <button className="page-link" onClick={() => handlePageChange(currentPage + 1)}>Siguiente</button>
-            </li>
-          </ul>
-        </nav>
+      <div>
+        <ActionsPagination totalCount={totalCount} limit={limit} onPageChange={handlePageChange} />
       </div>
     </div>
   );
 };
-
 
 export default IncomeExpenseLog;
