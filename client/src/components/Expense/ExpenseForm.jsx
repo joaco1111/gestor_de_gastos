@@ -2,16 +2,15 @@ import React, { useEffect } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addExpenseIncome, getCategoryIncome } from '../../redux/actions'; 
-import PieCharts from '../Charts/PieCharts';
+import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
 
-const IncomeForm = () => {
+const ExpenseForm = () => {
   const dispatch = useDispatch();
-  const categoriesIncome = useSelector(state => state.categorieIncome);
+  const categoriesExpense = useSelector(state => state.categorieExpense);
 
   useEffect(() => {
-    dispatch(getCategoryIncome());
+    dispatch(getCategoryExpense());
   }, [dispatch]);
 
   const validationSchema = Yup.object().shape({
@@ -26,7 +25,7 @@ const IncomeForm = () => {
   });
 
   const handleSubmit = (values, { resetForm }) => {
-    console.log('Datos del formulario INGRESOS:', values)
+    console.log('Datos del formulario:', values)
     dispatch(addExpenseIncome(values));
     resetForm();
   };
@@ -34,9 +33,9 @@ const IncomeForm = () => {
   return (
     <div>
       <Container>
-        <h2>Ingresos</h2>
+        <h2>Gastos</h2>
         <Formik
-          initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '' }}
+          initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -61,7 +60,7 @@ const IncomeForm = () => {
                   name="date" 
                   value={values.date} 
                   onChange={handleChange} 
-                  className={`form-control  ${touched.date && errors.date && 'is-invalid'}`} 
+                  className={`form-control ${touched.date && errors.date && 'is-invalid'}`} 
                 />
                 <ErrorMessage name="date" component="div" className="invalid-feedback" />
               </Form.Group>
@@ -73,10 +72,10 @@ const IncomeForm = () => {
                   name="idCategory" 
                   value={values.idCategory} 
                   onChange={handleChange} 
-                  className={`form-control ${touched.idCategory && errors.idCategory && 'is-invalid'}`} 
+                  className={`form-control  ${touched.idCategory && errors.idCategory && 'is-invalid'}`} 
                 >
                   <option value="">Seleccionar categoría</option>
-                  {categoriesIncome.map(category => (
+                  {categoriesExpense.map(category => (
                     <option key={category.id} value={category.id}>{category.name}</option>
                   ))}
                 </Field>
@@ -87,10 +86,9 @@ const IncomeForm = () => {
             </Form>
           )}
         </Formik>
-        {/* <PieCharts data={[]} /> */}
       </Container>
     </div>
   );
 };
 
-export default IncomeForm;
+export default ExpenseForm;

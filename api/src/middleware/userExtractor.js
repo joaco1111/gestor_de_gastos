@@ -28,5 +28,3 @@ module.exports = async(req, res, next) => {
     req.userID = decodedToken.id
     next()
 }
-
-

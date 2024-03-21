@@ -1,18 +1,23 @@
 import { Link } from 'react-router-dom';
-//import Login from '../../components/Login/Login';
+//import Login from '../Log/Log';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
+import { useNavigate } from 'react-router-dom';
 // import LandingPage from "../../components/LandingPage/LandingPage";
 
 const Landing = () => {
+    const navigate = useNavigate();
+    const handleLogin = () => {
+        navigate('/login');
+    };
+
     return(
         <div className="container-fluid overflow-hidden" style={{ backgroundColor: '#ffb703', height: 'auto' }}>
             <div className="row" >
                 <div className="col-sm-12 col-md-12 col-lg-12 my-3">
                     <h1 className="text-center">TE AYUDAMOS CON TU ECONOMIA</h1>
                 </div>
-                <div className="row my-2 hvr-grow" style={{ backgroundColor: '#219ebc', color: 'white', minHeight: '500px', marginRight: '0', marginLeft: '0' }}>
+                <div className="row my-2 hvr-grow" style={{ backgroundColor: '#219ebc', color: 'white', minHeight: '500px', width: '100vw', marginRight: '0', marginLeft: '0' }}>
                     <div className="col-sm-12 col-md-6 col-lg-6 d-flex flex-column justify-content-center" style={{maxWidth: '500px', margin: 'auto'}}>
                         <h2>Gestor de gastos</h2>
                         <h3>Tu nuevo aliado para el control financiero personal. Con
@@ -20,12 +25,10 @@ const Landing = () => {
                             tus ingresos y gastos, brindandote una vision clara y
                             organizada de tus finanzas.</h3>
                         <div style={{paddingTop: '20px'}}>
-                            <Link to="log"><button type="button" class="btn btn-dark">Sign up</button></Link>
+                            <Link to="log"><button type="button" className="btn btn-dark mr-2">Sign up</button></Link>
+                            <button type="button" className="btn btn-dark" onClick={handleLogin}>Login</button>
                         </div>
                     </div>
-                    {/* <div className="col-sm-12 col-md-6 col-lg-6 d-flex justify-content-center align-items-center" style={{maxWidth: '500px', margin: 'auto', padding: '20px'}}>
-                        <Login loggin={loggin} />
-                    </div> */}
                 </div>
             </div>
             <div className="row hvr-grow" style={{color: 'white'}}>
