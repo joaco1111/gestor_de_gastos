@@ -17,12 +17,8 @@ function App() {
         if (user?.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', JSON.stringify(user)
-<<<<<<< Updated upstream
             );     
             navigate('/home');                                                                              
-=======
-            );                                                                                     
->>>>>>> Stashed changes
         }
     }, [user]);
     
