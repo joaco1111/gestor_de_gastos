@@ -90,6 +90,7 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 10) => {
     return async function(dispatch) {
         try {
+            console.log(page, limit);
             const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
             if(loggedUserJSON) {
                 // Obtén el token del almacenamiento local
