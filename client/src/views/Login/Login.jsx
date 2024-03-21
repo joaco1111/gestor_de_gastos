@@ -8,6 +8,7 @@ import { Container, Form, Button } from 'react-bootstrap';
 
 const Login = () => {
     const dispatch = useDispatch();
+    const loginError = useSelector(state => state.loginError);
 
     const [userData, setUserData] = useState({
         email: '',
@@ -41,6 +42,8 @@ const Login = () => {
         <Container fluid className={`d-flex justify-content-center align-items-center ${style['login-container']}`}>
             <div className="w-50">
                 <h1 className="text-center">Login</h1>
+                    {/* Agregar un mensaje de error debajo del botón de inicio de sesión */}
+                    {loginError && <p className="text-danger">{loginError}</p>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="formBasicEmail">
                         <Form.Label>Email:</Form.Label>

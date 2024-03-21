@@ -21,6 +21,7 @@ const NavBar = ({onClick}) =>{
                 <p onClick={() => onPress("/home")} className={style.navItem}>Home</p>
                 <p onClick={() => onPress("/collaboration")} className={style.navItem} >Donar</p>
                 <p onClick={() => onPress("/detailsLog")} className={style.navItem} >Movimientos</p>
+                <p onClick={() => onPress("/users")} className={style.navItem}>Usuarios</p>
             </div>
         </div>
     )
