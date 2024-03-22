@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { validate } from '../../utils';
-import axios from 'axios';
 import style from './Log.module.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { authenticationFromGoogle } from '../../redux/actions'
+import { useDispatch, useSelector } from 'react-redux';
+import { log } from '../../redux/actions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -39,12 +39,11 @@ const googleProvider = new GoogleAuthProvider();
 // }
 // });
 
-
-const baseURL = 'http://localhost:3001/auth';
-
 const Log = () => {
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const logError = useSelector(state => state.logError);
+    //console.log(logError);
     const dispatch = useDispatch();
 
     const[form, setForm] = useState({
@@ -66,7 +65,7 @@ const Log = () => {
         setForm({ ...form, [property]: value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async(event) => {
         event.preventDefault();
         
         const newUser = {
@@ -75,10 +74,7 @@ const Log = () => {
             password: form.password,
         }
 
-        axios.post(`${baseURL}/register`, newUser)       
-            .then(res => alert('Successfully created user'))
-            .catch(err => alert(err));
-
+        await dispatch(log(newUser));
     };
 
     const handleGoogleSignIn = () => {
@@ -99,7 +95,6 @@ const Log = () => {
             });
     };
     
-
     return (
         <Container>
                     {loggedIn && <Navigate to="/home" />}
@@ -116,6 +111,7 @@ const Log = () => {
                             <label className="form-label">Email:</label>
                             <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
                             {errors.email && <span className="text-danger">{errors.email}</span>}
+                            {logError && <p className="text-danger">{logError}</p>}
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password:</label>

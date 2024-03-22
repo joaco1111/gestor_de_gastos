@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, CLEAN_USER, LOGIN_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -10,9 +10,25 @@ export const login = (credentials) => {
             console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch (error) {
-            console.error('Error en la solicitud de inicio de sesión:', error);
+            //console.error('Error en la solicitud de inicio de sesión:', error);
             // Envío el error al estado para manejarlo en el componente Login
             dispatch({ type: LOGIN_FAILED, payload: error.response.data });
+        }                                     
+    }
+};
+
+export const log = (newUser) => {
+    return async function(dispatch) {      
+        try {
+            const response = (await axios.post(`${baseURL}/register`, newUser)).data;
+            console.log(response);
+            console.log(typeof response);
+            if(typeof response !== 'string') {
+                return dispatch({ type: LOG, payload: response });
+            }
+            dispatch({ type: LOG_FAILED, payload: response });
+        } catch (error) {
+            console.error('Error al registrar en la DB:', error);
         }                                     
     }
 };
@@ -42,7 +58,7 @@ export const addExpenseIncome = (payload) => {
                 const apiData = await axios.post("http://localhost:3001/actions", payload, config)
                 const expense = apiData.data
     
-                alert("Exito")
+                //alert("Exito")
 
                 return dispatch({
                     type: ADD_EXPENSE_INCOME,
@@ -90,27 +106,31 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 10) => {
     return async function(dispatch) {
         try {
-            // Obtén el token del almacenamiento local
-            const localToken = await JSON.parse(localStorage.getItem('token'));
-
-            // Configura los headers de la solicitud
-            const config = {
-                headers: {
-                    token: localToken,
-                },
-                params: { page, limit }
-            };
-
-            // Realiza la solicitud
-            const response = await axios.get(`http://localhost:3001/actions`, config);
-            console.log(response.data);
-
-            const { rows, count } = response.data; // Accede a los datos de la respuesta
-
-            dispatch({
-                type: GET_ACTIONS,
-                payload: { actions: rows, totalCount: count } // Envía tanto las acciones como el recuento total de registros
-            });
+            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+            if(loggedUserJSON) {
+                // Obtén el token del almacenamiento local
+                const user = JSON.parse(loggedUserJSON);
+                const localToken = user.tokenUser;
+                console.log(localToken);
+                // Configura los headers de la solicitud
+                const config = {
+                    headers: {
+                        token: localToken,
+                    },
+                    params: { page, limit }
+                };
+        
+                // Realiza la solicitud
+                const response = await axios.get(`http://localhost:3001/actions`, config);
+        
+                const actions = response.data.rows; // Accede a los datos de la respuesta
+                console.log(actions);
+        
+                dispatch({
+                    type: GET_ACTIONS,
+                    payload: actions
+                });
+            }
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
             // Aquí podrías manejar el error de acuerdo a tus necesidades

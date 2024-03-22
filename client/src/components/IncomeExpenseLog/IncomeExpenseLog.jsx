@@ -9,7 +9,7 @@ import ActionsPagination from '../Pagination/ActionsPagination';
 const IncomeExpenseLog = () => {
   const dispatch = useDispatch();
   const actions = useSelector(state => state.actions);
-  const { totalCount } = useSelector(state => state.actions);
+  const totalCount = useSelector(state => state.actions);
   const [page, setPage] = useState(1);
   const limit = 10;
   const loading = useSelector(state => state.loading);
