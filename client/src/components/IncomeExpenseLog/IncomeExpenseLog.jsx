@@ -86,9 +86,10 @@ const IncomeExpenseLog = () => {
     // Retorna los datos filtrados
     return filteredData;
   };
-
+  console.log(actions);
+  console.log(filters);
   const filteredActions = applyFilters(actions, filters);
-
+  console.log(filteredActions);
   const getCategoryOptions = (type) => {
     let categoryOptionsSet = new Set(['Todos']);
     actions.forEach(action => {
