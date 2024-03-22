@@ -6,6 +6,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { authenticationFromGoogle } from '../../redux/actions'
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -43,6 +45,7 @@ const baseURL = 'http://localhost:3001/auth';
 const Log = () => {
 
     const [loggedIn, setLoggedIn] = useState(false);
+    const dispatch = useDispatch();
 
     const[form, setForm] = useState({
         name: '',
@@ -83,7 +86,13 @@ const Log = () => {
             .then((result) => {
                 const user = result.user;
                 const { email, displayName, uid } = user; 
-                console.log(email, displayName, uid); 
+
+                const credentials = {
+                    email,
+                    displayName,
+                    uid
+                }
+                dispatch(authenticationFromGoogle(credentials))
                 setLoggedIn(true);
             }).catch((error) => {
                 console.error(error);

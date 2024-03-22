@@ -11,7 +11,7 @@ function App() {
     const navigate = useNavigate();
 
     const user = useSelector(state => state.user);
-    console.log(user);
+    console.log(user,'user for google');
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
         if (user?.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
