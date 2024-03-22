@@ -1,88 +1,55 @@
-import { NavLink } from "react-router-dom"
-import style from "./NavBar.module.css"
-import MobileNavBar from "./MobileNavBar"
-import { useState, useEffect } from "react"
-import Hamburger from "../../assets/hamburger.png"
-import nav from "../../assets/nav.png"
-import { login } from '../../redux/actions';
-import { useDispatch } from "react-redux"
-import { cleanUser } from "../../redux/actions"
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import nav from '../../assets/nav.png';
+import "./navBar.css"
 
-const NavBar = () =>{
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const dispatch = useDispatch();
 
-    //*Me almacena las dimensiones de la ventana
-    const [windowDimensions, setWindowDimensions] = useState({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    
-    //*Manejo los cambios de tamaño d la ventana
-      const handleResize = () => {
-        setWindowDimensions({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      };
-  
-      useEffect(() => {
-        //Dimensiones iniciales de la ventana
-        setWindowDimensions({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-    
-        //Actualiza las dimensiones al cambiar el tamaño de la ventana
-        window.addEventListener("resize", handleResize);
-    
-        //limpia cuando se desmonta
-        return () => {
-          window.removeEventListener("resize", handleResize);
-        };
-      }, []); 
-    
-      
-      const { width, height } = windowDimensions;
-  
-      const isSizeLow = width < 800;
-    
-      //Función que maneja el botón Logout
-      const handleLogout = (event) => {
-        window.localStorage.removeItem('loggedNoteAppUser');
-        const obj = {
-          tokenUser: '',
-          email: '',
-          password: ''
-        };
-        dispatch(cleanUser(obj));
-      };
+function NavBar() {
+  // Función que maneja el botón Logout
+  const handleLogout = (event) => {
+    window.localStorage.removeItem('loggedNoteAppUser');
+    const obj = {
+      tokenUser: '',
+      email: '',
+      password: ''
+    };
+    dispatch(cleanUser(obj));
+  };
 
-    return (
-        <div className={style.navContainer}>
-
-               <NavLink to='/'>
-                <img className={style.logo} src={nav} alt="" />
-              </NavLink> 
-          
-            <button onClick={handleLogout}>Logout</button>
-            {
-                !isSizeLow ? 
-                <div className={style.text}>
-                  <NavLink to="/home" className={style.navItem}>Home</NavLink>
-                  <NavLink to="/collaboration"className={style.navItem} >Donar</NavLink>
-                  <NavLink to="/detailsLog"className={style.navItem} >Movimientos</NavLink>
-                  <NavLink to="/users" className={style.navItem}>Usuarios</NavLink>
-                </div>
-            :
-                <img className={style.image} src={Hamburger} onClick={() => setIsMenuOpen(true)}/>
-            }
-            {
-              //Si el menu esta abierto renderizo el mobile NavBar
-                isMenuOpen && (<MobileNavBar onClick={() => setIsMenuOpen(false)}/>)
-            }
+  return (
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/">
+          <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
+        </NavLink>
+        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
+          <ul className="navbar-nav mx-auto">
+            <li className="nav-item">
+              <NavLink exact className="nav-link" to="/home">Home</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/detailsLog">Movimientos</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/users">Usuarios</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
+            </li>
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
+            </li>
+          </ul>
         </div>
-    )
+      </div>
+    </nav>
+  );
 }
 
 export default NavBar;
