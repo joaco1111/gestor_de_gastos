@@ -1,14 +1,19 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS} from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, CLEAN_USER, LOGIN_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
 
 export const login = (credentials) => {                                         
-    return async function(dispatch) {                                           
-        const user = (await axios.post(`${baseURL}/login`, credentials)).data;        //Aquí(.data) estaría la info que nos interesa para la sesión del usuario
-        console.log(user);
-        //const token = `Bearer ${user.tokenUser}`;
-        dispatch({ type: LOGIN, payload: user });
+    return async function(dispatch) {      
+        try {
+            const user = (await axios.post(`${baseURL}/login`, credentials)).data;
+            console.log(user);
+            dispatch({ type: LOGIN, payload: user });
+        } catch (error) {
+            console.error('Error en la solicitud de inicio de sesión:', error);
+            // Envío el error al estado para manejarlo en el componente Login
+            dispatch({ type: LOGIN_FAILED, payload: error.response.data });
+        }                                     
     }
 };
 
@@ -23,32 +28,33 @@ export const addExpenseIncome = (payload) => {
     return async (dispatch) => {
         try {
             //creamos la constante localToken para almacenar el token que esta en el localStorage
-            const localToken = await JSON.parse(localStorage.getItem('token'))
-            console.log(localToken, "Llega")
-            //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
-            const config = {
-                headers: {
-                    token: localToken,
+            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+            if(loggedUserJSON) {
+                const user = JSON.parse(loggedUserJSON);
+                const localToken = user.tokenUser;
+                console.log(localToken, "Llega")
+                //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
+                const config = {
+                    headers: {
+                        token: localToken,
+                    }
                 }
+                const apiData = await axios.post("http://localhost:3001/actions", payload, config)
+                const expense = apiData.data
+    
+                alert("Exito")
+
+                return dispatch({
+                    type: ADD_EXPENSE_INCOME,
+                    payload: expense,
+                });
             }
-            const apiData = await axios.post("http://localhost:3001/actions", payload, config)
-            const expense = apiData.data
-
-            alert("Exito")
-
-            return dispatch({
-                type: ADD_EXPENSE_INCOME,
-                payload: expense,
-
-            })
-
         } catch (error) {
-
             alert("Ocurre un error")
             throw error;
         }
     }
-}
+};
 
 export const getCategoryExpense = () => {
     return async function(dispatch) {
@@ -85,7 +91,7 @@ export const fetchActions = (page = 1, limit = 10) => {
     return async function(dispatch) {
         try {
             // Obtén el token del almacenamiento local
-            const localToken = await JSON.parse(localStorage.getItem('token'))
+            const localToken = await JSON.parse(localStorage.getItem('token'));
 
             // Configura los headers de la solicitud
             const config = {
@@ -97,17 +103,41 @@ export const fetchActions = (page = 1, limit = 10) => {
 
             // Realiza la solicitud
             const response = await axios.get(`http://localhost:3001/actions`, config);
+            console.log(response.data);
 
-            const actions = response.data.rows; // Accede a los datos de la respuesta
-            console.log(actions);
+            const { rows, count } = response.data; // Accede a los datos de la respuesta
 
             dispatch({
                 type: GET_ACTIONS,
-                payload: actions
+                payload: { actions: rows, totalCount: count } // Envía tanto las acciones como el recuento total de registros
             });
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
             // Aquí podrías manejar el error de acuerdo a tus necesidades
         }
     };
+};
+
+export const deleteAction = (id) => {
+    return async (dispatch) => {
+        try {
+            // Realiza la solicitud DELETE al servidor
+            await axios.delete(`http://localhost:3001/action/${id}`);
+
+            // Si la eliminación es exitosa, actualiza el estado de Redux para reflejar los cambios
+            dispatch({
+                type: DELETE_ACTION,
+                payload: id // Envía el ID de la acción eliminada al reducer
+            });
+
+            // Opcionalmente, puedes realizar otras acciones después de la eliminación, como mostrar un mensaje de éxito, etc.
+        } catch (error) {
+            console.error('Error al eliminar la acción:', error);
+            // Aquí podrías manejar el error de acuerdo a tus necesidades
+        }
+    };
+};
+
+export const cleanUser = (emptyUser) => {
+    return { type: CLEAN_USER, payload: emptyUser }
 };

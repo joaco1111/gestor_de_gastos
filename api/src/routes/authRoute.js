@@ -18,7 +18,7 @@ const upload = multer({storage: storage})
 // traigo los handlers
 
 
-const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle,deleteUser } = require('../controllers/handlersUser/authHandler')
+const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle,deleteUser, restoreUser } = require('../controllers/handlersUser/authHandler')
 
 // rutas
 
@@ -28,5 +28,6 @@ authRouter.post('/register', registerHandler)
 authRouter.post('/fromGoogle', authenticationFromGoogle)
 authRouter.post('/userUpdate', userExtractor, upload.single('image'), updateHandler)
 authRouter.delete('/user/:id', deleteUser)
+authRouter.put('user/:id/restore', restoreUser)
 
 module.exports = authRouter

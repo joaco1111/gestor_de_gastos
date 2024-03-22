@@ -1,81 +1,91 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
-import PieCharts from '../Charts/PieCharts';
-import { Form, Button, Container } from 'react-bootstrap';
-
-// import styles from './ExpenseIncomeForm.module.css';
+import { Container, Button, Form } from 'react-bootstrap'; 
 
 const ExpenseForm = () => {
   const dispatch = useDispatch();
-  const [pieData, setPieData] = useState([]);
-  const [formData, setFormData] = useState({
-    type: 'gastos',
-    quantity: '',
-    date: '',
-    idCategory: ''
-  });
   const categoriesExpense = useSelector(state => state.categorieExpense);
 
   useEffect(() => {
     dispatch(getCategoryExpense());
   }, [dispatch]);
 
-  useEffect(() => {
-    const pieChartData = categoriesExpense.map(category => ({
-      name: category.name,
-      value: formData.idCategory === category.id ? Number(formData.quantity) : 0
-    }));
-    setPieData(pieChartData);
-  }, [formData, categoriesExpense]);
+  const validationSchema = Yup.object().shape({
+    quantity: Yup.number()
+      .required('La cantidad es requerida')
+      .positive('La cantidad debe ser un número positivo')
+      .typeError('La cantidad debe ser un número'),
+    date: Yup.date()
+      .required('La fecha es requerida')
+      .max(new Date(), 'La fecha no puede ser posterior a la actual'),
+    idCategory: Yup.string().required('La categoría es requerida')
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(addExpenseIncome(formData));
-    
-    setFormData({
-      type: 'gastos',
-      quantity: '',
-      date: '',
-      idCategory: ''
-    });
+  const handleSubmit = (values, { resetForm }) => {
+    console.log('Datos del formulario:', values)
+    dispatch(addExpenseIncome(values));
+    resetForm();
   };
 
   return (
-    <div >
+    <div>
       <Container>
-      <Form  onSubmit={handleSubmit}>
         <h2>Gastos</h2>
-        <Form.Group controlId="quantity">
-          <Form.Label>Cantidad:</Form.Label>
-          <Form.Control type="number" name="quantity" value={formData.quantity} onChange={handleChange} />
-        </Form.Group>
+        <Formik
+          initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ handleSubmit, handleChange, values, errors, touched }) => (
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="quantity">
+                <Form.Label>Cantidad:</Form.Label>
+                <Field 
+                  type="number" 
+                  name="quantity" 
+                  value={values.quantity} 
+                  onChange={handleChange} 
+                  className={`form-control  ${touched.quantity && errors.quantity && 'is-invalid'}`} 
+                />
+                <ErrorMessage name="quantity" component="div" className="invalid-feedback" />
+              </Form.Group>
 
-        <Form.Group controlId="date">
-          <Form.Label>Fecha:</Form.Label>
-          <Form.Control type="date" name="date" value={formData.date} onChange={handleChange} />
-        </Form.Group>
+              <Form.Group controlId="date">
+                <Form.Label>Fecha:</Form.Label>
+                <Field 
+                  type="date" 
+                  name="date" 
+                  value={values.date} 
+                  onChange={handleChange} 
+                  className={`form-control ${touched.date && errors.date && 'is-invalid'}`} 
+                />
+                <ErrorMessage name="date" component="div" className="invalid-feedback" />
+              </Form.Group>
 
-        <Form.Group controlId="idCategory">
-          <Form.Label>Categoría:</Form.Label>
-          <Form.Control as="select" name="idCategory" value={formData.idCategory} onChange={handleChange}>
-            {categoriesExpense.map(category => (
-              <option key={category.id} value={category.id}>{category.name}</option>
-            ))}
-          </Form.Control>
-        </Form.Group>
+              <Form.Group controlId="idCategory">
+                <Form.Label>Categoría:</Form.Label>
+                <Field 
+                  as="select" 
+                  name="idCategory" 
+                  value={values.idCategory} 
+                  onChange={handleChange} 
+                  className={`form-control  ${touched.idCategory && errors.idCategory && 'is-invalid'}`} 
+                >
+                  <option value="">Seleccionar categoría</option>
+                  {categoriesExpense.map(category => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
+                  ))}
+                </Field>
+                <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
+              </Form.Group>
 
-        <Button variant="primary" size="sm" type="submit">Añadir</Button>
-      </Form>
-      <PieCharts data={pieData} />
+              <Button variant="primary" size="sm" type="submit">Añadir</Button>
+            </Form>
+          )}
+        </Formik>
       </Container>
     </div>
   );
