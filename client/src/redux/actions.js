@@ -138,6 +138,20 @@ export const deleteAction = (id) => {
     };
 };
 
+export const authenticationFromGoogle = (credentials) => {
+    return async (dispatch) => {
+        try{
+            const user = (await axios.post(`${baseURL}/fromGoogle`,credentials)).data
+            console.log(user);
+            dispatch({ type: LOGIN, payload: user });
+        } catch(error){
+            console.error('Error en la solicitud de inicio de sesión:', error);
+            // Envío el error al estado para manejarlo en el componente Login
+            dispatch({ type: LOGIN_FAILED, payload: error.response.data });
+        }
+    }
+}
+
 export const cleanUser = (emptyUser) => {
     return { type: CLEAN_USER, payload: emptyUser }
 };
