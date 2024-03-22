@@ -6,7 +6,7 @@ import clean from "../../assets/clean.png"
 
 
 const NavBar = ({onClick}) =>{
-
+  
     const navigate = useNavigate();
 
     const onPress = (value) => {
