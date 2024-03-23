@@ -49,7 +49,7 @@ export const addExpenseIncome = (payload) => {
                 });
             }
         } catch (error) {
-            alert("Ocurre un error")
+            
             throw error;
         }
     }
@@ -64,7 +64,7 @@ export const getCategoryExpense = () => {
                   payload: categories 
                 });
         } catch (error) {
-            alert("Ocurrió un error al obtener las categorías");
+           
             throw error;
         }
     }
@@ -79,7 +79,7 @@ export const getCategoryIncome = () => {
                   payload: categories 
                 });
         } catch (error) {
-            alert("Ocurrió un error al obtener las categorías");
+            
             throw error;
         }
     }

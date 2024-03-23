@@ -34,7 +34,7 @@ const ExpenseForm = () => {
   return (
     <div>
       <Container>
-        <h2>Gastos</h2>
+  
         <Formik
           initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
           validationSchema={validationSchema}
@@ -42,6 +42,7 @@ const ExpenseForm = () => {
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
             <Form onSubmit={handleSubmit} className="expense-form">
+              <div><h2>Gastos</h2></div>
               <Form.Group controlId="quantity">
                 <Form.Label>Cantidad:</Form.Label>
                 <Field 

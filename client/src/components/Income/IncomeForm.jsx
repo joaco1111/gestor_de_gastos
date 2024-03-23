@@ -35,7 +35,6 @@ const IncomeForm = () => {
   return (
     <div>
       <Container>
-        <h2>Ingresos</h2>
         <Formik
           initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '' }}
           validationSchema={validationSchema}
@@ -43,6 +42,7 @@ const IncomeForm = () => {
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
             <Form onSubmit={handleSubmit} className='income-form'>
+              <div><h2>Ingresos</h2></div>
               <Form.Group controlId="quantity">
                 <Form.Label>Cantidad:</Form.Label>
                 <Field 
