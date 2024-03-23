@@ -40,6 +40,7 @@ export const addExpenseIncome = (payload) => {
                     }
                 }
                 const apiData = await axios.post("http://localhost:3001/actions", payload, config)
+                console.log(apiData.data);
                 const expense = apiData.data
 
                 return dispatch({
