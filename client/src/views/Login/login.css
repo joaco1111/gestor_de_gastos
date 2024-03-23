@@ -1,0 +1,42 @@
+/* .login-container {
+    border: 2px solid black;
+    text-align: center;
+    display: inline-block;
+    align-items: center;
+} */
+body {
+    margin: 0;
+    text-align: center;
+  }
+
+
+.login-container {
+    
+    /* justify-content: center; */
+    padding: 20px;
+  }
+
+  .login-form {
+    max-width: 400px;
+    margin: 0 auto;
+    background-color: #fff; 
+    border-radius: 8px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    padding: 40px; 
+  }
+
+  .form-label {
+    font-weight: bold;
+  }
+
+  .form-control {
+    margin-bottom: 20px; 
+  }
+
+  .submit-button {
+    width: 100%; 
+  }
+
+  .error-message {
+    color: red; 
+  }
