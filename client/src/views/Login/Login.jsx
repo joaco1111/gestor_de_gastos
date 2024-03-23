@@ -5,6 +5,8 @@ import { login } from '../../redux/actions';
 import { validate } from '../../utils';
 import "./login.css"
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
+import { FaLock, FaUser } from 'react-icons/fa';
+
 
 const Login = () => {
     const dispatch = useDispatch();
@@ -42,15 +44,16 @@ const Login = () => {
             <Row>
                 <Col md={{ span: 6, offset: 3 }}>
                     <Form className="login-form" onSubmit={handleSubmit}>
-                        <h1 className="text-center mb-4">Login</h1>
+                        {/* <h1 className="text-center mb-4">Login</h1> */}
                         {loginError && <p className="error-message">{loginError}</p>}
                         <Form.Group controlId="formBasicEmail">
-                            <Form.Label className="form-label">Email:</Form.Label>
+                            <div><h2>Login</h2></div>
+                            <Form.Label className="form-label"><FaUser/> Email:</Form.Label>
                             <Form.Control type="email" value={userData.email} onChange={handleChange} name="email" className="form-control" />
                             {errors.email && <p className="error-message">{errors.email}</p>}
                         </Form.Group>
                         <Form.Group controlId="formBasicPassword">
-                            <Form.Label className="form-label">Password:</Form.Label>
+                            <Form.Label className="form-label"><FaLock/> Password:</Form.Label>
                             <Form.Control type="password" value={userData.password} onChange={handleChange} name="password" className="form-control" />
                             {errors.password && <p className="error-message">{errors.password}</p>}
                         </Form.Group>

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { validate } from '../../utils';
 import axios from 'axios';
-import style from './Log.module.css';
+import  './log.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authenticationFromGoogle } from '../../redux/actions'
+import { FaUser, FaEnvelope, FaLock} from 'react-icons/fa';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -102,32 +103,34 @@ const Log = () => {
 
     return (
         <Container>
-                    {loggedIn && <Navigate to="/home" />}
-            <Row className={`justify-content-center align-items-center ${style['login-container']}`}>
-                <Col xs={12} md={6}>
-                    <h1>Log</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-3">
-                            <label className="form-label">Name:</label>
-                            <input type='text' className="form-control" value={form.name} onChange={handleChange} name='name' />
-                            {errors.name && <span className="text-danger">{errors.name}</span>}
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Email:</label>
-                            <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
-                            {errors.email && <span className="text-danger">{errors.email}</span>}
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">Password:</label>
-                            <input type='password' className="form-control" value={form.password} onChange={handleChange} name='password' />
-                            {errors.password && <span className="text-danger">{errors.password}</span>}
-                        </div>
-                        <button type='submit' className="btn btn-primary" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
-                    </form>
-                    <button onClick={handleGoogleSignIn} className="btn btn-danger mt-3">Sign in with Google</button>
-                </Col>
-            </Row>
-        </Container>
+        {loggedIn && <Navigate to="/home" />}
+        <Row className="justify-content-center align-items-center 'login-container'">
+            <Col xs={12} md={6}>
+                {/* <h1>Log</h1> */}
+                <form onSubmit={handleSubmit} className='log-form'>
+                    <div><h2>Log</h2></div>
+                    <div className="mb-3">
+                        <label className="form-label"><FaUser/> Name:</label>
+                        <input type='text' className="form-control" value={form.name} onChange={handleChange} name='name' />
+                        {errors.name && <span className="text-danger">{errors.name}</span>}
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label"><FaEnvelope /> Email:</label>
+                        <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
+                        {errors.email && <span className="text-danger">{errors.email}</span>}
+                    </div>
+                    <div className="mb-3">
+                        <label className="form-label"><FaLock/> Password:</label>
+                        <input type='password' className="form-control" value={form.password} onChange={handleChange} name='password' />
+                        {errors.password && <span className="text-danger">{errors.password}</span>}
+                    </div>
+                    <button type='submit' className="btn btn-primary" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
+                </form>
+                <h4>or</h4>
+                <button onClick={handleGoogleSignIn} className="btn btn-danger mt-3">Sign in with Google</button>
+            </Col>
+        </Row>
+    </Container>
     );
 };
 
