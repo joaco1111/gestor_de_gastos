@@ -5,6 +5,7 @@ import { Collaboration, Log, Login, Home, Landing } from './views';
 import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
+import ActionDetail from './components/ActionDetail/ActionDetail';
 
 function App() {
     const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
                 <Route path='/login' element={<Login />}/>
                 <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
                 <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/actions/:id' element={user.tokenUser ? <ActionDetail /> : <Login />} />
                 <Route path='/users' element={<UserList />} />
                 <Route path='/' element={<Landing />}/>
             </Routes>

@@ -87,6 +87,39 @@ const getActions = async (req, res) => {
   };
 
 
+  const getActionById = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const action = await Action.findOne({
+        where: { id },
+        attributes: ["id", "type", "date", "quantity"],
+        include: [
+          {
+            model: CategoryBills,
+            attributes: ["name"]
+          },
+          {
+            model: CategoryIncome,
+            attributes: ["name"]
+          }
+        ]
+      });
+  
+      // En caso de no encontrar la acción
+      if (!action) return res.status(404).send("Acción no encontrada");
+  
+      res.status(200).json(action);
+  
+    } catch (error) {
+  
+      console.error('Error al obtener la acción:', error)
+      res.status(500).json({ error: 'Error al obtener la acción' })
+    }
+  };
+  
+
+
 const updateAction = async (req, res) => {
     try {
       //id de actions a modificar
@@ -171,6 +204,7 @@ const updateAction = async (req, res) => {
 module.exports = { 
     createActions, 
     getActions,
+    getActionById,
     updateAction,
     deleteAction
   };
