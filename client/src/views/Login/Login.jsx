@@ -40,14 +40,14 @@ const Login = () => {
     };
 
     return(
-        <Container fluid className="login-container">
+        <Container fluid className="container-form">
             <Row>
-                <Col md={{ span: 6, offset: 3 }}>
+                <Col>
                     <Form className="login-form" onSubmit={handleSubmit}>
                         {/* <h1 className="text-center mb-4">Login</h1> */}
                         {loginError && <p className="error-message">{loginError}</p>}
                         <Form.Group controlId="formBasicEmail">
-                            <div><h2>Login</h2></div>
+                            <div className='text-login'>Login</div>
                             <Form.Label className="form-label"><FaUser/> Email:</Form.Label>
                             <Form.Control type="email" value={userData.email} onChange={handleChange} name="email" className="form-control" />
                             {errors.email && <p className="error-message">{errors.email}</p>}
@@ -62,7 +62,10 @@ const Login = () => {
                         </Button>
                         <div className="mt-3 text-center">
                             <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
-                            <Link to="/log">Log</Link>
+                        </div>
+                        <div className="mt-3 text-center">
+                            <span className='mr-2'>Don't have an account?</span>
+                            <Link to="/log">Register Now</Link>
                         </div>
                     </Form>
                 </Col>
