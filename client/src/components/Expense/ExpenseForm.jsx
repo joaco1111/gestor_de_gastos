@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
+import "./expenseForm.css"
 
 const ExpenseForm = () => {
   const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const ExpenseForm = () => {
           onSubmit={handleSubmit}
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="expense-form">
               <Form.Group controlId="quantity">
                 <Form.Label>Cantidad:</Form.Label>
                 <Field 
