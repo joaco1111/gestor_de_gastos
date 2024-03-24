@@ -31,11 +31,12 @@ const CustomModal = ({ onClose, updatedData = {}, handleInputChange, handleUpdat
                 <div style={{ marginBottom: '1rem' }}>
                     <label style={{ fontWeight: 'bold' }}>Categoría:</label>
                     <select
-                        name="category"
-                        value={updatedData.category || ''}
+                        name="idCategory"
+                        value={updatedData.idCategory || ''}
                         onChange={handleInputChange}
                         className="form-control"
                     >
+                        <option value="">Seleccionar categoría</option>
                         {(action?.type === 'ingresos' ? incomeCategories : expenseCategories).map(category => (
                             <option key={category.id} value={category.id}>
                                 {category.name}
