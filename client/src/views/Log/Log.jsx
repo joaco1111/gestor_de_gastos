@@ -114,6 +114,7 @@ const Log = () => {
                         <label className="form-label"><FaEnvelope /> Email:</label>
                         <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
                         {errors.email && <span className="text-danger">{errors.email}</span>}
+                        {logError && <p className="text-danger">{logError}</p>}
                     </div>
                     <div className="mb-3">
                         <label className="form-label"><FaLock/> Password:</label>
