@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, UPDATE_ACTION,UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED } from './action-types';
+import { GET_USERS, LOGIN , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -190,6 +190,7 @@ export const fetchActionDetail = (id) => {
         };
   
         const response = await axios.put(`http://localhost:3001/actions/${id}`, data, config);
+        console.log(response.data)
   
         dispatch({
           type: UPDATE_ACTION,

@@ -33,8 +33,8 @@ const ActionDetail = () => {
   };
 
   let fecha = new Date(action?.date);
-let fechaFormateada = fecha.getFullYear() + '-' + String(fecha.getMonth() + 1).padStart(2, '0') + '-' + String(fecha.getDate()).padStart(2, '0');
-
+  let fechaFormateada = fecha.getUTCFullYear() + '-' + String(fecha.getUTCMonth() + 1).padStart(2, '0') + '-' + String(fecha.getUTCDate()).padStart(2, '0');
+  
   const handleUpdate = async () => {
     // Usa el 'id' de 'useParams', no de 'updatedData'
     await dispatch(updateAction(id, updatedData));
@@ -43,6 +43,12 @@ let fechaFormateada = fecha.getFullYear() + '-' + String(fecha.getMonth() + 1).p
   };
 
   const openModal = () => {
+    // Inicializa 'updatedData' con los valores actuales de la acción
+    setUpdatedData({
+      date: fechaFormateada,
+      quantity: action.quantity,
+      idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id
+    });
     setIsModalOpen(true);
   };
 
