@@ -40,7 +40,8 @@ const Login = () => {
     };
 
     return(
-        <Container fluid className="container-form">
+        <div fluid className="container-form">
+            <div className="container-second">
             <Row>
                 <Col>
                     <Form className="login-form" onSubmit={handleSubmit}>
@@ -70,7 +71,8 @@ const Login = () => {
                     </Form>
                 </Col>
             </Row>
-        </Container>
+            </div>
+        </div>
     )
 };
 
