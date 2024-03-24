@@ -70,7 +70,8 @@ const rootReducer = (state = initialState, action) => {
         case UPDATE_ACTION:
             return {
                 ...state,
-                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem)
+                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem),
+                actionDetail: action.payload.id === state.actionDetail.id ? action.payload : state.actionDetail
             };
         case UPDATE_ACTION_ERROR:
             return {
