@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG , ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, UPDATE_ACTION,UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -7,7 +7,7 @@ export const login = (credentials) => {
     return async function(dispatch) {      
         try {
             const user = (await axios.post(`${baseURL}/login`, credentials)).data;
-            console.log(user);
+            // console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch (error) {
             //console.error('Error en la solicitud de inicio de sesión:', error);
@@ -56,6 +56,7 @@ export const addExpenseIncome = (payload) => {
                     }
                 }
                 const apiData = await axios.post("http://localhost:3001/actions", payload, config)
+                console.log(apiData.data);
                 const expense = apiData.data
     
                 //alert("Exito")
@@ -66,7 +67,7 @@ export const addExpenseIncome = (payload) => {
                 });
             }
         } catch (error) {
-            alert("Ocurre un error")
+            
             throw error;
         }
     }
@@ -81,7 +82,7 @@ export const getCategoryExpense = () => {
                   payload: categories 
                 });
         } catch (error) {
-            alert("Ocurrió un error al obtener las categorías");
+           
             throw error;
         }
     }
@@ -96,64 +97,85 @@ export const getCategoryIncome = () => {
                   payload: categories 
                 });
         } catch (error) {
-            alert("Ocurrió un error al obtener las categorías");
+            
             throw error;
         }
     }
 };
 
 
-export const fetchActions = (page = 1, limit = 10) => {
+export const fetchActions = (page = 1, limit = 10, data, type, category) => {
     return async function(dispatch) {
         try {
-            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-            if(loggedUserJSON) {
-                // Obtén el token del almacenamiento local
-                const user = JSON.parse(loggedUserJSON);
-                const localToken = user.tokenUser;
-                console.log(localToken);
-                // Configura los headers de la solicitud
-                const config = {
-                    headers: {
-                        token: localToken,
-                    },
-                    params: { page, limit }
-                };
+            // const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+            // if(loggedUserJSON) {
+            //     // Obtén el token del almacenamiento local
+            //     const user = JSON.parse(loggedUserJSON);
+            //     const localToken = user.tokenUser;
+            //     console.log(localToken);
+            //     // Configura los headers de la solicitud
+            //     const config = {
+            //         headers: {
+            //             token: localToken,
+            //         },
+            //         params: { page, limit }
+            //     };
         
-                // Realiza la solicitud
-                const response = await axios.get(`http://localhost:3001/actions`, config);
+            //     // Realiza la solicitud
+            //     const response = await axios.get(`http://localhost:3001/actions`, config);
         
-                const actions = response.data.rows; // Accede a los datos de la respuesta
-                console.log(actions);
+            //     const actions = response.data.rows; // Accede a los datos de la respuesta
+            //     console.log(actions);
         
-                dispatch({
-                    type: GET_ACTIONS,
-                    payload: actions
-                });
-            }
+            //     dispatch({
+            //         type: GET_ACTIONS,
+            //         payload: actions
+            //     });
+            // }
+            const localToken = await JSON.parse(localStorage.getItem('token'));
+
+            const config = {
+                headers: {
+                    token: localToken,
+                },
+                params: { page, limit, data, type, category }
+            };
+
+            const response = await axios.get(`http://localhost:3001/actions`, config);
+            console.log(response.data);
+
+            const { rows, count } = response.data;
+
+            dispatch({
+                type: GET_ACTIONS,
+                payload: { actions: rows, totalCount: count }
+            });
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
-            // Aquí podrías manejar el error de acuerdo a tus necesidades
         }
     };
 };
 
+
 export const deleteAction = (id) => {
     return async (dispatch) => {
         try {
-            // Realiza la solicitud DELETE al servidor
-            await axios.delete(`http://localhost:3001/action/${id}`);
+            const localToken = await JSON.parse(localStorage.getItem('token'));
 
-            // Si la eliminación es exitosa, actualiza el estado de Redux para reflejar los cambios
+            const config = {
+                headers: {
+                    token: localToken,
+                }
+            };
+
+            await axios.delete(`http://localhost:3001/action/${id}`, config);
+
             dispatch({
                 type: DELETE_ACTION,
-                payload: id // Envía el ID de la acción eliminada al reducer
+                payload: id
             });
-
-            // Opcionalmente, puedes realizar otras acciones después de la eliminación, como mostrar un mensaje de éxito, etc.
         } catch (error) {
             console.error('Error al eliminar la acción:', error);
-            // Aquí podrías manejar el error de acuerdo a tus necesidades
         }
     };
 };
@@ -171,6 +193,61 @@ export const authenticationFromGoogle = (credentials) => {
         }
     }
 }
+
+export const fetchActionDetail = (id) => {
+    return async function(dispatch) {
+      try {
+        const localToken = JSON.parse(localStorage.getItem('token'));
+        
+        const config = {
+          headers: {
+            token: localToken
+          }
+        };
+  
+        const response = await axios.get(`http://localhost:3001/action/${id}`, config);
+  
+        dispatch({
+          type: GET_ACTION_DETAIL,
+          payload: response.data
+        });
+      } catch (error) {
+        console.error('Error al obtener el detalle de la acción:', error);
+        dispatch({
+          type: FETCH_ACTION_DETAIL_ERROR,
+          payload: error.message
+        });
+      }
+    };
+  };
+  
+  export const updateAction = (id, data) => {
+    return async function(dispatch) {
+      try {
+        const localToken = JSON.parse(localStorage.getItem('token'));
+        
+        const config = {
+          headers: {
+            token: localToken
+          }
+        };
+  
+        const response = await axios.put(`http://localhost:3001/actions/${id}`, data, config);
+  
+        dispatch({
+          type: UPDATE_ACTION,
+          payload: response.data
+        });
+      } catch (error) {
+        console.error('Error al actualizar la acción:', error);
+        dispatch({
+          type: UPDATE_ACTION_ERROR,
+          payload: error.message
+        });
+      }
+    };
+  };
+  
 
 export const cleanUser = (emptyUser) => {
     return { type: CLEAN_USER, payload: emptyUser }

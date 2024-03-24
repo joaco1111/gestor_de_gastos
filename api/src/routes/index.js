@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const {createActions,
         getActions,
+        getActionById,
         updateAction,
     deleteAction} = require('../controllers/Actions/actionsControllers')
 const {createReview, getReview, updateReview, deleteReview} = require('../controllers/Review/review');
@@ -25,6 +26,8 @@ router.post('/actions', userExtractor, createActions)
 router.get('/actions', userExtractor, getActions)
 //Ruta actualizar los datos de la Actions
 router.put('/actions/:id', userExtractor, updateAction)
+//Ruta obtener los datos de la Action por id
+router.get('/action/:id', userExtractor, getActionById)
 //Ruta eliminar algun dato de la Actions
 router.delete('/action/:id', userExtractor, deleteAction)
 

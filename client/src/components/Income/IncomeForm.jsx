@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,7 @@ import { addExpenseIncome, getCategoryIncome } from '../../redux/actions';
 import PieCharts from '../Charts/PieCharts';
 import { Container, Button, Form } from 'react-bootstrap'; 
 import ModalHome from '../Modal/ModalHome';
+import "./incomeForm.css"
 
 const IncomeForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
@@ -61,14 +62,14 @@ const IncomeForm = () => {
   return (
     <div>
       <Container>
-        <h2>Ingresos</h2>
         <Formik
           initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className='income-form'>
+              <div><h2>Ingresos</h2></div>
               <Form.Group controlId="quantity">
                 <Form.Label>Cantidad:</Form.Label>
                 <Field 

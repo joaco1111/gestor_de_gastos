@@ -1,5 +1,4 @@
-import { LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
-
+import { LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
 const initialState = {
     users: [],
     user: {},
@@ -8,9 +7,10 @@ const initialState = {
     categorieExpense: [],
     categorieIncome: [],
     actions: [],
+    totalCount: 0,
     loginError: '',
     logError: '',
-    totalCount: ''
+    //totalCount: ''
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -42,10 +42,16 @@ const rootReducer = (state = initialState, action) => {
                 categorieIncome: action.payload
             };
         case GET_ACTIONS:
+            const { actions, totalCount } = action.payload;
             return {
                 ...state,
-                actions: action.payload.actions,
-                totalCount: action.payload.totalCount
+                actions,
+                totalCount
+            };
+        case GET_ACTION_DETAIL:
+            return {
+                ...state,
+                actionDetail: action.payload
             };
         case CLEAN_USER:
             return {
@@ -58,11 +64,21 @@ const rootReducer = (state = initialState, action) => {
                 loginError: action.payload
             };
         case DELETE_ACTION:
-            // Filtra las acciones para eliminar la acción con el ID correspondiente
-            const updatedActions = state.actions.filter(action => action.id !== action.payload);
+            const updatedActions = state.actions.filter(actionItem => actionItem.id !== action.payload);
             return {
                 ...state,
-                actions: updatedActions
+                actions: updatedActions,
+                totalCount: state.totalCount - 1
+            };
+        case UPDATE_ACTION:
+            return {
+                ...state,
+                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem)
+            };
+        case UPDATE_ACTION_ERROR:
+            return {
+                ...state,
+                updateActionError: action.payload
             };
         case LOG_FAILED:
             return {
