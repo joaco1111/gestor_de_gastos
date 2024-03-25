@@ -1,4 +1,5 @@
 import { LOGIN, DELETE_ACTION, LOG, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
+
 const initialState = {
     users: [],
     user: {},
@@ -11,7 +12,6 @@ const initialState = {
     totalCount: 0,
     loginError: '',
     logError: '',
-    //totalCount: ''
 };
 
 const rootReducer = (state = initialState, action) => {

@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
-import ModalHome from '../Modal/ModalHome';
-import "./expenseForm.css"
+import ModalHome from '../Modals/ModalHome';
+import "./expenseForm.css";
 
 const ExpenseForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal

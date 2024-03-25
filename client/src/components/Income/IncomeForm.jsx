@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryIncome } from '../../redux/actions'; 
 import PieCharts from '../Charts/PieCharts';
 import { Container, Button, Form } from 'react-bootstrap'; 
-import ModalHome from '../Modal/ModalHome';
-import "./incomeForm.css"
+import ModalHome from '../Modals/ModalHome';
+import "./incomeForm.css";
 
 const IncomeForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
