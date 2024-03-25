@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const cloudinary = require('cloudinary')
 const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 const loginHandler = async (req, res) => {
 
@@ -58,8 +59,8 @@ const registerHandler = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 10)
 
         // creo el registro en db
-
-        await User.create({ name, email, password: passwordHash, idAccess: 2 });
+    
+        await User.create({ name: name.toLowerCase(), email, password: passwordHash, idAccess: 2 });
         const { token } = await validate(email, password);
 
         if (token) {
@@ -75,26 +76,6 @@ const registerHandler = async (req, res) => {
     }
 }
 
-const getUsers = async (req, res) => {
-    try {
-        const { page = 1, limit = 10 } = req.query;
-        const offset = (page - 1) * limit;
-
-        const users = await User.findAndCountAll({ 
-            where: { 
-                idAccess: 2, 
-            }, 
-            paranoid: false,
-            limit, 
-            offset });
-
-        if (!users) return res.status(400).send("No existen usuarios.");
-
-        return res.status(200).json(users);
-    } catch (error) {
-        res.status(400).json({ error: error.message })
-    }
-}
 
 const updateHandler = async (req, res) => {
     try {
@@ -215,6 +196,47 @@ const authenticationFromGoogle = async (req,res) => {
 
     } catch(error){
         res.status(500).json({error: error.message})
+    }
+}
+
+const getUsers = async(req,res) => {
+    try {
+        const { page = 1, limit = 10, search = "" } = req.query;
+        const offset = (page - 1) * limit;
+
+        //cuando no hayan una busqueda, devolvemos todos los usuarios
+        if(search === "") {
+
+            const users = await User.findAndCountAll({ 
+                where: { 
+                    idAccess: 2, 
+                }, 
+                paranoid: false,
+                limit, 
+                offset });
+
+            if (!users) return res.status(400).send("No existen usuarios.");
+
+            return res.status(200).json(users);
+        }
+        //cuando haya una busqueda, devolvemos unicamente lo que conincida con ella 
+        const user = await User.findAndCountAll({
+            where: {
+                name: {
+                    [Op.like]: `%${search}%`
+                }, 
+                idAccess: 2
+            }, 
+            limit, 
+            offset, 
+            paranoid: false
+        });
+
+        if(!user) return res.status(400).send("No se encontraron resultados");
+
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).json({error: error.message})
     }
 }
 

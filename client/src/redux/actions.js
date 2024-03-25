@@ -17,12 +17,14 @@ export const login = (credentials) => {
     }
 };
 
-export const getUsers = () => {
+export const getUsers = (value) => {
     return async function(dispatch) {
-        const users = (await axios.get('http://localhost:3001/auth/users')).data;
+        const users = (await axios.get('http://localhost:3001/auth/users?search='+value)).data;
+        
         dispatch({ type: GET_USERS, payload: users});
     }
 };
+
 
 export const addExpenseIncome = (payload) => {
     return async (dispatch) => {

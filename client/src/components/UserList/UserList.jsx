@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUsers } from '../../redux/actions';
-import { Table, Button } from 'react-bootstrap';
+import { Table, Button, Form } from 'react-bootstrap';
 import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
 import ModalsDisable from '../Modals/ModalsDisable';
 import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
-import Form from 'react-bootstrap/Form';
+import { useNavigate } from 'react-router-dom';
 
 const _URL_CLEAN = 'http://localhost:3001/auth/user/';
 const _URL_RESTORE = 'http://localhost:3001/auth/user/restore/';
 const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+
 const config = {
       headers: {
         token: localToken?.tokenUser
       }
     }
 
-    console.log(config);
 
 const UserList = ({ users, getUsers}) => {
   const [message, setMessage] = useState({
     message: '',
     access: false
   });
-  const [user, setUser] = useState({})
   const [activated, setActivated] = useState({
     access: false,
     id: ''
@@ -36,7 +35,7 @@ const UserList = ({ users, getUsers}) => {
   })
 
   useEffect(() => {
-    getUsers();
+    getUsers("");
 
     if(message.message !== ''){
       setTimeout(()=> {
@@ -84,6 +83,17 @@ const UserList = ({ users, getUsers}) => {
       type: "danger"
     }))
   }
+
+  const handlerChange = (e) => {
+    getUsers(e.target.value.toLowerCase());
+  }
+  
+  const toCase = (value) => {
+    const str = value.split(" ");
+
+    return str.map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
+  }
+
   return (
     <div>
       <NavBar />
@@ -97,13 +107,12 @@ const UserList = ({ users, getUsers}) => {
           </Alert>
         )}
 
-      {/* SEARCHSBAR TODAVIA NO FUNCIONA */}
-        {/* <Form className="d-flex" role="search">
+      {/* SEARCHS */}
+        <Form className="d-flex" role="search">
           <Form.Group>
-            <Form.Control className="form-control my-2" placeholder='Buscar Usuario...' type='text'/>
+            <Form.Control className="form-control my-2" placeholder='Buscar Usuario...' type='text' onChange={handlerChange}/>
           </Form.Group>
-          <button className="bi bi-arrow-clockwise"></button>
-        </Form> */}
+        </Form>
 
         {/* TABLA  */}
         {users.length > 0 ? (
@@ -122,7 +131,7 @@ const UserList = ({ users, getUsers}) => {
             <tbody>
               {users.map(user => (
                 <tr key={user.id}>
-                  <td>{user.name}</td>
+                  <td>{toCase(user.name)}</td>
                   <td>{user.email}</td>
                   <td>{user.deletedAt === null ? 'Sí' : 'No'}</td>
                   <td>{user.createdAt}</td>
