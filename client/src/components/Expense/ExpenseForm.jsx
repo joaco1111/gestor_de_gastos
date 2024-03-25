@@ -1,11 +1,33 @@
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
+import ModalHome from '../Modals/ModalHome';
+import "./expenseForm.css";
 
 const ExpenseForm = () => {
+  const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
+  console.log(show);
+
+  const [expense, setExpense] = useState({        //Estado para no permitir que aparezca el Modal, si los 3 inputs NO están llenos
+    quantity: '',
+    date: '',
+    idCategory: '',
+  });
+
+  const handleClose = () => {
+    setShow(false);
+    setExpense({       
+      quantity: '',
+      date: '',
+      idCategory: '',
+    });
+  };
+  const handleShow = () => setShow(true);
+
+
   const dispatch = useDispatch();
   const categoriesExpense = useSelector(state => state.categorieExpense);
 
@@ -23,24 +45,31 @@ const ExpenseForm = () => {
       .max(new Date(), 'La fecha no puede ser posterior a la actual'),
     idCategory: Yup.string().required('La categoría es requerida')
   });
-
+  console.log(validationSchema);
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario:', values)
     dispatch(addExpenseIncome(values));
     resetForm();
+
+    setExpense({                                 
+      quantity: values.quantity,
+      date: values.date,
+      idCategory: values.idCategory
+    });
   };
 
   return (
     <div>
       <Container>
-        <h2>Gastos</h2>
+  
         <Formik
           initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
           {({ handleSubmit, handleChange, values, errors, touched }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="expense-form">
+              <div><h2>Gastos</h2></div>
               <Form.Group controlId="quantity">
                 <Form.Label>Cantidad:</Form.Label>
                 <Field 
@@ -82,11 +111,12 @@ const ExpenseForm = () => {
                 <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
               </Form.Group>
 
-              <Button variant="primary" size="sm" type="submit">Añadir</Button>
+              <Button variant="primary" size="sm" type="submit" onClick={handleShow}>Añadir</Button>
             </Form>
           )}
         </Formik>
       </Container>
+      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
     </div>
   );
 };

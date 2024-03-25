@@ -5,13 +5,16 @@ import { deleteAction } from '../../redux/actions';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import ActionsPagination from '../Pagination/ActionsPagination';
+import { BiTrash, BiDetail } from 'react-icons/bi';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 const IncomeExpenseLog = () => {
   const dispatch = useDispatch();
   const actions = useSelector(state => state.actions);
-  const { totalCount } = useSelector(state => state.actions);
-  const [page, setPage] = useState(1);
-  const limit = 10;
+  const totalCount = useSelector(state => state.totalCount);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limitPerPage = 10;
   const loading = useSelector(state => state.loading);
   const [filters, setFilters] = useState({
     date: '',
@@ -20,23 +23,34 @@ const IncomeExpenseLog = () => {
   });
 
   useEffect(() => {
-    dispatch(fetchActions(page, limit));
-}, [dispatch, page, limit]);
+    dispatch(fetchActions(currentPage, limitPerPage, filters));
+  }, [dispatch, currentPage, filters]);
 
   // Función para manejar cambios en los filtros
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters(prevFilters => ({
-      ...prevFilters,
-      [name]: value
-    }));
-  };
+  const { name, value } = e.target;
+  setCurrentPage(1);
+  setFilters(prevFilters => {
+    if (name === 'type') {
+      return {
+        ...prevFilters,
+        [name]: value,
+        category: '',
+      };
+    } else {
+      return {
+        ...prevFilters,
+        [name]: value
+      };
+    }
+  });
+};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Agrega un cero al principio si el mes es menor que 10
-    const day = String(date.getDate()).padStart(2, '0'); // Agrega un cero al principio si el día es menor que 10
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate() + 1).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
 
@@ -86,28 +100,29 @@ const IncomeExpenseLog = () => {
     // Retorna los datos filtrados
     return filteredData;
   };
-
+  console.log(actions);
+  console.log(filters);
   const filteredActions = applyFilters(actions, filters);
-
+  console.log(filteredActions);
   const getCategoryOptions = (type) => {
     let categoryOptionsSet = new Set(['Todos']);
     actions.forEach(action => {
-      if (type === 'gastos' && action.type === 'gastos' && action.categoryBill) {
-        categoryOptionsSet.add(action.categoryBill.name);
-      } else if (type === 'ingresos' && action.type === 'ingresos' && action.categoryIncome) {
-        categoryOptionsSet.add(action.categoryIncome.name);
+      if ((type === 'gastos' && action.type === 'gastos' && action.categoryBill) ||
+          (type === 'ingresos' && action.type === 'ingresos' && action.categoryIncome)) {
+        categoryOptionsSet.add(type === 'gastos' ? action.categoryBill.name : action.categoryIncome.name);
       }
     });
     return Array.from(categoryOptionsSet); // Convertir el conjunto a un array para ser iterado en el renderizado
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
+  const handleDelete = async (id) => {
+    await dispatch(deleteAction(id));
+    dispatch(fetchActions(currentPage, limitPerPage));
   };
 
-  const handleDelete = (id) => {
-    // Llama a la acción deleteAction con el ID de la acción a eliminar
-    dispatch(deleteAction(id));
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    dispatch(fetchActions(page, limitPerPage, filters));
   };
 
   return (
@@ -148,6 +163,14 @@ const IncomeExpenseLog = () => {
           </label>
         )}
       </div>
+      <div className='pagination-container'>
+        <ActionsPagination
+          currentPage={currentPage}
+          totalCount={totalCount}
+          limitPerPage={limitPerPage}
+          onPageChange={handlePageChange}
+        />
+      </div>
       {loading ? (
         <p>Cargando...</p>
       ) : (
@@ -156,7 +179,6 @@ const IncomeExpenseLog = () => {
             <table className='table table-dark table-striped'>
               <thead>
                 <tr>
-                  <th>ID</th>
                   <th>Tipo</th>
                   <th>Fecha</th>
                   <th>Cantidad</th>
@@ -167,13 +189,21 @@ const IncomeExpenseLog = () => {
               <tbody>
                 {filteredActions.map(action => (
                   <tr key={action.id}>
-                    <td>{action.id}</td>
                     <td>{action.type}</td>
                     <td>{formatDate(action.date)}</td>
                     <td>{action.quantity}</td>
                     <td>{action.categoryBill ? action.categoryBill.name : '-'}</td>
                     <td>{action.categoryIncome ? action.categoryIncome.name : '-'}</td>
-                    <td><button onClick={() => handleDelete(action.id)}>Eliminar</button></td>
+                    <td>
+                      <Button title='Eliminar' variant="danger" onClick={() => handleDelete(action.id)}>
+                        <BiTrash />
+                      </Button>
+                    </td>
+                    <td>
+                      <Link to={`/actions/${action.id}`}>
+                      <Button title='Ver Detalle' variant="primary"><BiDetail /></Button>
+                      </Link>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -183,8 +213,13 @@ const IncomeExpenseLog = () => {
           )}
         </div>
       )}
-      <div>
-        <ActionsPagination totalCount={totalCount} limit={limit} onPageChange={handlePageChange} />
+      <div className='pagination-container'>
+        <ActionsPagination
+          currentPage={currentPage}
+          totalCount={totalCount}
+          limitPerPage={limitPerPage}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
