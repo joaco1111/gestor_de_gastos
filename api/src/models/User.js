@@ -14,16 +14,28 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    photoProfile:{
+      type: DataTypes.STRING,
+      defaultValue: null
+    },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+
+        validate: {
+          isEmail: true
+        }
     },
     password: {
         type: DataTypes.STRING,
         allowNull: false,
     }
  
-}, { timestamps: false })
+}, {
+  
+  //no poner timestamp, porque paranoid necesita esos datos 
+  paranoid: true,  //columna borrador logico
+})
 }
 
 

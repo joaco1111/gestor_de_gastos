@@ -1,11 +1,15 @@
-const { Action, Category_bills, Category_income, User } = require('../../db.js');
+const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { id_user, type, quantity, date, id_category } = req.body;
+    const { type, quantity, date, idCategory } = req.body;
+    const idUser = req.userID;
+
+    const typeCategory = {}
+
     
     //en caso de no tener datos completos 
-    if (!type || !date || !quantity || !id_category  || !id_user) {
+    if (!type || !date || !quantity || !idCategory  || !idUser) {
       return res.status(400).send('Completar los campos obligatorios')
     }
 
@@ -15,57 +19,35 @@ const createActions = async (req, res) => {
     }
 
     if(type === "ingresos"){
-      const category_income = await Category_income.findOne({where: {id: id_category}});
+      const categoryIncome = await CategoryIncome.findOne({where: {id: idCategory}});
       
       //en caso de no encontrar dicha categoria
-      if(!category_income) return res.status(400).send("No coinciden los datos");
+      if(!categoryIncome) return res.status(400).send("No coinciden los datos");
 
-      const new_action = await Action.create({
-        type, 
-        date, 
-        quantity, 
-        id_categoria_income: id_category,
-        id_usuario: id_user
-      })
-
-      return res.status(200).json(new_action);
+      typeCategory['idCategoryIncome'] = idCategory;
+      
     }
 
     else{
-      const category_bills = await Category_bills.findOne({where: {id: id_category}});
+      
+      const categoryBills = await CategoryBills.findOne({where: {id: idCategory}});
       
       //en caso de no encontrar dicha categoria
-      if(!category_bills) return res.status(400).send("No coinciden los datos");
+      if(!categoryBills) return res.status(400).send("No coinciden los datos");
 
-      const new_action = await Action.create({
-        type, 
-        date, 
-        quantity, 
-        id_categoria_bills: id_category,
-        id_usuario: id_user
-      })
-
-      return res.status(200).json(new_action);
+      typeCategory['idCategoryBills'] = idCategory;
     }
 
+    const newAction = await Action.create({
+      type, 
+      date, 
+      quantity, 
+      ...typeCategory,
+      idUser: idUser
+    })
 
-    //LUEGO LO REFACTORIZAMOS BIEN :)
+    return res.status(200).json(newAction);
 
-
-    // let categories = await Category.findOne({ where: { name: category } })
-    
-    // if (!categories) {
-    //   categories = await Category.create({ name: category })
-    // }
-
-    // const newAction = await Action.create({
-    //   type,
-    //   date,
-    //   quantity
-    // });
-
-    
-    // res.status(201).json({ mensaje: 'Acción creada exitosamente', newAction })
 
   } catch (error) {
     console.error('Error al crear la acción:', error)
@@ -76,15 +58,19 @@ const createActions = async (req, res) => {
 
 const getActions = async (req, res) => {
     try {
-      const actions = await Action.findAll({
-        attributes: ["id","type", "date", "quantity"], 
+      const {page = 1, limit = 10} = req.query;
+      const offset = (page - 1) * limit; 
 
+      const actions = await Action.findAndCountAll({
+        attributes: ["id","type", "date", "quantity"], 
+        offset,
+        limit,
         include:[
         {
-          model: Category_bills,
+          model: CategoryBills,
           attributes: ["name"]
         },{
-          model: Category_income,
+          model: CategoryIncome,
           attributes: ["name"]
         }]});
 
@@ -103,6 +89,7 @@ const getActions = async (req, res) => {
 
 const updateAction = async (req, res) => {
     try {
+      //id de actions a modificar
       const { id } = req.params;
 
       const action = await Action.findByPk(id)
@@ -112,38 +99,37 @@ const updateAction = async (req, res) => {
       }
 
       const type = action.dataValues.type;
-
       //condiciones para saber en que caso modificar un ingreso o un gasto cuando haya un id_category
       if(type === "ingresos"){
-        if(req.body?.id_category ){
-          const id_category = req.body.id_category;
-          const data = { id_categoria_income: id_category , ...req.body}
+        if(req.body?.idCategory ){
+          const idCategory = req.body.idCategory;
+          const data = { idCategoryIncome: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await Category_income.findOne({where: {id: id_category}})
+          const category = await CategoryIncome.findOne({where: {id: idCategory}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
 
-          const update_actions = await action.update(data)
+          const updateActions = await action.update(data)
 
-          return res.status(200).json(update_actions);
+          return res.status(200).json(updateActions);
         }
       }
       else{
-        if(req.body?.id_category ){
-          const id_category = req.body.id_category;
-          const data = { id_categoria_bills: id_category , ...req.body}
+        if(req.body?.idCategory ){
+          const idCategory = req.body.idCategory;
+          const data = { idCategoryBills: idCategory , ...req.body}
 
           //buscamos en la categoria que exista el id que nos mandaron
-          const category = await Category_bills.findOne({where: {id: id_category}})
+          const category = await CategoryBills.findOne({where: {id: idCategory}})
           
           //en caso que no error
           if(!category) return res.status(400).send("No coinciden los datos")
 
-          const update_actions = await action.update(data)
+          const updateActions = await action.update(data)
 
-          return res.status(200).json(update_actions);
+          return res.status(200).json(updateActions);
         }
       }
       

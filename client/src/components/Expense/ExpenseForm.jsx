@@ -1,93 +1,92 @@
-import { useState } from 'react';
-import useCategories from './useCategories'; // Uso el hook
-import styles from './ExpenseForm.module.css'; // Importa los estilos CSS modules
+import React, { useEffect } from 'react';
+import { Formik, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch, useSelector } from 'react-redux';
+import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
+import { Container, Button, Form } from 'react-bootstrap'; 
 
 const ExpenseForm = () => {
-  const { categories, addCategory } = useCategories();
+  const dispatch = useDispatch();
+  const categoriesExpense = useSelector(state => state.categorieExpense);
 
-  const [amount, setAmount] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [newCategory, setNewCategory] = useState('');
-  const [date, setDate] = useState('');
-  const [comment, setComment] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState(''); 
+  useEffect(() => {
+    dispatch(getCategoryExpense());
+  }, [dispatch]);
 
-  const handleAddExpense = () => {
-    const expenseData = {
-      amount,
-      category: selectedCategory || newCategory,
-      date,
-      comment,
-      paymentMethod
-    };
-    // console.log(expenseData);
+  const validationSchema = Yup.object().shape({
+    quantity: Yup.number()
+      .required('La cantidad es requerida')
+      .positive('La cantidad debe ser un número positivo')
+      .typeError('La cantidad debe ser un número'),
+    date: Yup.date()
+      .required('La fecha es requerida')
+      .max(new Date(), 'La fecha no puede ser posterior a la actual'),
+    idCategory: Yup.string().required('La categoría es requerida')
+  });
+
+  const handleSubmit = (values, { resetForm }) => {
+    console.log('Datos del formulario:', values)
+    dispatch(addExpenseIncome(values));
+    resetForm();
   };
 
   return (
-    <div className={styles.container}>
-      <h2>Gasto</h2>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>Monto:</label>
-        <input
-          className={styles.textInput}
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </div>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>Categoría:</label>
-        <select
-          className={styles.selectInput}
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+    <div>
+      <Container>
+        <h2>Gastos</h2>
+        <Formik
+          initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
         >
-          <option value="">Seleccionar categoría</option>
-          {categories.map((category, index) => (
-            <option key={index} value={category}>{category}</option>
-          ))}
-        </select>
-        <input
-          className={styles.textInput}
-          type="text"
-          placeholder="Nueva categoría"
-          value={newCategory}
-          onChange={(e) => setNewCategory(e.target.value)}
-        />
-        <button className={styles.addButton} onClick={() => addCategory(newCategory)}>Agregar Categoría</button>
-      </div>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>Forma de Pago:</label>
-        <select
-          className={styles.selectInput}
-          value={paymentMethod}
-          onChange={(e) => setPaymentMethod(e.target.value)}
-        >
-          <option value="">Seleccionar forma de pago</option>
-          <option value="Efectivo">Efectivo</option>
-          <option value="Tarjeta de Débito">Tarjeta de Débito</option>
-          <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
-          <option value="Transferencia">Transferencia</option>
-        </select>
-      </div>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>Fecha:</label>
-        <input
-          className={styles.textInput}
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
-      </div>
-      <div className={styles.inputContainer}>
-        <label className={styles.label}>Comentario (opcional):</label>
-        <textarea
-          className={styles.textInput}
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-      </div>
-      <button className={styles.addButton} onClick={handleAddExpense}>Añadir</button>
+          {({ handleSubmit, handleChange, values, errors, touched }) => (
+            <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="quantity">
+                <Form.Label>Cantidad:</Form.Label>
+                <Field 
+                  type="number" 
+                  name="quantity" 
+                  value={values.quantity} 
+                  onChange={handleChange} 
+                  className={`form-control  ${touched.quantity && errors.quantity && 'is-invalid'}`} 
+                />
+                <ErrorMessage name="quantity" component="div" className="invalid-feedback" />
+              </Form.Group>
+
+              <Form.Group controlId="date">
+                <Form.Label>Fecha:</Form.Label>
+                <Field 
+                  type="date" 
+                  name="date" 
+                  value={values.date} 
+                  onChange={handleChange} 
+                  className={`form-control ${touched.date && errors.date && 'is-invalid'}`} 
+                />
+                <ErrorMessage name="date" component="div" className="invalid-feedback" />
+              </Form.Group>
+
+              <Form.Group controlId="idCategory">
+                <Form.Label>Categoría:</Form.Label>
+                <Field 
+                  as="select" 
+                  name="idCategory" 
+                  value={values.idCategory} 
+                  onChange={handleChange} 
+                  className={`form-control  ${touched.idCategory && errors.idCategory && 'is-invalid'}`} 
+                >
+                  <option value="">Seleccionar categoría</option>
+                  {categoriesExpense.map(category => (
+                    <option key={category.id} value={category.id}>{category.name}</option>
+                  ))}
+                </Field>
+                <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
+              </Form.Group>
+
+              <Button variant="primary" size="sm" type="submit">Añadir</Button>
+            </Form>
+          )}
+        </Formik>
+      </Container>
     </div>
   );
 };

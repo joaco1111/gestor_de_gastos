@@ -6,7 +6,7 @@ import clean from "../../assets/clean.png"
 
 
 const NavBar = ({onClick}) =>{
-
+  
     const navigate = useNavigate();
 
     const onPress = (value) => {
@@ -20,6 +20,8 @@ const NavBar = ({onClick}) =>{
                 <img src={clean} className={style.imgContainer} onClick={onClick}/>
                 <p onClick={() => onPress("/home")} className={style.navItem}>Home</p>
                 <p onClick={() => onPress("/collaboration")} className={style.navItem} >Donar</p>
+                <p onClick={() => onPress("/detailsLog")} className={style.navItem} >Movimientos</p>
+                <p onClick={() => onPress("/users")} className={style.navItem}>Usuarios</p>
             </div>
         </div>
     )
