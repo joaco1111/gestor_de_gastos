@@ -4,7 +4,6 @@ const initialState = {
     users: [],
     user: {},
     newUser: {},
-    newUser: {},
     expenses: [],
     categorieExpense: [],
     categorieIncome: [],
@@ -22,6 +21,11 @@ const rootReducer = (state = initialState, action) => {
                 user: action.payload,
                 loginError: ''
             };
+        case LOG: 
+            return {
+                ...state,
+                newUser: action.payload
+            }
         case GET_USERS:
             return {
                 ...state,
@@ -74,7 +78,8 @@ const rootReducer = (state = initialState, action) => {
         case UPDATE_ACTION:
             return {
                 ...state,
-                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem)
+                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem),
+                actionDetail: action.payload.id === state.actionDetail.id ? action.payload : state.actionDetail
             };
         case UPDATE_ACTION_ERROR:
             return {
