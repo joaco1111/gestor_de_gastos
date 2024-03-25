@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, DELETE_ACTION, GET_ACTION_DETAIL, UPDATE_ACTION } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3001/auth';
@@ -157,7 +157,6 @@ export const deleteAction = (id) => {
                     payload: id
                 });
             }
- 
         } catch (error) {
             console.error('Error al eliminar la acción:', error);
         }
@@ -223,7 +222,8 @@ export const fetchActionDetail = (id) => {
             }
             };
   
-            const response = await axios.put(`http://localhost:3001/actions/${id}`, data, config);
+        const response = await axios.put(`http://localhost:3001/actions/${id}`, data, config);
+        console.log(response.data)
   
             dispatch({
             type: UPDATE_ACTION,

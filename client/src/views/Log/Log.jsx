@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { validate } from '../../utils';
-import axios from 'axios';
+//import axios from 'axios';
 import  './log.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";

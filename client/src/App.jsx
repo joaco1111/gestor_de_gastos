@@ -53,7 +53,7 @@ function App() {
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
-    )
-}
+    )  
+};
 
 export default App;
