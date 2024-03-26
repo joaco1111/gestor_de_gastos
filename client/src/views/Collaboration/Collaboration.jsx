@@ -1,53 +1,45 @@
-// import "./Donar.css"
-<<<<<<< HEAD
-
-const Donacion = () => {
-    return (
-        <div className="card-donacion-container">
-            <div className="card-donacion">
-                <div className="card">
-                <img src="" alt="Donacion Image" />
-                <h3>Haz tu donacion</h3>
-                <p className= 'monto'>50,00 €</p>
-                <button>Donar</button>
-                </div>
-            </div>
-        </div>
-        
-    )
-}
-
-export default Donacion;
-=======
 import React from 'react';
+import NavBar from "../../components/NavBar/NavBar";
+import { Button } from 'react-bootstrap'; // Importamos el componente Button de Bootstrap
+import './Collaboration.module.css'; // Asumo que tienes estilos personalizados
 
 const Collaboration = () => {
     const token = JSON.parse(localStorage.getItem('loggedNoteAppUser')).tokenUser;
 
     const handleCollaborate = async () => {
-        // Realizar la llamada a la API para crear la orden de pago en MercadoPago
-        const response = await fetch('http://localhost:3001/create-order', {
-            method: 'POST',
-             
-            headers: {
-                'Content-Type': 'application/json',
-                token
-            }
-        });
-        const data = await response.json();
+        try {
+            // Realizar la llamada a la API para crear la orden de pago en MercadoPago
+            const response = await fetch('http://localhost:3001/create-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            });
+            const data = await response.json();
 
-        // Redirigir a la página de pago de MercadoPago
-        window.open(data.init_point, '_blank');
+            // Redirigir a la página de pago de MercadoPago
+            window.open(data.init_point, '_blank');
+        } catch (error) {
+            console.error(error);
+            // Manejo de errores
+        }
     };
 
     return (
-        <div className="card-donacion-container">
-            <div className="card-donacion">
-                <div className="card">
-                    <img src="" alt="Donacion Image" />
-                    <h3>Haz tu donacion</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis commodi pariatur cupiditate voluptate ipsam eveniet rem, consectetur alias placeat laboriosam veritatis quam quaerat. A fugit ratione molestiae ipsam exercitationem nostrum.</p>
-                    <button className="btn btn-primary" onClick={handleCollaborate}>Colaborar</button>
+        <div className="container">
+            <NavBar />
+            <div className="row justify-content-center align-items-center">
+                <div className="col-md-6 col-lg-4 mb-4">
+                    <div className="card text-center">
+                        <div className="card-body">
+                            <h3>Haz tu donación</h3>
+                            <p>Tu donación es la clave para que sigamos creciendo.
+                             Con tu apoyo, proporcionamos ayuda vital a quienes más lo necesitan.
+                             ¡Únete a nosotros y marca la diferencia ahora!</p>
+                            <Button variant="primary" onClick={handleCollaborate}>Donar!</Button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,4 +47,3 @@ const Collaboration = () => {
 };
 
 export default Collaboration;
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5

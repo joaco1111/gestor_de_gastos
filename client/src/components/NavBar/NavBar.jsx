@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-=======
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/nav.png';
@@ -21,11 +17,7 @@ function NavBar() {
   };
 
   return (
-<<<<<<< HEAD
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-=======
     <nav className="navbar navbar-expand-lg navbar-light " style={{ backgroundColor: '#ffb703' }}>
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
@@ -45,10 +37,11 @@ function NavBar() {
               <NavLink className="nav-link" to="/users">Usuarios</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
+              <NavLink className="nav-link" to="/collaboration">Colaboracion</NavLink>
             </li>
           </ul>
           <ul className="navbar-nav">
+            
             <li className="nav-item">
               <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
             </li>

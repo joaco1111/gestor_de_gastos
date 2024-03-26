@@ -16,11 +16,7 @@ const loginHandler = async (req, res) => {
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-<<<<<<< HEAD
-        const { token, user } = await validate(email, password);
-=======
         const { token } = await validate(email, password);
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
         if (token) {
             //respondemos con el token y el acceso
@@ -63,11 +59,6 @@ const registerHandler = async (req, res) => {
 
         // creo el registro en db
 
-<<<<<<< HEAD
-        await User.create({ name, email, password: passwordHash, idAccess: 2 })
-
-        res.status(201).json({ name, email })
-=======
         await User.create({ name, email, password: passwordHash, idAccess: 2 });
         const { token } = await validate(email, password);
 
@@ -78,7 +69,6 @@ const registerHandler = async (req, res) => {
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
         }
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
     } catch (error) {
         res.status(400).send('Error al registrar en la Base de Datos: ', error.message)
@@ -90,9 +80,6 @@ const getUsers = async (req, res) => {
         const { page = 1, limit = 10 } = req.query;
         const offset = (page - 1) * limit;
 
-<<<<<<< HEAD
-        const users = await User.findAndCountAll({ where: { idAccess: 2 }, limit, offset });
-=======
         const users = await User.findAndCountAll({ 
             where: { 
                 idAccess: 2, 
@@ -100,7 +87,6 @@ const getUsers = async (req, res) => {
             paranoid: false,
             limit, 
             offset });
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
         if (!users) return res.status(400).send("No existen usuarios.");
 
@@ -113,14 +99,10 @@ const getUsers = async (req, res) => {
 const updateHandler = async (req, res) => {
     try {
         //id del usuario por token
-<<<<<<< HEAD
-        const idUser = req.userID
-=======
         let idUser = req.params.id;
 
         if(!idUser) idUser = req.userID;
 
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
         const userExists = await User.findOne({ where: { id: idUser } });
         let updateData = {}
 
@@ -165,32 +147,20 @@ const updateHandler = async (req, res) => {
 
 const deleteUser = async(req, res) => {
     try {
-<<<<<<< HEAD
-        const idUser = req.params;
-        const user = await User.findOne({where: {id: idUser}});
-=======
         const idUser = req.params.id;
         const user = await User.findOne({where: {id: idUser}});
         console.log(user);
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
         if(!user) return res.status(400).send("No se encuentra el usuario.")
 
         user.destroy();
         return res.status(200).json({detroy: true, user});
     } catch (error) {
-<<<<<<< HEAD
-        return res.status(500).json({error: error.message})
-    }
-}
-
-=======
         return res.status(500).json({error})
     }
 }
 
 
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 const authenticationFromGoogle = async (req,res) => {
     try{
         const { email,displayName,uid } = req.body
@@ -250,11 +220,7 @@ const authenticationFromGoogle = async (req,res) => {
 
 
 const restoreUser = async (req,res) => {
-<<<<<<< HEAD
-    const {id} = req.params
-=======
     const {id} = req.params;
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
 try {
     const user = await User.findByPk(id, {paranoid: false})
@@ -265,11 +231,7 @@ try {
 
     await user.restore()
     
-<<<<<<< HEAD
-    res.status(200).send('Usuario restaurado correctamente')
-=======
     return res.status(200).json(user)
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 } catch (error) {
     res.status(500).send('Error al restaurar usuario: ', error.message)
 }

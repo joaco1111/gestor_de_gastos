@@ -5,28 +5,13 @@ import { Collaboration, Log, Login, Home, Landing } from './views';
 import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
-<<<<<<< HEAD
-=======
 import ActionDetail from './components/ActionDetail/ActionDetail';
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
 function App() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.user);
-<<<<<<< HEAD
-    console.log(user,'user for google');
-
-    useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (user?.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
-            window.localStorage.setItem(
-                'loggedNoteAppUser', JSON.stringify(user)
-            );     
-            navigate('/home');                                                                              
-        }
-    }, [user]);
-=======
     const newUser = useSelector(state => state.newUser);
     console.log(user);
     console.log(newUser);
@@ -39,7 +24,6 @@ function App() {
             navigate('/home');                                                                              
         }
     }, [user, newUser]);
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
     
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
@@ -62,28 +46,14 @@ function App() {
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
-<<<<<<< HEAD
-                <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
-                <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
-=======
                 <Route path='/detailsLog' element={user.tokenUser || newUser.tokenUser ? <IncomeExpenseView /> : <Login />}/>
                 <Route path='/home' element={user.tokenUser || newUser.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/actions/:id' element={user.tokenUser || newUser.tokenUser ? <ActionDetail /> : <Login />} />
-<<<<<<< HEAD
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
-                <Route path='/users' element={<UserList />} />
-=======
                 <Route path='/users' element={user.tokenUser || newUser.tokenUser ? <UserList /> : <Login />} />
->>>>>>> 1294bd47106303554596d36a4d7dccae0cb1456a
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
-<<<<<<< HEAD
-    )
-}
-=======
     )  
 };
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
 
 export default App;

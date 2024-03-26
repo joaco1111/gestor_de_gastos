@@ -1,21 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { getUsers, cleanUser } from '../../redux/actions';
-import { Table, Button } from 'react-bootstrap';
-import { BiTrash } from 'react-icons/bi'; // Importa el ícono de papelera de react-icons
-import NavBar from '../NavBar/NavBar';
-
-const UserList = ({ users, getUsers, cleanUser }) => {
-  useEffect(() => {
-    getUsers();
-  }, [getUsers]);
-
-  const handleCleanUser = (userId) => {
-    cleanUser(userId);
-  };
-
-=======
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUsers } from '../../redux/actions';
@@ -102,14 +84,10 @@ const UserList = ({ users, getUsers}) => {
       type: "danger"
     }))
   }
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
   return (
     <div>
       <NavBar />
       <div className='container'>
-<<<<<<< HEAD
-        <h2>Lista de usuarios registrados</h2>
-=======
         <h2 className='text-center my-4'>Lista de usuarios registrados</h2>
 
         {/* MENSAJES DE ACCESS O ERROR */}
@@ -128,7 +106,6 @@ const UserList = ({ users, getUsers}) => {
         </Form> */}
 
         {/* TABLA  */}
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
         {users.length > 0 ? (
           <Table striped bordered hover variant="dark">
             <thead>
@@ -136,14 +113,10 @@ const UserList = ({ users, getUsers}) => {
                 <th>Nombre</th>
                 <th>Email</th>
                 <th>Activo</th>
-<<<<<<< HEAD
-                <th>Acciones</th>
-=======
                 <th>Fecha de creación</th>
                 <th>Fecha desactivado</th>
                 <th></th>
                 <th></th>
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
               </tr>
             </thead>
             <tbody>
@@ -151,14 +124,6 @@ const UserList = ({ users, getUsers}) => {
                 <tr key={user.id}>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
-<<<<<<< HEAD
-                  <td>{user.isActive ? 'Sí' : 'No'}</td>
-                  <td>
-                    {/* Botón con icono de papelera */}
-                    <Button variant="danger" onClick={() => handleCleanUser(user.id)}>
-                      <BiTrash />
-                    </Button>
-=======
                   <td>{user.deletedAt === null ? 'Sí' : 'No'}</td>
                   <td>{user.createdAt}</td>
                   <td>{user.deletedAt}</td>
@@ -200,7 +165,6 @@ const UserList = ({ users, getUsers}) => {
 
                     )}
                     
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
                   </td>
                 </tr>
               ))}
@@ -209,8 +173,6 @@ const UserList = ({ users, getUsers}) => {
         ) : (
           <p>No hay usuarios registrados.</p>
         )}
-<<<<<<< HEAD
-=======
 
         {/* MODALS DESHABILITAR USUARIO */}
         {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivated}/>}
@@ -219,7 +181,6 @@ const UserList = ({ users, getUsers}) => {
         {activatedForm.access && <ModalsForm data={activatedForm.data} activatedForm={activatedForm} setActivatedForm={setActivateForm} setMessage={setMessage}/>}
         
         
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
       </div>
     </div>
   );
@@ -229,8 +190,4 @@ const mapStateToProps = state => ({
   users: state.users
 });
 
-<<<<<<< HEAD
-export default connect(mapStateToProps, { getUsers, cleanUser })(UserList);
-=======
 export default connect(mapStateToProps, { getUsers })(UserList);
->>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
