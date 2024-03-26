@@ -5,22 +5,25 @@ import { Collaboration, Log, Login, Home, Landing } from './views';
 import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
+import ActionDetail from './components/ActionDetail/ActionDetail';
 
 function App() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const user = useSelector(state => state.user);
+    const newUser = useSelector(state => state.newUser);
     console.log(user);
+    console.log(newUser);
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (user?.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
+        if (user.tokenUser || newUser.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
-                'loggedNoteAppUser', JSON.stringify(user)
+                'loggedNoteAppUser', user.tokenUser ? JSON.stringify(user) : JSON.stringify(newUser)
             );     
             navigate('/home');                                                                              
         }
-    }, [user]);
+    }, [user, newUser]);
     
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
     useEffect(() => {
@@ -43,13 +46,14 @@ function App() {
                 <Route path='/collaboration' element={<Collaboration />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/login' element={<Login />}/>
-                <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
-                <Route path='/home' element={user.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/detailsLog' element={user.tokenUser || newUser.tokenUser ? <IncomeExpenseView /> : <Login />}/>
+                <Route path='/home' element={user.tokenUser || newUser.tokenUser ? <Home/> : <Login />}/>
+                <Route path='/actions/:id' element={user.tokenUser || newUser.tokenUser ? <ActionDetail /> : <Login />} />
                 <Route path='/users' element={<UserList />} />
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
-    )
-}
+    )  
+};
 
 export default App;

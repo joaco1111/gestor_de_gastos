@@ -31,28 +31,29 @@ const Landing = () => {
                     </div>
                 </div>
             </div>
+            {/* <button onClick={handleLogin}>LOGIN</button> */}
             <div className="row hvr-grow" style={{color: 'white'}}>
                 <div className="col-sm-12 col-md-6 col-xl-6 d-flex flex-column justify-content-center" style={{maxWidth: '400px', height: '400px', margin: 'auto'}}>
                     <h2 style={{fontSize: '110%'}}>Registro de Ingresos y Gastos</h2>
-                    <h3 style={{fontSize: '100%'}}>Registra fácilmente tus ingresos, ya sea tu salario mensual, 
-                        ingresos adicionales o regalos inesperados. Además, categoriza 
+                    <h3 style={{fontSize: '100%'}}>Registra fácilmente tus ingresos, ya sea tu salario mensual,
+                        ingresos adicionales o regalos inesperados. Además, categoriza
                         tus gastos en áreas como alimentos, transporte, salud y más
                         para obtener una visión detallada de tus hábitos financieros.</h3>
                     <h2 style={{fontSize: '110%'}}>Inicio de Sesión Seguro</h2>
-                    <h3 style={{fontSize: '100%'}}>Para garantizar la privacidad de tus datos, hemos implementado 
-                        un sistema de inicio de sesión seguro. Ingresa con confianza y 
+                    <h3 style={{fontSize: '100%'}}>Para garantizar la privacidad de tus datos, hemos implementado
+                        un sistema de inicio de sesión seguro. Ingresa con confianza y
                         accede a todas las herramientas que necesitas para manejar tus
                         ingresos y gastos.</h3>
                 </div>
                 <div className="col-sm-12 col-md-6 col-xl-6 d-flex flex-column justify-content-center" style={{maxWidth: '400px', height: '400px', margin: 'auto'}}>
                     <h2 style={{fontSize: '110%'}}>Reportes Detallados</h2>
-                    <h3 style={{fontSize: '100%'}}>Accede a informes detallados que te permitirán analizar tu 
-                        comportamiento financiero a lo largo del tiempo. Identifica 
-                        patrones, establece metas y realiza ajustes para alcanzar tus 
+                    <h3 style={{fontSize: '100%'}}>Accede a informes detallados que te permitirán analizar tu
+                        comportamiento financiero a lo largo del tiempo. Identifica
+                        patrones, establece metas y realiza ajustes para alcanzar tus
                         objetivos financieros.</h3>
                     <h2 style={{fontSize: '110%'}}>Acceso desde cualquier dispositivo</h2>
-                    <h3 style={{fontSize: '100%'}}>Gestiona tus finanzas en cualquier lugar y momento. Nuestra 
-                        plataforma es accesible desde dispositivos móviles y computadoras, 
+                    <h3 style={{fontSize: '100%'}}>Gestiona tus finanzas en cualquier lugar y momento. Nuestra
+                        plataforma es accesible desde dispositivos móviles y computadoras,
                         lo que te brinda la flexibilidad que necesitas.</h3>
                 </div>
             </div>

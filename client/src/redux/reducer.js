@@ -1,13 +1,16 @@
-import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, DELETE_ACTION } from './action-types';
+import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
 
 const initialState = {
     users: [],
     user: {},
+    newUser: {},
     expenses: [],
     categorieExpense: [],
     categorieIncome: [],
     actions: [],
-    loginError: ''
+    totalCount: 0,
+    loginError: '',
+    logError: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -18,6 +21,11 @@ const rootReducer = (state = initialState, action) => {
                 user: action.payload,
                 loginError: ''
             };
+        case LOG: 
+            return {
+                ...state,
+                newUser: action.payload
+            }
         case GET_USERS:
             return {
                 ...state,
@@ -39,10 +47,16 @@ const rootReducer = (state = initialState, action) => {
                 categorieIncome: action.payload
             };
         case GET_ACTIONS:
+            const { actions, totalCount } = action.payload;
             return {
                 ...state,
-                actions: action.payload.actions,
-                totalCount: action.payload.totalCount
+                actions,
+                totalCount
+            };
+        case GET_ACTION_DETAIL:
+            return {
+                ...state,
+                actionDetail: action.payload
             };
         case CLEAN_USER:
             return {
@@ -55,12 +69,27 @@ const rootReducer = (state = initialState, action) => {
                 loginError: action.payload
             };
         case DELETE_ACTION:
-            // Filtra las acciones para eliminar la acción con el ID correspondiente
-            const updatedActions = state.actions.filter(action => action.id !== action.payload);
+            const updatedActions = state.actions.filter(actionItem => actionItem.id !== action.payload);
             return {
                 ...state,
-                actions: updatedActions
+                actions: updatedActions,
+                totalCount: state.totalCount - 1
             };
+        case UPDATE_ACTION:
+            return {
+                ...state,
+                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem),
+                actionDetail: action.payload.id === state.actionDetail.id ? action.payload : state.actionDetail
+            };
+        case UPDATE_ACTION_ERROR:
+            return {
+                ...state,
+                updateActionError: action.payload
+            };
+        case LOG_FAILED:
+            return {
+                ...state, logError: action.payload
+            }
         default:
             return state;
     }
