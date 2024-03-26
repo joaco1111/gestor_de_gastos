@@ -26,6 +26,7 @@ authRouter.get('/users', getUsers)
 authRouter.post('/login', loginHandler)
 authRouter.post('/register', registerHandler)
 authRouter.post('/fromGoogle', authenticationFromGoogle)
+
 authRouter.put('/userUpdate/:id', userExtractor, upload.single('image'), updateHandler)
 authRouter.delete('/user/:id', userExtractor, deleteUser)
 authRouter.post('/user/restore/:id',userExtractor, restoreUser)
