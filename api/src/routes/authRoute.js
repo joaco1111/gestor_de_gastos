@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 const upload = multer({storage: storage})
 // traigo los handlers
 
-
 const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFromGoogle,deleteUser, restoreUser } = require('../controllers/handlersUser/authHandler')
 
 // rutas

@@ -69,8 +69,12 @@ function App() {
                 <Route path='/detailsLog' element={user.tokenUser || newUser.tokenUser ? <IncomeExpenseView /> : <Login />}/>
                 <Route path='/home' element={user.tokenUser || newUser.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/actions/:id' element={user.tokenUser || newUser.tokenUser ? <ActionDetail /> : <Login />} />
+<<<<<<< HEAD
 >>>>>>> 10b572947c361023fc6ad32a6e16df404a3614d5
                 <Route path='/users' element={<UserList />} />
+=======
+                <Route path='/users' element={user.tokenUser || newUser.tokenUser ? <UserList /> : <Login />} />
+>>>>>>> 1294bd47106303554596d36a4d7dccae0cb1456a
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
