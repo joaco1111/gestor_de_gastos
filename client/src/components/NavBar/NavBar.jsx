@@ -37,10 +37,11 @@ function NavBar() {
               <NavLink className="nav-link" to="/users">Usuarios</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
+              <NavLink className="nav-link" to="/collaboration">Colaboracion</NavLink>
             </li>
           </ul>
           <ul className="navbar-nav">
+            
             <li className="nav-item">
               <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
             </li>
