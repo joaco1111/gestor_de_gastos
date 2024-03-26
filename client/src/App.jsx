@@ -49,7 +49,7 @@ function App() {
                 <Route path='/detailsLog' element={user.tokenUser || newUser.tokenUser ? <IncomeExpenseView /> : <Login />}/>
                 <Route path='/home' element={user.tokenUser || newUser.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/actions/:id' element={user.tokenUser || newUser.tokenUser ? <ActionDetail /> : <Login />} />
-                <Route path='/users' element={<UserList />} />
+                <Route path='/users' element={user.tokenUser || newUser.tokenUser ? <UserList /> : <Login />} />
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
