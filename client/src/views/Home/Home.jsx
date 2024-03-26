@@ -4,9 +4,13 @@ import ExpenseForm from "../../components/Expense/ExpenseForm";
 import IncomeForm from "../../components/Income/IncomeForm";
 import style from './Home.module.css';
 
+
+
 const Home = () => {
+   
     return (
         <div className={style.homeContainer}>
+          
             <NavBar />
             <div className="container">
                 <div className="row justify-content-center mt-5">
@@ -18,6 +22,8 @@ const Home = () => {
                     </div>
                 </div>
             </div>
+            
+         
         </div>
     )
 };
