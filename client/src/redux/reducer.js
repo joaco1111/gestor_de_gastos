@@ -24,7 +24,8 @@ const rootReducer = (state = initialState, action) => {
         case LOG: 
             return {
                 ...state,
-                newUser: action.payload
+                newUser: action.payload,
+                logError: ''
             }
         case GET_USERS:
             return {
