@@ -26,5 +26,6 @@ module.exports = async(req, res, next) => {
 
 // si todo va bien, guardo en req el id que me llego por el token y sigue funcionando la ruta
     req.userID = decodedToken.id
+    console.log(req.userID);
     next()
 }
