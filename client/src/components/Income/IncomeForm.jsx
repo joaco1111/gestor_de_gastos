@@ -1,13 +1,34 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, getCategoryIncome } from '../../redux/actions'; 
 import PieCharts from '../Charts/PieCharts';
 import { Container, Button, Form } from 'react-bootstrap'; 
-import "./incomeForm.css"
+import ModalHome from '../Modals/ModalHome';
+import "./incomeForm.css";
 
 const IncomeForm = () => {
+  const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
+  console.log(show);
+
+  const [expense, setExpense] = useState({        //Estado para no permitir que aparezca el Modal, si los 3 inputs NO están llenos
+    quantity: '',
+    date: '',
+    idCategory: '',
+  });
+
+  const handleClose = () => {
+    setShow(false);
+    setExpense({       
+      quantity: '',
+      date: '',
+      idCategory: '',
+    });
+  };
+  const handleShow = () => setShow(true);
+
+
   const dispatch = useDispatch();
   const categoriesIncome = useSelector(state => state.categorieIncome);
 
@@ -30,6 +51,12 @@ const IncomeForm = () => {
     console.log('Datos del formulario INGRESOS:', values)
     dispatch(addExpenseIncome(values));
     resetForm();
+
+    setExpense({                                 
+      quantity: values.quantity,
+      date: values.date,
+      idCategory: values.idCategory
+    });
   };
 
   return (
@@ -84,12 +111,13 @@ const IncomeForm = () => {
                 <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
               </Form.Group>
 
-              <Button variant="primary" size="sm" type="submit">Añadir</Button>
+              <Button variant="primary" size="sm" type="submit" onClick={handleShow}>Añadir</Button>
             </Form>
           )}
         </Formik>
         {/* <PieCharts data={[]} /> */}
       </Container>
+      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}
     </div>
   );
 };

@@ -9,7 +9,7 @@ const  {CategoryIncome, CategoryBills, Access} = require('./src/db.js');
 const typeAccess = ["admin", "user"];
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(async() => {
+conn.sync({ force: false }).then(async() => {
 
   //Insertando datos dentro de la tabla User
 

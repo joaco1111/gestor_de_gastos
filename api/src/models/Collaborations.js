@@ -3,28 +3,27 @@ const { DataTypes } = require('sequelize')
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
 
-  sequelize.define('action', {
+  sequelize.define('collaborations', {
     id: {
         type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    type: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    quantity: {
-        type: DataTypes.FLOAT,
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    amount: {
+        type: DataTypes.INTEGER,
         allowNull: false
     },
-    date: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-    },
-    description: {
-      type: DataTypes.STRING
+    transactionId: {
+      type: DataTypes.STRING,
     }
- 
 }, { timestamps: false })
 }

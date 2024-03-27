@@ -5,13 +5,14 @@ const {createActions,
         updateAction,
     deleteAction} = require('../controllers/Actions/actionsControllers')
 const {createReview, getReview, updateReview, deleteReview} = require('../controllers/Review/review');
-
 //traigo mis rutas
 const authRouter = require('./authRoute');
 const userExtractor = require('../middleware/userExtractor')
 const { filters } = require('../controllers/Filtres/Filters');
 const { getCategoryBills, getCategoryIncomes } = require('../controllers/Categories/Category');
-
+const {getCollaborations} = require('../controllers/Collaborations/Collaborations')
+const {createOrder, receiveWebHook} = require('../mercadoPago/payment.controllers');
+const { metricasActions } = require('../controllers/metricas/metricasActions');
 const router = Router();
 
 //CATEGORIAS BILLS
@@ -30,6 +31,8 @@ router.put('/actions/:id', userExtractor, updateAction)
 router.get('/action/:id', userExtractor, getActionById)
 //Ruta eliminar algun dato de la Actions
 router.delete('/action/:id', userExtractor, deleteAction)
+//Ruta metricas de actions 
+router.get('/actions/metricas', userExtractor, metricasActions);
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas
@@ -41,6 +44,17 @@ router.put('/review/:id', updateReview);
 //Ruta para eliminar una reseña
 router.delete('/review/:id', deleteReview);
 
+//ruta para crear las colaboraciones(donacion)
+
+router.get('/collaboration', userExtractor, getCollaborations)
+
+//mercadoPago
+
+router.post('/create-order',userExtractor, createOrder)
+router.get('/success')
+router.get('/failure')
+router.get('/pending')
+router.post('/webhook', receiveWebHook)
 //USERS
 /*ruta para 
 1. logiar

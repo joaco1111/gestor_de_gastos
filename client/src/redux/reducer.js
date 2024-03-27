@@ -1,13 +1,16 @@
-import { LOGIN, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
+import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
+
 const initialState = {
     users: [],
     user: {},
+    newUser: {},
     expenses: [],
     categorieExpense: [],
     categorieIncome: [],
     actions: [],
     totalCount: 0,
-    loginError: ''
+    loginError: '',
+    logError: '',
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -18,6 +21,12 @@ const rootReducer = (state = initialState, action) => {
                 user: action.payload,
                 loginError: ''
             };
+        case LOG: 
+            return {
+                ...state,
+                newUser: action.payload,
+                logError: ''
+            }
         case GET_USERS:
             return {
                 ...state,
@@ -78,6 +87,10 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 updateActionError: action.payload
             };
+        case LOG_FAILED:
+            return {
+                ...state, logError: action.payload
+            }
         default:
             return state;
     }

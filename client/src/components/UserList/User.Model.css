@@ -1,0 +1,7 @@
+.header tr th {
+    background-color: rgb(237, 173, 100);
+}
+
+.body tr td{
+    background-color: grey;
+}
