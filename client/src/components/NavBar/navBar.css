@@ -3,11 +3,13 @@
   margin: 10px;
   border-radius: 16px;
   padding: 0.5rem;
+  
 }
 
 .navbar-toggler {
   border: none;
 }
+
 
 .navbar-nav .nav-link {
   color: #666777;
