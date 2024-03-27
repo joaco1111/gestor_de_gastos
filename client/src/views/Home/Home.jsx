@@ -41,6 +41,7 @@ const Home = () => {
 
     return (
         <div className={style.homeContainer}>
+          
             <NavBar />
             <div className="container">
                 <div className="row justify-content-center mt-5">
