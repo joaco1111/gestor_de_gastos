@@ -11,17 +11,19 @@ const loginHandler = async (req, res) => {
     // Se trae del front email/passw
 
     const { email, password } = req.body
+    
 
     try {
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const { token } = await validate(email, password);
+        const { token, idAccess } = await validate(email, password);
 
         if (token) {
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password })
+            console.log(idAccess);
+            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess })
             //res.header('token', token).json({access: true, token, user});
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
@@ -57,6 +59,7 @@ const registerHandler = async (req, res) => {
         // Se hashea la contraseña 
 
         const passwordHash = await bcrypt.hash(password, 10)
+        console.log(passwordHash);
 
         // creo el registro en db
     
@@ -65,7 +68,7 @@ const registerHandler = async (req, res) => {
 
         if (token) {
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password })
+            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess: 2 })
             //res.header('token', token).json({access: true, token, user});
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
@@ -75,7 +78,6 @@ const registerHandler = async (req, res) => {
         res.status(400).send('Error al registrar en la Base de Datos: ', error.message)
     }
 }
-
 
 const updateHandler = async (req, res) => {
     try {
@@ -166,7 +168,7 @@ const authenticationFromGoogle = async (req,res) => {
                 let token = jwt.sign(userForToken, SECRET_KEY)
 
                 if (token) {
-                    res.status(200).json({ access: true, tokenUser: token})
+                    res.status(200).json({ access: true, tokenUser: token, idAccess: 2})
                 }
             } else {
                 return res.status(400).send('Este usuario ya se encuentra registrado en la aplicacion')
@@ -186,7 +188,7 @@ const authenticationFromGoogle = async (req,res) => {
                 let token = jwt.sign(userForToken, SECRET_KEY)
 
                 if (token) {
-                    res.status(200).json({ access: true, tokenUser: token })
+                    res.status(200).json({ access: true, tokenUser: token, idAccess: 2 })
                 }
 
             } catch (error) {
@@ -225,7 +227,9 @@ const getUsers = async(req,res) => {
                 name: {
                     [Op.like]: `%${search}%`
                 }, 
-                idAccess: 2
+                idAccess: {
+                    [Op.or]: [1,2]
+                }
             }, 
             limit, 
             offset, 

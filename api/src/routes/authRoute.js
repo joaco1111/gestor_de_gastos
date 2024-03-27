@@ -1,8 +1,11 @@
 const { Router } = require('express');
 const authRouter = Router()
 const userExtractor = require('../middleware/userExtractor')
+const { admin } = require('../middleware/rolsExtractor')
 const path = require('path')
 const multer = require('multer')
+
+console.log('hola');
 
 const storage = multer.diskStorage({
     destination: function (req,file, cb) {
@@ -21,7 +24,7 @@ const { loginHandler,registerHandler, updateHandler, getUsers, authenticationFro
 
 // rutas
 
-authRouter.get('/users', getUsers)
+authRouter.get('/users',admin, getUsers)
 authRouter.post('/login', loginHandler)
 authRouter.post('/register', registerHandler)
 authRouter.post('/fromGoogle', authenticationFromGoogle)

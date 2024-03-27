@@ -3,7 +3,7 @@ const { conn } = require('./src/db.js');
 //obtener los datos del json¡
 const { ingresos, gastos} = require('./categories.json');
 //tabla User
-const  {CategoryIncome, CategoryBills, Access} = require('./src/db.js');
+const  {CategoryIncome, CategoryBills, Access, User} = require('./src/db.js');
 
 //RANDOM PARA INGRESARLOS A LA BASE DE DATOS
 const typeAccess = ["admin", "user"];
@@ -14,6 +14,9 @@ conn.sync({ force: false }).then(async() => {
   //Insertando datos dentro de la tabla User
 
   //SI GUSTAN USAR LOS DATOS DEL JSON EN LA TABLA USER, DESCOMENTEN EL CODIGO DE ABAJO JUNTO CON SUS IMPORTACIONES
+
+  User.create({name: 'admin', email: 'admin@gmail.com', password: '$2b$10$aLPR0WQjxrtcLftujnZyG.em/0x8/y6OnNRDkE/jY3lC4LVT4DhqC', idAccess: 1})
+
   ingresos.forEach(async(element) => {
     await CategoryIncome.findOrCreate({where: {name: element}})
   })
