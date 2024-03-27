@@ -1,12 +1,24 @@
 import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3001/auth';
+
+//token del local Storage
+const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+
+//config general, si necesitas otra configuración como params, agregala dentro de tu función
+var config = {}
+if(loggedUserJSON){
+    const token = JSON.parse(loggedUserJSON);
+    config["headers"] = {
+            token: token.tokenUser,
+        }
+}
+
 
 export const login = (credentials) => {                                         
     return async function(dispatch) {      
         try {
-            const user = (await axios.post(`${baseURL}/login`, credentials)).data;
+            const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
             // console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch (error) {
@@ -20,7 +32,7 @@ export const login = (credentials) => {
 export const log = (newUser) => {
     return async function(dispatch) {      
         try {
-            const response = (await axios.post(`${baseURL}/register`, newUser)).data;
+            const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser)).data;
             console.log(response);
             console.log(typeof response);
             if(typeof response !== 'string') {
@@ -33,22 +45,11 @@ export const log = (newUser) => {
     }
 };
 
-export const getUsers = () => {
+export const getUsers = (value) => {
     return async function(dispatch) {
 
-        const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-
         if(loggedUserJSON){
-            const user = JSON.parse(loggedUserJSON);
-            const localToken = user.tokenUser;
-
-            const config = {
-                headers: {
-                    token: localToken,
-                }
-            }
-
-            const users = (await axios.get(`${baseURL}/users`, config)).data;
+            const users = (await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/users?search=${value}`, config)).data;
             dispatch({ type: GET_USERS, payload: users});
         }
     }
@@ -57,20 +58,10 @@ export const getUsers = () => {
 export const addExpenseIncome = (payload) => {
     return async (dispatch) => {
         try {
-            //creamos la constante localToken para almacenar el token que esta en el localStorage
-            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-            if(loggedUserJSON) {
-                const user = JSON.parse(loggedUserJSON);
-                const localToken = user.tokenUser;
-                console.log(localToken, "Llega")
-                //config tiene la propiedad de headers donde va a estar pasando el token para dar el permiso en el backEnd
-                const config = {
-                    headers: {
-                        token: localToken,
-                    }
-                }
-                const apiData = await axios.post("http://localhost:3001/actions", payload, config)
-                console.log(apiData.data);
+            if(loggedUserJSON) {   
+
+                const apiData = await axios.post(`${import.meta.env.VITE_BASE_URL}/actions`, payload, config);
+
                 const expense = apiData.data
     
                 return dispatch({
@@ -88,7 +79,7 @@ export const addExpenseIncome = (payload) => {
 export const getCategoryExpense = () => {
     return async function(dispatch) {
         try {
-            const categories = (await axios.get('http://localhost:3001/categoryBills')).data;
+            const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryBills`)).data;
             dispatch({
                  type: GET_CATEGORIES_EXPENSE,
                   payload: categories 
@@ -103,7 +94,7 @@ export const getCategoryExpense = () => {
 export const getCategoryIncome = () => {
     return async function(dispatch) {
         try {
-            const categories = (await axios.get('http://localhost:3001/categoryIncome')).data;
+            const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryIncome`)).data;
             dispatch({
                  type: GET_CATEGORIES_INCOME,
                   payload: categories 
@@ -119,20 +110,15 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 10, data, type, category) => {
     return async function(dispatch) {
         try {
-            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
             if(loggedUserJSON) {
-                // Obtén el token del almacenamiento local
-                const user = JSON.parse(loggedUserJSON);
-                const localToken = user.tokenUser;
                 
-                const config = {
-                    headers: {
-                        token: localToken,
-                    },
+                //ejemplo de como agregar datos a la configuración general 
+                const configuration = {
+                    ...config,
                     params: { page, limit, data, type, category }
                 };
     
-                const response = await axios.get(`http://localhost:3001/actions`, config);
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 console.log(response.data);
     
                 const { rows, count } = response.data;
@@ -152,19 +138,9 @@ export const fetchActions = (page = 1, limit = 10, data, type, category) => {
 export const deleteAction = (id) => {
     return async (dispatch) => {
         try {
-            const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-            console.log(loggedUserJSON);
             if(loggedUserJSON) {
-                const user = JSON.parse(loggedUserJSON);
-                const localToken = user.tokenUser;
-                console.log(localToken);
-                const config = {
-                    headers: {
-                        token: localToken,
-                    }
-                };
     
-                await axios.delete(`http://localhost:3001/action/${id}`, config);
+                await axios.delete(`${import.meta.env.VITE_BASE_URL}/action/${id}`, config);
     
                 dispatch({
                     type: DELETE_ACTION,
@@ -180,7 +156,7 @@ export const deleteAction = (id) => {
 export const authenticationFromGoogle = (credentials) => {
     return async (dispatch) => {
         try{
-            const user = (await axios.post(`${baseURL}/fromGoogle`,credentials)).data
+            const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/fromGoogle`,credentials)).data
             console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch(error){
@@ -194,18 +170,10 @@ export const authenticationFromGoogle = (credentials) => {
 export const fetchActionDetail = (id) => {
     return async function(dispatch) {
       try {
-        const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+
         if(loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON)
-            const localToken = user.tokenUser;
-            console.log(localToken);
-            const config = {
-              headers: {
-                token: localToken
-              }
-            };
       
-            const response = await axios.get(`http://localhost:3001/action/${id}`, config);
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/action/${id}`, config);
       
             dispatch({
               type: GET_ACTION_DETAIL,
@@ -225,18 +193,10 @@ export const fetchActionDetail = (id) => {
   export const updateAction = (id, data) => {
     return async function(dispatch) {
       try {
-        const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+
         if(loggedUserJSON) {
-            const user = JSON.parse(loggedUserJSON);
-            const localToken = user.tokenUser;
-        
-            const config = {
-            headers: {
-                token: localToken
-            }
-            };
   
-        const response = await axios.put(`http://localhost:3001/actions/${id}`, data, config);
+        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
         console.log(response.data)
   
             dispatch({

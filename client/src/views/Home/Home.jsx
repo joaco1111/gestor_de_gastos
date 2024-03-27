@@ -17,11 +17,12 @@ const config = {
 const getMetrica = async(type) => {
     try {
         
-        const {data} = await axios.get(`http://localhost:3001/actions/metricas?type=${type}`, config)
-
+        const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
+        
+        if(typeof data === "string") return [0,0];
         return [data.count, data.total];
     } catch (error) {
-        if(error.response.data === "Todavía no hay acciones creadas.") return [0,0]; 
+        console.log(error);
     }
 }
 
@@ -32,8 +33,9 @@ const Home = () => {
     const [ingresos, setIngresos] = useState([])
 
     useEffect(()=> {
-        getMetrica("gastos").then(res => setGastos(res));
-        getMetrica("ingresos").then(res => setIngresos(res));
+            getMetrica("gastos").then(res => setGastos(res));
+            getMetrica("ingresos").then(res => setIngresos(res));
+       
         
     },[actions])
 

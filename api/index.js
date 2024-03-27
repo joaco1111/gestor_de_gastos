@@ -15,8 +15,6 @@ conn.sync({ force: false }).then(async() => {
 
   //SI GUSTAN USAR LOS DATOS DEL JSON EN LA TABLA USER, DESCOMENTEN EL CODIGO DE ABAJO JUNTO CON SUS IMPORTACIONES
 
-  User.create({name: 'admin', email: 'admin@gmail.com', password: '$2b$10$aLPR0WQjxrtcLftujnZyG.em/0x8/y6OnNRDkE/jY3lC4LVT4DhqC', idAccess: 1})
-
   ingresos.forEach(async(element) => {
     await CategoryIncome.findOrCreate({where: {name: element}})
   })
@@ -28,6 +26,8 @@ conn.sync({ force: false }).then(async() => {
   typeAccess.forEach(async(element) => {
     await Access.findOrCreate({where: {name: element}})
   })
+
+   await User.findOrCreate({where: {name: 'admin', email: 'admin@gmail.com', password: '$2b$10$aLPR0WQjxrtcLftujnZyG.em/0x8/y6OnNRDkE/jY3lC4LVT4DhqC', idAccess: 1}})
   
   server.listen(3001, () => {
     console.log('%s listening at 3001');

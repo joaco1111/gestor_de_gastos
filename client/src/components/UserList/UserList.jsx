@@ -7,10 +7,9 @@ import axios from 'axios';
 import ModalsDisable from '../Modals/ModalsDisable';
 import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
-import { useNavigate } from 'react-router-dom';
 
-const _URL_CLEAN = 'http://localhost:3001/auth/user/';
-const _URL_RESTORE = 'http://localhost:3001/auth/user/restore/';
+const _URL_CLEAN = `${import.meta.env.VITE_BASE_URL}/auth/user/`;
+const _URL_RESTORE = `${import.meta.env.VITE_BASE_URL}/auth/user/restore/`;
 const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 
 const config = {
@@ -116,7 +115,7 @@ const UserList = ({ users, getUsers}) => {
 
         {/* TABLA  */}
         {users.length > 0 ? (
-          <Table striped bordered hover variant="dark">
+          <Table striped hover variant="secondary">
             <thead>
               <tr>
                 <th>Nombre</th>
@@ -124,8 +123,6 @@ const UserList = ({ users, getUsers}) => {
                 <th>Activo</th>
                 <th>Fecha de creación</th>
                 <th>Fecha desactivado</th>
-                <th></th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
