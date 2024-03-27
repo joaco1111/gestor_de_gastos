@@ -10,7 +10,6 @@ import "./incomeForm.css";
 
 const IncomeForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
-  console.log(show);
 
   const [expense, setExpense] = useState({        //Estado para no permitir que aparezca el Modal, si los 3 inputs NO están llenos
     quantity: '',

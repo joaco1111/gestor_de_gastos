@@ -204,9 +204,10 @@ const authenticationFromGoogle = async (req,res) => {
 const getUsers = async(req,res) => {
     try {
         const { page = 1, limit = 10, search = "" } = req.query;
+        console.log(search);
         const offset = (page - 1) * limit;
 
-        //cuando no hayan una busqueda, devolvemos todos los usuarios
+        //cuando no haya busqueda, devolvemos todos los usuarios
         if(search === "") {
 
             const users = await User.findAndCountAll({ 

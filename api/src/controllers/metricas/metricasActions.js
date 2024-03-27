@@ -19,7 +19,7 @@ const metricasActions = async(req, res) => {
                 where: {type, idUser}
             })
 
-            if(!numberActions) return res.status(400).send("Todavía no hay acciones creadas.")
+            if(!numberActions) return res.status(200).send("Todavía no hay acciones creadas.")
 
             result['count'] = numberActions;
     
