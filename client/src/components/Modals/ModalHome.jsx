@@ -4,8 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 const ModalHome = ({ show, handleClose}) => {
 
     return(
-        <Modal show={show} onHide={handleClose}>            {/*onHide es la propiedad que le dice al Modal si se va a ver o no, show muestra u oculta el Modal(onHide es simplemente una propiedad) */}
-            <Modal.Header closeButton>
+        <Modal show={show}>            {/*onHide es la propiedad que le dice al Modal si se va a ver o no, show muestra u oculta el Modal(onHide es simplemente una propiedad) */}
+            <Modal.Header >
                 <Modal.Title>EXITO</Modal.Title>
             </Modal.Header>
             <Modal.Body>La acción se ha completado exitosamente</Modal.Body>
