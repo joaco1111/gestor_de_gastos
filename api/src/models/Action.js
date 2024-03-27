@@ -21,6 +21,9 @@ module.exports = (sequelize) => {
     date: {
         type: DataTypes.DATE,
         allowNull: false,
+    },
+    comments: {
+      type: DataTypes.STRING
     }
  
 }, { timestamps: false })

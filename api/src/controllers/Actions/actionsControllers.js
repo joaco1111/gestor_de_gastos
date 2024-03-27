@@ -2,14 +2,14 @@ const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, idCategory } = req.body;
+    const { type, quantity, date, comments, idCategory } = req.body;
     const idUser = req.userID;
 
     const typeCategory = {}
 
     
     //en caso de no tener datos completos 
-    if (!type || !date || !quantity || !idCategory  || !idUser) {
+    if (!type || !date || !quantity || !comments  || !idCategory || !idUser) {
       return res.status(400).send('Completar los campos obligatorios')
     }
 
@@ -41,7 +41,8 @@ const createActions = async (req, res) => {
     const newAction = await Action.create({
       type, 
       date, 
-      quantity, 
+      quantity,
+      comments,
       ...typeCategory,
       idUser: idUser
     })
@@ -62,7 +63,7 @@ const getActions = async (req, res) => {
       const offset = (page - 1) * limit; 
 
       const actions = await Action.findAndCountAll({
-        attributes: ["id","type", "date", "quantity"], 
+        attributes: ["id","type", "date", "quantity", "comments"], 
         offset,
         limit,
         include:[
@@ -93,7 +94,7 @@ const getActions = async (req, res) => {
   
       const action = await Action.findOne({
         where: { id },
-        attributes: ["id", "type", "date", "quantity"],
+        attributes: ["id", "type", "date", "quantity", "comments"],
         include: [
           {
             model: CategoryBills,
