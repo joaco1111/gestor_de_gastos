@@ -25,7 +25,7 @@ const Administrador  = () => {
                 <CssBaseline/>   
             <div style={{display: 'flex'}}>
                 <SideBar/>     
-                <div className="content">
+                <div className="contents">
                 <TopBar/>
                     <Routes>
                         <Route path="/admin" element={<DashBoard/>}/>
