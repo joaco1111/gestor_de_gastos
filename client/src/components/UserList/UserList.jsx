@@ -8,6 +8,10 @@ import ModalsDisable from '../Modals/ModalsDisable';
 import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
 
+//ICONOS
+import { BsEyeFill, BsPersonLock   ,BsPersonFillGear , BsXOctagonFill, BsFillTrashFill   } from "react-icons/bs";
+
+const _URL_UNLOCK = `${import.meta.env.VITE_BASE_URL}/auth/unLockUser/`;
 const _URL_CLEAN = `${import.meta.env.VITE_BASE_URL}/auth/user/`;
 const _URL_RESTORE = `${import.meta.env.VITE_BASE_URL}/auth/user/restore/`;
 const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
@@ -32,6 +36,10 @@ const UserList = ({ users, getUsers}) => {
     access: false,
     data: ''
   })
+  const [activatedDelete, setActivatedDelete] = useState({
+    access: false,
+    data: ''
+  })
 
   useEffect(() => {
     getUsers("");
@@ -46,15 +54,34 @@ const UserList = ({ users, getUsers}) => {
     }
   }, [getUsers, message]);
 
-  const handleCleanUser = async(userId) => {
+  const handleUnlockUser = async(userId) => {
     setActivated({
       access: false,
       id: ''
     })
-    axios.delete(_URL_CLEAN + userId, config)
+    axios.delete(_URL_UNLOCK + userId, config)
     .then(res => {
       setMessage({
         message: `El usuario ${res.data.user.name} fue desactivado.`,
+        access: true,
+        type: "danger"
+      })})
+    .catch(error => setMessage({
+          message: 'Lo siento ha ocurrido un error al intentar desactivar el usuario',
+          access: true,
+          type: "danger"
+        }))
+  };
+
+  const handleCleanUser = (userId)=> {
+    setActivatedDelete({
+      access: false,
+      id: userId
+    })
+    axios.delete(_URL_CLEAN + userId, config)
+    .then(res => {
+      setMessage({
+        message: `El usuario ${res.data.user.name} fue Eliminado.`,
         access: true,
         type: "danger"
       })})
@@ -63,7 +90,7 @@ const UserList = ({ users, getUsers}) => {
           access: true,
           type: "danger"
         }))
-  };
+  }
 
   const handleRestoreUser = async(userId) => {
      setActivated({
@@ -92,6 +119,7 @@ const UserList = ({ users, getUsers}) => {
 
     return str.map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
   }
+
 
   return (
     <div>
@@ -137,7 +165,7 @@ const UserList = ({ users, getUsers}) => {
                   <td>
                     {user.deletedAt !== null ? (
                       <Button variant="danger"  onClick={() => handleRestoreUser(user.id)}>
-                      <i className="bi bi-eye-slash"></i>
+                      < BsPersonLock   />
                     </Button>
                     ): (
                       <Button variant="success" onClick={() =>{
@@ -146,7 +174,7 @@ const UserList = ({ users, getUsers}) => {
                           id: user.id
                         })
                          }}>
-                      <i className="bi bi-eye-fill"></i>
+                      <BsEyeFill />
                     </Button>
                     )}
                     
@@ -159,14 +187,36 @@ const UserList = ({ users, getUsers}) => {
                         access: true,
                         type: "danger"
                         })}>
-                     <i className="bi bi-person-lock"></i>
+                     < BsXOctagonFill />
                     </Button>
                     ): (
                       <Button variant="success" onClick={() => setActivateForm({
                         access: true,
                         data: user
                       })}>
-                      <i className="bi bi-person-fill-gear"></i>
+                      <BsPersonFillGear  />
+                    </Button>
+
+                    )}
+                    
+                  </td>
+
+                  {/* BOTON ELIMINAR POR COMPLETO */}
+                  <td>
+                    {user.deletedAt !== null ? (
+                      <Button variant="danger" onClick={() => setMessage({
+                        message: 'Usuario deshabilitado, activalo para poder eliminarlo por completo!',
+                        access: true,
+                        type: "danger"
+                        })}>
+                     < BsFillTrashFill  />
+                    </Button>
+                    ): (
+                      <Button variant="success" onClick={() => setActivatedDelete({
+                        access: true,
+                        id: user.id
+                      })}>
+                      <BsFillTrashFill  />
                     </Button>
 
                     )}
@@ -181,11 +231,15 @@ const UserList = ({ users, getUsers}) => {
         )}
 
         {/* MODALS DESHABILITAR USUARIO */}
-        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivated}/>}
+        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleUnlockUser} setAccess={setActivated}/>}
+
+        {/* MODALS ELIMINAR USUARIO */}
+        {activatedDelete.access && <ModalsDisable id={activatedDelete.id} activated={activatedDelete.access} title={`Confirmar Eliminación`} body={`¿Seguro que deseas eliminar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivatedDelete}/>}
 
         {/* MODALS ACTUALIZAR DATOS */}
         {activatedForm.access && <ModalsForm data={activatedForm.data} activatedForm={activatedForm} setActivatedForm={setActivateForm} setMessage={setMessage}/>}
         
+
         
       </div>
     </div>

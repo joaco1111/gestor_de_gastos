@@ -128,16 +128,28 @@ const updateHandler = async (req, res) => {
     }
 }
 
-const deleteUser = async(req, res) => {
+const unLockUser = async(req, res) => {
     try {
         const idUser = req.params.id;
         const user = await User.findOne({where: {id: idUser}});
-        console.log(user);
 
         if(!user) return res.status(400).send("No se encuentra el usuario.")
 
         user.destroy();
-        return res.status(200).json({detroy: true, user});
+        return res.status(200).json({destroy: true, user});
+    } catch (error) {
+        return res.status(500).json({error})
+    }
+}
+const deleteUser = async(req, res) => {
+    try {
+        const idUser = req.params.id;
+        const user = await User.findOne({where: {id: idUser}});
+
+        if(!user) return res.status(400).send("No se encuentra el usuario.")
+
+        user.destroy({force: true});
+        return res.status(200).json({destroy: true, user});
     } catch (error) {
         return res.status(500).json({error})
     }
@@ -204,7 +216,7 @@ const authenticationFromGoogle = async (req,res) => {
 const getUsers = async(req,res) => {
     try {
         const { page = 1, limit = 10, search = "" } = req.query;
-        console.log(search);
+
         const offset = (page - 1) * limit;
 
         //cuando no haya busqueda, devolvemos todos los usuarios
@@ -228,9 +240,7 @@ const getUsers = async(req,res) => {
                 name: {
                     [Op.like]: `%${search}%`
                 }, 
-                idAccess: {
-                    [Op.or]: [1,2]
-                }
+                idAccess: 2
             }, 
             limit, 
             offset, 
@@ -270,6 +280,7 @@ module.exports = {
     updateHandler,
     getUsers,
     authenticationFromGoogle,
+    unLockUser,
     deleteUser,
     restoreUser
 }
