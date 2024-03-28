@@ -122,7 +122,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
             <Box paddingLeft={isCollapsed ? undefined : "10%"}>
               <Item
                 title="Dashboard"
-                to="/admin"
+                to="/admin/"
                 icon={<HomeOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -135,6 +135,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               >
                 Data
               </Typography>
+              
               <Item
                 title="Manage Team"
                 to="/admin/team"
@@ -143,8 +144,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 setSelected={setSelected}
               />
               <Item
-                title="Contacts Information"
-                to="/contacts"
+                title="User list"
+                to="/admin/userslist"
                 icon={<ContactsOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
