@@ -14,7 +14,7 @@ function App() {
 
     const user = useSelector(state => state.user);
     const newUser = useSelector(state => state.newUser);
-    console.log(user);
+    console.log(user.tokenUser);
     console.log(newUser);
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
