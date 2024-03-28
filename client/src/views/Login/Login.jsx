@@ -35,7 +35,7 @@ const Login = () => {
             email: userData.email,
             password: userData.password
         };
-        console.log(credentials);
+        //console.log(credentials);
         await dispatch(login(credentials));
     };
 
