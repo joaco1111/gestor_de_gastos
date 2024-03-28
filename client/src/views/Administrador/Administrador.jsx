@@ -10,10 +10,10 @@ import Users from "./Users"
 // import Bar from "./Bar"
 // import Form from "./Form"
 // import Line from "./Line"
-// import Pie from "./Pie"
+import Pie from "./pie/Pie"
 // import Faq from "./Faq"
-// import Calendar from "./Calendar"
-// import Geography from "./Geography"
+import Calendar from "./Calendar"
+import Geography from "./geo/Geography.jsx";
 
 
 
@@ -34,11 +34,11 @@ const Administrador  = () => {
                         {/* <Route path="/invoices" element={<Invoices/>}/> */}
                         {/* <Route path="/form" element={<Form/>}/> */}
                         {/* <Route path="/bar" element={<Bar/>}/> */}
-                        {/* <Route path="/pie" element={<Pie/>}/> */}
+                        <Route path="/pie" element={<Pie/>}/>
                         {/* <Route path="/line" element={<Line/>}/> */}
-                        {/* <Route path="/geography" element={<Geography/>}/> */}
+                        <Route path="/geography" element={<Geography/>}/>
                         {/* <Route path="/faq" element={<Faq/>}/> */}
-                        {/* <Route path="/calendar" element={<Calendar/>}/> */}
+                        <Route path="/calendar" element={<Calendar/>}/>
                         
                     </Routes>
                 </div>

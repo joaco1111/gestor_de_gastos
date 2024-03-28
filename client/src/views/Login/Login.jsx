@@ -5,7 +5,7 @@ import { login } from '../../redux/actions';
 import { validate } from '../../utils';
 import "./login.css"
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
-import { FaLock, FaUser } from 'react-icons/fa';
+import { FaLock, FaUser, FaArrowLeft } from 'react-icons/fa';
 
 
 const Login = () => {
@@ -44,7 +44,11 @@ const Login = () => {
             <div className="container-second">
             <Row>
                 <Col>
+                    
                     <Form className="login-form" onSubmit={handleSubmit}>
+                        <Link to="/" className="go-back-button">
+                            <FaArrowLeft />  
+                        </Link>
                         {/* <h1 className="text-center mb-4">Login</h1> */}
                         {loginError && <p className="error-message">{loginError}</p>}
                         <Form.Group controlId="formBasicEmail">
@@ -69,6 +73,7 @@ const Login = () => {
                             <Link to="/log">Register Now</Link>
                         </div>
                     </Form>
+                    
                 </Col>
             </Row>
             </div>
