@@ -47,7 +47,8 @@ const ActionDetail = () => {
     setUpdatedData({
       date: fechaFormateada,
       quantity: action.quantity,
-      idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id
+      idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id,
+      description: action.description
     });
     setIsModalOpen(true);
   };
@@ -68,7 +69,8 @@ const ActionDetail = () => {
                 Tipo: {action?.type} <br />
                 Fecha: {fechaFormateada} <br />
                 Cantidad: {action?.quantity} <br />
-                Categoría: {action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name}
+                Categoría: {action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name} <br />
+                Descripción: {action?.description}
               </Card.Text>
               <Button className="action-detail-button" onClick={openModal}>Editar</Button>
             </Card.Body>
@@ -86,6 +88,7 @@ const ActionDetail = () => {
             >
               <input type="date" name="date" value={updatedData.date || ''} onChange={handleInputChange} />
               <input type="text" name="quantity" value={updatedData.quantity || ''} onChange={handleInputChange} />
+              <input type="text" name="description" value={updatedData.description || ''} onChange={handleInputChange} />
               <Button onClick={handleUpdate}>Actualizar</Button>
               <Button onClick={closeModal}>Cancelar</Button>
             </Modal>
