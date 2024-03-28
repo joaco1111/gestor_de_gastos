@@ -44,6 +44,16 @@ const CustomModal = ({ onClose, updatedData = {}, handleInputChange, handleUpdat
                         ))}
                     </select>
                 </div>
+                <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ fontWeight: 'bold' }}>Descripción:</label>
+                    <input
+                        type="text"
+                        name="description"
+                        value={updatedData.description || ''}
+                        onChange={handleInputChange}
+                        className="form-control"
+                    />
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
