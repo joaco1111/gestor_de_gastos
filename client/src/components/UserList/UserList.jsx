@@ -95,7 +95,7 @@ const UserList = ({ users, getUsers}) => {
 
   return (
     <div>
-      <NavBar />
+      {/* <NavBar /> */}
       <div className='container'>
         <h2 className='text-center my-4'>Lista de usuarios registrados</h2>
 

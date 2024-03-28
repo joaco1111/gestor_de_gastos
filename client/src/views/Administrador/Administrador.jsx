@@ -5,7 +5,7 @@ import TopBar from "./TopBar";
 import SideBar from "./Sidebar"
 import DashBoard from "./DashBoard"
 import Team from "./Team";
-// import Invoices from "./Invoices"
+import Users from "./Users"
 // import Contacts from "./Contacts"
 // import Bar from "./Bar"
 // import Form from "./Form"
@@ -25,13 +25,12 @@ const Administrador  = () => {
                 <CssBaseline/>   
             <div style={{display: 'flex'}}>
                 <SideBar/>     
-                <div className="contents">
+                <div className="content">
                 <TopBar/>
                     <Routes>
-                        <Route path="/admin" element={<DashBoard/>}/>
+                        <Route path="/" element={<DashBoard/>}/>
                         <Route path="/team" element={<Team/>}/>
-
-                        {/* <Route path="/contacts" element={<Contacts/>}/> */}
+                        <Route path="/userslist" element={<Users/>}/>
                         {/* <Route path="/invoices" element={<Invoices/>}/> */}
                         {/* <Route path="/form" element={<Form/>}/> */}
                         {/* <Route path="/bar" element={<Bar/>}/> */}
