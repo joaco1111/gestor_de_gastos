@@ -1,58 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchActions } from '../../redux/actions';
-import { deleteAction } from '../../redux/actions';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { fetchActions, deleteAction } from '../../redux/actions';
 import ActionsPagination from '../Pagination/ActionsPagination';
 import { BiTrash, BiDetail } from 'react-icons/bi';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import './IncomeExpenseLog.css'
 
 const IncomeExpenseLog = () => {
-  const dispatch = useDispatch();
-  const actions = useSelector(state => state.actions);
-  const totalCount = useSelector(state => state.totalCount);
-  const [currentPage, setCurrentPage] = useState(1);
-  const limitPerPage = 10;
-  const loading = useSelector(state => state.loading);
-  const [filters, setFilters] = useState({
-    date: '',
-    type: '',
-    category: '',
-  });
+    const dispatch = useDispatch();
+    const actions = useSelector(state => state.actions);
+    const totalCount = useSelector(state => state.totalCount);
+    const [currentPage, setCurrentPage] = useState(1);
+    const limitPerPage = 5;
+    const loading = useSelector(state => state.loading);
+    const [filters, setFilters] = useState({
+      date: '',
+      type: '',
+      category: '',
+    });
+    const [orderDirection, setOrderDirection] = useState('DESC');
+    const [orderBy, setOrderBy] = useState('createdAt'); // Nuevo estado para el campo de ordenamiento
 
-  useEffect(() => {
-    dispatch(fetchActions(currentPage, limitPerPage, filters));
-  }, [dispatch, currentPage, filters]);
+    useEffect(() => {
+      dispatch(fetchActions(currentPage, limitPerPage, filters, orderDirection, orderBy)); // Incluir el nuevo estado 'orderBy' en la llamada a fetchActions
+    }, [dispatch, currentPage, filters, orderDirection, orderBy]);
+  
+    // Función para manejar cambios en los filtros
+    const handleFilterChange = (e) => {
+      const { name, value } = e.target;
+      setCurrentPage(1);
+      setFilters(prevFilters => {
+        if (name === 'type') {
+          return {
+            ...prevFilters,
+            [name]: value,
+            category: '',
+          };
+        } else {
+          return {
+            ...prevFilters,
+            [name]: value
+          };
+        }
+      });
+    };
+  
+    // Función para manejar cambios en la ordenación
+    const handleOrderChange = (e) => {
+        const { value } = e.target;
+        setOrderBy(value); // Actualizar el estado 'orderBy' con el valor seleccionado
+    };
 
-  // Función para manejar cambios en los filtros
-  const handleFilterChange = (e) => {
-  const { name, value } = e.target;
-  setCurrentPage(1);
-  setFilters(prevFilters => {
-    if (name === 'type') {
-      return {
-        ...prevFilters,
-        [name]: value,
-        category: '',
-      };
-    } else {
-      return {
-        ...prevFilters,
-        [name]: value
-      };
-    }
-  });
-};
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate() + 1).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+    const handleOrderDirectionChange = (e) => {
+      const { value } = e.target;
+      setOrderDirection(value);
+    };
 
   // Función para aplicar los filtros
   const applyFilters = (data, filters) => {
@@ -100,8 +103,7 @@ const IncomeExpenseLog = () => {
     // Retorna los datos filtrados
     return filteredData;
   };
-  console.log(actions);
-  console.log(filters);
+  
   const filteredActions = applyFilters(actions, filters);
   console.log(filteredActions);
   const getCategoryOptions = (type) => {
@@ -125,56 +127,63 @@ const IncomeExpenseLog = () => {
     dispatch(fetchActions(page, limitPerPage, filters));
   };
 
+  console.log("Acciones filtradas:", filteredActions);
+
   return (
     <div className='container'>
       <h2>Tus Movimientos</h2>
       <div className='filters'>
         <label>
-          Fecha:
-          <input type="date" name="date" value={filters.date} onChange={handleFilterChange} />
+            Fecha: <br />
+            <input className="filter-select" type="date" name="date" value={filters.date} onChange={handleFilterChange} />
         </label>
         <label>
-          Tipo:
-          <select name="type" value={filters.type} onChange={handleFilterChange}>
+            Ordenar por: <br />
+            <select className="filter-select" name="orderBy" value={orderBy} onChange={handleOrderChange}>
+                <option value="createdAt">Fecha</option>
+                <option value="quantity">Cantidad</option>
+            </select>
+        </label>
+        <label>
+            Ordenar: <br />
+            <select className="filter-select" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
+                <option value="DESC">Descendente</option>
+                <option value="ASC">Ascendente</option>
+            </select>
+        </label>
+        <label>
+            Tipo: <br />
+            <select className="filter-select" name="type" value={filters.type} onChange={handleFilterChange}>
             <option value="">Todos</option>
             <option value="ingresos">Ingresos</option>
             <option value="gastos">Gastos</option>
-          </select>
+            </select>
         </label>
         {filters.type === 'gastos' && (
-          <label>
-            Categoría de Gastos:
-            <select name="category" value={filters.category} onChange={handleFilterChange}>
-              {getCategoryOptions('gastos').map((category, index) => (
+            <label>
+            Categoría: <br />
+            <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
+                {getCategoryOptions('gastos').map((category, index) => (
                 <option key={index} value={category}>{category}</option>
-              ))}
+                ))}
             </select>
-          </label>
+            </label>
         )}
-
         {filters.type === 'ingresos' && (
-          <label>
-            Categoría de Ingresos:
-            <select name="category" value={filters.category} onChange={handleFilterChange}>
-              {getCategoryOptions('ingresos').map((category, index) => (
+            <label>
+            Categoría: <br />
+            <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
+                {getCategoryOptions('ingresos').map((category, index) => (
                 <option key={index} value={category}>{category}</option>
-              ))}
+                ))}
             </select>
-          </label>
+            </label>
         )}
-      </div>
-      <div className='pagination-container'>
-        <ActionsPagination
-          currentPage={currentPage}
-          totalCount={totalCount}
-          limitPerPage={limitPerPage}
-          onPageChange={handlePageChange}
-        />
-      </div>
+        </div>
       {loading ? (
         <p>Cargando...</p>
       ) : (
-        <div className='col-sm-12 col-md-12 col-lg-12 my-3'>
+        <div className='col-sm-12 col-md-12 col-lg-12 my-3' style={{ paddingTop: '20px' }}>
           {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
             <table className='table table-dark table-striped'>
               <thead>
@@ -182,24 +191,22 @@ const IncomeExpenseLog = () => {
                   <th>Tipo</th>
                   <th>Fecha</th>
                   <th>Cantidad</th>
-                  <th>Categoría de Gasto</th>
-                  <th>Categoría de Ingreso</th>
+                  <th>Categoría</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
                 {filteredActions.map(action => (
                   <tr key={action.id}>
                     <td>{action.type}</td>
-                    <td>{formatDate(action.date)}</td>
+                    <td>{action.date}</td>
                     <td>{action.quantity}</td>
-                    <td>{action.categoryBill ? action.categoryBill.name : '-'}</td>
-                    <td>{action.categoryIncome ? action.categoryIncome.name : '-'}</td>
+                    <td>{action.categoryBill ? action.categoryBill.name : ''} {action.categoryIncome ? action.categoryIncome.name : ''}</td>
                     <td>
                       <Button title='Eliminar' variant="danger" onClick={() => handleDelete(action.id)}>
                         <BiTrash />
                       </Button>
-                    </td>
-                    <td>
+                      <span style={{ marginRight: '8px' }}></span>
                       <Link to={`/actions/${action.id}`}>
                       <Button title='Ver Detalle' variant="primary"><BiDetail /></Button>
                       </Link>

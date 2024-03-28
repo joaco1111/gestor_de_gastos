@@ -60,39 +60,54 @@ const ActionDetail = () => {
   return (
     <div>
       <NavBar/>
+      {isModalOpen && (
+        <Modal 
+        onClose={closeModal} 
+        updatedData={updatedData} 
+        handleInputChange={handleInputChange} 
+        handleUpdate={handleUpdate}
+        action={action}
+        incomeCategories={incomeCategories}
+        expenseCategories={expenseCategories}
+        >
+          <input type="date" name="date" value={updatedData.date || ''} onChange={handleInputChange} />
+          <input type="text" name="quantity" value={updatedData.quantity || ''} onChange={handleInputChange} />
+          <Button onClick={handleUpdate}>Actualizar</Button>
+          <Button onClick={closeModal}>Cancelar</Button>
+        </Modal>
+      )}
       <div className='container-principal'>
         <div className="card-container">
-          <Card>
-            <Card.Body>
-              <Card.Title className='text-center'>Movimiento</Card.Title>
-              <Card.Text>
-                Tipo: {action?.type} <br />
-                Fecha: {fechaFormateada} <br />
-                Cantidad: {action?.quantity} <br />
-                Categoría: {action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name} <br />
-                Descripción: {action?.description}
-              </Card.Text>
-              <Button className="action-detail-button" onClick={openModal}>Editar</Button>
-            </Card.Body>
-          </Card>
-          
-          {isModalOpen && (
-            <Modal 
-            onClose={closeModal} 
-            updatedData={updatedData} 
-            handleInputChange={handleInputChange} 
-            handleUpdate={handleUpdate}
-            action={action}
-            incomeCategories={incomeCategories}
-            expenseCategories={expenseCategories}
-            >
-              <input type="date" name="date" value={updatedData.date || ''} onChange={handleInputChange} />
-              <input type="text" name="quantity" value={updatedData.quantity || ''} onChange={handleInputChange} />
-              <input type="text" name="description" value={updatedData.description || ''} onChange={handleInputChange} />
-              <Button onClick={handleUpdate}>Actualizar</Button>
-              <Button onClick={closeModal}>Cancelar</Button>
-            </Modal>
-          )}
+        <Card className="card shadow-sm">
+          <Card.Body className="card-body p-4">
+            <Card.Title className='text-center mb-3'>Movimiento</Card.Title>
+            <Card.Text>
+              <div className="form-group">
+                <label>Tipo:</label>
+                <input type="text" className="form-control" value={action?.type} disabled />
+              </div>
+              <div className="form-group">
+                <label>Fecha:</label>
+                <input type="text" className="form-control" value={fechaFormateada} disabled />
+              </div>
+              <div className="form-group">
+                <label>Cantidad:</label>
+                <input type="text" className="form-control" value={action?.quantity} disabled />
+              </div>
+              <div className="form-group">
+                <label>Categoría:</label>
+                <input type="text" className="form-control" value={action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name} disabled />
+              </div>
+              <div className="form-group">
+                <label>Descripción:</label>
+                <p>{action?.description}</p>
+              </div>
+            </Card.Text>
+            <div className="d-grid gap-2">
+              <Button className="action-detail-button d-block" onClick={openModal}>Editar</Button>
+            </div>
+          </Card.Body>
+        </Card>
         </div>
       </div>
     </div>
