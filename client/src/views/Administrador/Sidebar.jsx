@@ -151,8 +151,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 setSelected={setSelected}
               />
               <Item
-                title="Invoices Balances"
-                to="/invoices"
+                title="Transactions"
+                to="/admin/transactions"
                 icon={<ReceiptOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -167,21 +167,21 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               </Typography>
               <Item
                 title="Profile Form"
-                to="/form"
+                to="/admin/form"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Calendar"
-                to="/calendar"
+                to="/admin/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="FAQ Page"
-                to="/faq"
+                to="/admin/faq"
                 icon={<HelpOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -196,28 +196,28 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               </Typography>
               <Item
                 title="Bar Chart"
-                to="/bar"
+                to="/admin/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Pie Chart"
-                to="/pie"
+                to="/admin/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Line Chart"
-                to="/line"
+                to="/admin/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Geography Chart"
-                to="/geography"
+                to="/admin/geography"
                 icon={<MapOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
