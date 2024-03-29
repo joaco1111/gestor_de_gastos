@@ -5,13 +5,13 @@ const cloudinary = require('cloudinary')
 const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const {sendEmail, getTemplate} = require("../../config/nodemailer")
 
 const loginHandler = async (req, res) => {
 
     // Se trae del front email/passw
 
     const { email, password } = req.body
-    
 
     try {
 
@@ -22,9 +22,18 @@ const loginHandler = async (req, res) => {
 
         if (token) {
             //respondemos con el token y el acceso
-            console.log(idAccess);
-            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess })
+            res.status(200).json({ tokenUser: token, email: email, password: password})
             //res.header('token', token).json({access: true, token, user});
+
+            // Se anexa codigo para envio de correos luego de poder leguearse
+            // await transporter.sendMail({
+            //     from: '"Inicio de sesion satisfactorio" <Gestordepagospf@gmail.com>', // sender address
+            //     to: email, // list of receivers
+            //     subject: "Inicio de sesion satisfactorio en Gestor de Pagos", // Subject line
+            //     html: "<b>Ha iniciado secion de manera exitosa en la web Gestor de gastos</b>", // html body
+            //   });
+
+
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
         }
@@ -67,8 +76,11 @@ const registerHandler = async (req, res) => {
         const { token } = await validate(email, password);
 
         if (token) {
+            //se envia el correo
+            const html = getTemplate("bienvenida", name);
+            await sendEmail(email,`Bienvenido ${name}`, html)
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess: 2 })
+            res.status(200).json({ tokenUser: token, email: email, password: password })
             //res.header('token', token).json({access: true, token, user});
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
@@ -137,6 +149,7 @@ const deleteUser = async(req, res) => {
         if(!user) return res.status(400).send("No se encuentra el usuario.")
 
         user.destroy();
+        
         return res.status(200).json({detroy: true, user});
     } catch (error) {
         return res.status(500).json({error})
