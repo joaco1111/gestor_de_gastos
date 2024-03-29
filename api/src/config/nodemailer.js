@@ -1,6 +1,13 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
 const {CONTRASENADEAPLICACIONES, CORREO} = process.env;
+
+const mail= {
+  user: CORREO,
+  pass: CONTRASENADEAPLICACIONES
+
+}
+
 const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
     port: 465,
@@ -9,8 +16,8 @@ const transporter = nodemailer.createTransport({
     },
     secure: true, // Use `true` for port 465, `false` for all other ports
     auth: {
-      user: CORREO,
-      pass: "wirwkomptqshhgrc",
+      user: mail.user,
+      pass: mail.pass,
     },
   });
   const sendEmail = async (email, subject, html) => {
@@ -20,6 +27,11 @@ const transporter = nodemailer.createTransport({
             to: email, // list of receivers
             subject,
             html,
+    attachments: [{
+        filename: 'GDG_fondo_blanco.jpeg',
+        path: __dirname+ '/GDG_fondo_blanco.jpeg',
+        cid: 'GDG_fondo_blanco' //same cid value as in the html img src
+    }],
       });
      } catch (error) {
       console.log("Correo NO enviado", error)
@@ -35,14 +47,15 @@ const transporter = nodemailer.createTransport({
 
 const getBienvenida = (name) => {
   return `
+  <img src='cid:GDG_fondo_blanco'>
       <h2>Hola, ${name || 'Usuario'}</h2>
       <p>Gracias por preferirnos.</p>
       <p>Ahora que estás regitrado/a, te contamos mas de la aplicacion</p>
-      <h3>Tu nuevo aliado para el control financiero personal, con facil acceso donde podras: </h3>
+      <h3>Tu nuevo aliado para el control financiero personal de facil acceso donde podras: </h3>
       <ul>
-          <li>Realizar un registro detallado de tus ingresos y egresos</li>
+          <li>Realizar un registro de tus ingresos y egresos</li>
           <li>Vision clara y organizada de tus finanzas</li>
-          <li>Organiza tus finanzas por categorias.</li>
+          <li>Registro de movimietos por categoria</li>
           <li>¡Hacer donaciones con tu cuenta MercadoPago!</li>
       </ul>
     
