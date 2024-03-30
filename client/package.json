@@ -29,6 +29,7 @@
     "axios": "^1.6.7",
     "bootstrap": "^5.2.0",
     "bootstrap-icons": "^1.11.3",
+    "chart.js": "^2.9.4",
     "dotenv": "^16.4.5",
     "firebase": "^10.9.0",
     "formik": "^2.4.5",

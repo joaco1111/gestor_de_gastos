@@ -6,6 +6,7 @@ import { Pie } from 'react-chartjs-2';
 import './ActionsMetrics.css';
 
 const ActionsMetrics = () => {
+    const actions = useSelector(state => state.actions);
     const [filters, setFilters] = useState({
         type: '',
         dateInitial: '',
@@ -16,7 +17,6 @@ const ActionsMetrics = () => {
 
     const metrics = useSelector(state => state.metrics);
     const error = useSelector(state => state.error);
-    const actions = useSelector(state => state.actions);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,8 +37,10 @@ const ActionsMetrics = () => {
     }, [filters, dispatch]);
 
     useEffect(() => {
-        dispatch(fetchActions()); // Esto obtiene todas las acciones cuando el componente se monta
+        dispatch(fetchActions());
     }, [dispatch]);
+
+
 
     const pieData = {
         labels: ['Cantidad', 'Promedio Entre Fechas', 'Promedio', 'Total'],
@@ -65,59 +67,66 @@ const ActionsMetrics = () => {
 
     return (
         <div className='container'>
-            <form>
-                <label>
-                    Tipo: <br />
-                    <select className='filter-select' name="type" value={filters.type} onChange={handleChange}>
-                        <option value="">Selecciona un tipo</option>
-                        <option value="gastos">Gastos</option>
-                        <option value="ingresos">Ingresos</option>
-                    </select>
-                </label>
-                <label>
-                    Fecha inicial: <br />
-                    <input className='filter-select' type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
-                </label>
-                <label>
-                    Fecha límite: <br />
-                    <input className='filter-select' type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
-                </label>
-            </form>
-            {metrics && (
+            <h2>Promedios</h2>
+            {Array.isArray(actions) && actions.length > 0 ? (
                 <div>
-                    <h2>Métricas</h2>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Tipo</th>
-                                <th>Cantidad</th>
-                                <th>Promedio Entre Fechas</th>
-                                <th>Promedio</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{metrics.type}</td>
-                                <td>{metrics.count}</td>
-                                <td>{metrics.promedioFechaDefinida}</td>
-                                <td>{metrics.promedioType}</td>
-                                <td>{metrics.total}</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                    <div>
-                        <div className="chart-container" style={{ maxWidth: '800px' }}>
-                            <Pie data={pieData} options={pieOptions} />
+
+                    <form>
+                        <label>
+                            Tipo: <br />
+                            <select className='filter-select' name="type" value={filters.type} onChange={handleChange}>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="gastos">Gastos</option>
+                                <option value="ingresos">Ingresos</option>
+                            </select>
+                        </label>
+                        <label>
+                            Fecha inicial: <br />
+                            <input className='filter-select' type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
+                        </label>
+                        <label>
+                            Fecha límite: <br />
+                            <input className='filter-select' type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
+                        </label>
+                    </form>
+                    {metrics  && (
+                        <div>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Cantidad</th>
+                                        <th>Promedio Entre Fechas</th>
+                                        <th>Promedio</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{metrics.type}</td>
+                                        <td>{metrics.count}</td>
+                                        <td>{metrics.promedioFechaDefinida}</td>
+                                        <td>{metrics.promedioType}</td>
+                                        <td>{metrics.total}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            <div>
+                                <div className="chart-container" style={{ maxWidth: '800px' }}>
+                                    <Pie data={pieData} options={pieOptions} />
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    )}
+                    {error && (
+                        <div>
+                            <h2>Error</h2>
+                            <p>{error}</p>
+                        </div>
+                    )}
                 </div>
-            )}
-            {error && (
-                <div>
-                    <h2>Error</h2>
-                    <p>{error}</p>
-                </div>
+            ) : (
+                <p className="text-center">No hay movimientos que promediar</p>
             )}
         </div>
     );
