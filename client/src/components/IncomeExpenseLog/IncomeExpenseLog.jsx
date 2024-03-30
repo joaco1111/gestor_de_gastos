@@ -105,7 +105,6 @@ const IncomeExpenseLog = () => {
   };
   
   const filteredActions = applyFilters(actions, filters);
-  console.log(filteredActions);
   const getCategoryOptions = (type) => {
     let categoryOptionsSet = new Set(['Todos']);
     actions.forEach(action => {
@@ -132,56 +131,60 @@ const IncomeExpenseLog = () => {
   return (
     <div className='container'>
       <h2>Tus Movimientos</h2>
-      <div className='filters'>
-        <label>
-            Fecha: <br />
-            <input className="filter-select" type="date" name="date" value={filters.date} onChange={handleFilterChange} />
-        </label>
-        <label>
-            Ordenar por: <br />
-            <select className="filter-select" name="orderBy" value={orderBy} onChange={handleOrderChange}>
-                <option value="createdAt">Fecha</option>
-                <option value="quantity">Cantidad</option>
-            </select>
-        </label>
-        <label>
-            Ordenar: <br />
-            <select className="filter-select" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
-                <option value="DESC">Descendente</option>
-                <option value="ASC">Ascendente</option>
-            </select>
-        </label>
-        <label>
-            Tipo: <br />
-            <select className="filter-select" name="type" value={filters.type} onChange={handleFilterChange}>
-            <option value="">Todos</option>
-            <option value="ingresos">Ingresos</option>
-            <option value="gastos">Gastos</option>
-            </select>
-        </label>
-        {filters.type === 'gastos' && (
+      {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
+        <div className='filters'>
             <label>
-            Categoría: <br />
-            <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
-                {getCategoryOptions('gastos').map((category, index) => (
-                <option key={index} value={category}>{category}</option>
-                ))}
-            </select>
+                Fecha: <br />
+                <input className="filter-select" type="date" name="date" value={filters.date} onChange={handleFilterChange} />
             </label>
-        )}
-        {filters.type === 'ingresos' && (
             <label>
-            Categoría: <br />
-            <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
-                {getCategoryOptions('ingresos').map((category, index) => (
-                <option key={index} value={category}>{category}</option>
-                ))}
-            </select>
+                Ordenar por: <br />
+                <select className="filter-select" name="orderBy" value={orderBy} onChange={handleOrderChange}>
+                    <option value="createdAt">Fecha</option>
+                    <option value="quantity">Cantidad</option>
+                </select>
             </label>
-        )}
-        </div>
+            <label>
+                Ordenar: <br />
+                <select className="filter-select" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
+                    <option value="DESC">Descendente</option>
+                    <option value="ASC">Ascendente</option>
+                </select>
+            </label>
+            <label>
+                Tipo: <br />
+                <select className="filter-select" name="type" value={filters.type} onChange={handleFilterChange}>
+                <option value="">Todos</option>
+                <option value="ingresos">Ingresos</option>
+                <option value="gastos">Gastos</option>
+                </select>
+            </label>
+            {filters.type === 'gastos' && (
+                <label>
+                Categoría: <br />
+                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
+                    {getCategoryOptions('gastos').map((category, index) => (
+                    <option key={index} value={category}>{category}</option>
+                    ))}
+                </select>
+                </label>
+            )}
+            {filters.type === 'ingresos' && (
+                <label>
+                Categoría: <br />
+                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
+                    {getCategoryOptions('ingresos').map((category, index) => (
+                    <option key={index} value={category}>{category}</option>
+                    ))}
+                </select>
+                </label>
+            )}
+          </div>
+      ) : (
+        <p className="text-center">No tienes movimientos todavia</p>
+      )}
       {loading ? (
-        <p>Cargando...</p>
+        <p className="text-center">Cargando...</p>
       ) : (
         <div className='col-sm-12 col-md-12 col-lg-12 my-3' style={{ paddingTop: '20px' }}>
           {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
@@ -216,7 +219,7 @@ const IncomeExpenseLog = () => {
               </tbody>
             </table>
           ) : (
-            <p>No hay acciones que coincidan con los filtros seleccionados</p>
+            <Link to={`/home`}><Button className="action-detail-button d-block" variant="primary" size="sm" >Agrega Tus Movimientos</Button></Link>
           )}
         </div>
       )}
