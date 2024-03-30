@@ -24,7 +24,7 @@ const ActionsMetrics = () => {
             ...prevFilters,
             [name]: value
         }));
-        if (name === 'type') {
+        if (name === 'type' && value.trim() !== '') { // Verifica si el valor no está vacío
             dispatch(fetchMetrics(value, '', ''));
         }
     };
@@ -70,7 +70,6 @@ const ActionsMetrics = () => {
             <h2>Promedios</h2>
             {Array.isArray(actions) && actions.length > 0 ? (
                 <div>
-
                     <form>
                         <label>
                             Tipo: <br />
@@ -89,7 +88,7 @@ const ActionsMetrics = () => {
                             <input className='filter-select' type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
                         </label>
                     </form>
-                    {metrics  && (
+                    {metrics && filters.type !== '' && filters.type !== '' ? (
                         <div>
                             <Table striped bordered hover>
                                 <thead>
@@ -117,12 +116,8 @@ const ActionsMetrics = () => {
                                 </div>
                             </div>
                         </div>
-                    )}
-                    {error && (
-                        <div>
-                            <h2>Error</h2>
-                            <p>{error}</p>
-                        </div>
+                    ) : (
+                        <p className="text-center">Selecciona un tipo</p>
                     )}
                 </div>
             ) : (
