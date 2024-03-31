@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMetrics, fetchActions } from '../../redux/actions';
 import Table from 'react-bootstrap/Table';
@@ -66,57 +66,59 @@ const ActionsMetrics = () => {
     return (
         <div className='container'>
             <h2>Promedios</h2>
-            <form className="row g-3">
-                <div className="col-md-4">
-                    <label htmlFor="type" className="form-label">Tipo:</label>
-                    <select className="form-select" name="type" value={filters.type} onChange={handleChange}>
-                        <option value="">Selecciona un tipo</option>
-                        <option value="gastos">Gastos</option>
-                        <option value="ingresos">Ingresos</option>
-                    </select>
-                </div>
-                <div className="col-md-4">
-                    <label htmlFor="dateInitial" className="form-label">Fecha inicial:</label>
-                    <input className="form-control" type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
-                </div>
-                <div className="col-md-4">
-                    <label htmlFor="dateLimit" className="form-label">Fecha límite:</label>
-                    <input className="form-control" type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
-                </div>
-            </form>
-            <div className="row">
-                <div className="col-md-6">
-                    {Array.isArray(actions) && actions.length > 0 ? (
-                        <Table striped bordered hover>
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Cantidad</th>
-                                    <th>Promedio Entre Fechas</th>
-                                    <th>Promedio</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{metrics.type}</td>
-                                    <td>{metrics.count}</td>
-                                    <td>{metrics.promedioFechaDefinida}</td>
-                                    <td>{metrics.promedioType}</td>
-                                    <td>{metrics.total}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
+            {Array.isArray(actions) && actions.length > 0 ? (
+                <div>
+                    <form className="row g-3">
+                        <div className="col-md-4">
+                            <label htmlFor="type" className="form-label">Tipo:</label>
+                            <select className="form-select" name="type" value={filters.type} onChange={handleChange}>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="gastos">Gastos</option>
+                                <option value="ingresos">Ingresos</option>
+                            </select>
+                        </div>
+                        <div className="col-md-4">
+                            <label htmlFor="dateInitial" className="form-label">Fecha inicial:</label>
+                            <input className="form-control" type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
+                        </div>
+                        <div className="col-md-4">
+                            <label htmlFor="dateLimit" className="form-label">Fecha límite:</label>
+                            <input className="form-control" type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
+                        </div>
+                    </form>
+                    {metrics && filters.type !== '' && filters.type !== '' ? (
+                        <div>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Cantidad</th>
+                                        <th>Promedio Entre Fechas</th>
+                                        <th>Promedio</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{metrics.type}</td>
+                                        <td>{metrics.count}</td>
+                                        <td>{metrics.promedioFechaDefinida}</td>
+                                        <td>{metrics.promedioType}</td>
+                                        <td>{metrics.total}</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            <div className="chart-container" style={{ maxWidth: '800px' }}>
+                                <Pie data={pieData} options={pieOptions} />
+                            </div>
+                        </div>
                     ) : (
                         <p className="text-center">Selecciona un tipo</p>
                     )}
                 </div>
-                <div className="col-md-6">
-                    <div className="chart-container" style={{ maxWidth: '800px' }}>
-                        <Pie data={pieData} options={pieOptions} />
-                    </div>
-                </div>
-            </div>
+            ) : (
+                <p className="text-center">No hay movimientos que promediar</p>
+            )}
         </div>
     );
 };
