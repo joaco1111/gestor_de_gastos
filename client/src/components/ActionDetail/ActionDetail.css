@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 5px;
+  padding: 50px;
 }
 
 .card-container {
@@ -21,13 +21,13 @@
   margin: 0 auto;
 }
 
-/* Establecer altura máxima y agregar barra de desplazamiento */
+
 .card-body {
-  max-height: 700px; /* Cambia este valor según tus necesidades */
-  overflow-y: hidden; /* Agrega barra de desplazamiento vertical si el contenido excede la altura máxima */
+  max-height: 700px; 
+  overflow-y: hidden;
 }
 
-/* Ajustar estilos para la descripción */
+
 .form-group label {
   font-weight: bold;
 }
@@ -46,4 +46,9 @@
 .form-group p {
   max-height: 100px; /* Establecer altura máxima para la descripción */
   overflow-y: auto; /* Agregar barra de desplazamiento vertical si la descripción es muy larga */
+}
+
+.action-detail-button{
+  width: 100%;
+  height: 38px; 
 }
