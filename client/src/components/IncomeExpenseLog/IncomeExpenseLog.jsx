@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions, deleteAction } from '../../redux/actions';
 import ActionsPagination from '../Pagination/ActionsPagination';
 import { BiTrash, BiDetail } from 'react-icons/bi';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Table } from 'react-bootstrap'; // Importar componente de tabla de Bootstrap
 import './IncomeExpenseLog.css'
 
 const IncomeExpenseLog = () => {
@@ -131,64 +132,61 @@ const IncomeExpenseLog = () => {
   return (
     <div className='container'>
       <h2>Tus Movimientos</h2>
-      {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
-        <div className='filters'>
-            <label>
-                Fecha: <br />
-                <input className="filter-select" type="date" name="date" value={filters.date} onChange={handleFilterChange} />
-            </label>
-            <label>
-                Ordenar por: <br />
-                <select className="filter-select" name="orderBy" value={orderBy} onChange={handleOrderChange}>
-                    <option value="createdAt">Fecha</option>
-                    <option value="quantity">Cantidad</option>
-                </select>
-            </label>
-            <label>
-                Ordenar: <br />
-                <select className="filter-select" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
-                    <option value="DESC">Descendente</option>
-                    <option value="ASC">Ascendente</option>
-                </select>
-            </label>
-            <label>
-                Tipo: <br />
-                <select className="filter-select" name="type" value={filters.type} onChange={handleFilterChange}>
-                <option value="">Todos</option>
-                <option value="ingresos">Ingresos</option>
-                <option value="gastos">Gastos</option>
-                </select>
-            </label>
-            {filters.type === 'gastos' && (
-                <label>
-                Categoría: <br />
-                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
-                    {getCategoryOptions('gastos').map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
-                    ))}
-                </select>
-                </label>
-            )}
-            {filters.type === 'ingresos' && (
-                <label>
-                Categoría: <br />
-                <select className="filter-select" name="category" value={filters.category} onChange={handleFilterChange}>
-                    {getCategoryOptions('ingresos').map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
-                    ))}
-                </select>
-                </label>
-            )}
+
+      <div className="row " >
+        <div className="col-md-3 mb-3">
+          <label htmlFor="date" className="form-label">Fecha:</label>
+          <input className="form-control" type="date" id="date" name="date" value={filters.date} onChange={handleFilterChange} />
+        </div>
+        <div className="col-md-3 mb-3">
+          <label htmlFor="orderBy" className="form-label">Ordenar por:</label>
+          <select className="form-select" id="orderBy" name="orderBy" value={orderBy} onChange={handleOrderChange}>
+            <option value="createdAt">Fecha</option>
+            <option value="quantity">Cantidad</option>
+          </select>
+        </div>
+        <div className="col-md-3 mb-3">
+          <label htmlFor="orderDirection" className="form-label">Ordenar:</label>
+          <select className="form-select" id="orderDirection" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
+            <option value="DESC">Descendente</option>
+            <option value="ASC">Ascendente</option>
+          </select>
+        </div>
+        <div className="col-md-3 mb-3">
+          <label htmlFor="type" className="form-label">Tipo:</label>
+          <select className="form-select" id="type" name="type" value={filters.type} onChange={handleFilterChange}>
+            <option value="">Todos</option>
+            <option value="ingresos">Ingresos</option>
+            <option value="gastos">Gastos</option>
+          </select>
+        </div>
+        {filters.type === 'gastos' && (
+          <div className="col-md-3 mb-3">
+            <label htmlFor="category" className="form-label">Categoría:</label>
+            <select className="form-select" id="category" name="category" value={filters.category} onChange={handleFilterChange}>
+              {getCategoryOptions('gastos').map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
           </div>
-      ) : (
-        <p className="text-center">No tienes movimientos todavia</p>
-      )}
+        )}
+        {filters.type === 'ingresos' && (
+          <div className="col-md-3 mb-3">
+            <label htmlFor="category" className="form-label">Categoría:</label>
+            <select className="form-select" id="category" name="category" value={filters.category} onChange={handleFilterChange}>
+              {getCategoryOptions('ingresos').map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
+            </select>
+          </div>
+        )}
+      </div>
       {loading ? (
         <p className="text-center">Cargando...</p>
       ) : (
         <div className='col-sm-12 col-md-12 col-lg-12 my-3' style={{ paddingTop: '20px' }}>
           {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
-            <table className='table table-dark table-striped'>
+            <Table striped bordered hover> {/* Utilizar componente de tabla de Bootstrap */}
               <thead>
                 <tr>
                   <th>Tipo</th>
@@ -217,7 +215,7 @@ const IncomeExpenseLog = () => {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           ) : (
             <Link to={`/home`}><Button className="action-detail-button d-block" variant="primary" size="sm" >Agrega Tus Movimientos</Button></Link>
           )}
