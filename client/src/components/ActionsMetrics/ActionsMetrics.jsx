@@ -67,27 +67,27 @@ const ActionsMetrics = () => {
         <div className='container'>
             <h2>Promedios</h2>
             {Array.isArray(actions) && actions.length > 0 ? (
-                <div>
-                    <form className="row g-3">
-                        <div className="col-md-4">
-                            <label htmlFor="type" className="form-label">Tipo:</label>
-                            <select className="form-select" name="type" value={filters.type} onChange={handleChange}>
-                                <option value="">Selecciona un tipo</option>
-                                <option value="gastos">Gastos</option>
-                                <option value="ingresos">Ingresos</option>
-                            </select>
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="dateInitial" className="form-label">Fecha inicial:</label>
-                            <input className="form-control" type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
-                        </div>
-                        <div className="col-md-4">
-                            <label htmlFor="dateLimit" className="form-label">Fecha límite:</label>
-                            <input className="form-control" type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
-                        </div>
-                    </form>
-                    {metrics && filters.type !== '' && filters.type !== '' ? (
-                        <div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <form className="row g-3">
+                            <div className="col-md-12">
+                                <label htmlFor="type" className="form-label">Tipo:</label>
+                                <select className="form-select" name="type" value={filters.type} onChange={handleChange}>
+                                    <option value="">Selecciona un tipo</option>
+                                    <option value="gastos">Gastos</option>
+                                    <option value="ingresos">Ingresos</option>
+                                </select>
+                            </div>
+                            <div className="col-md-6">
+                                <label htmlFor="dateInitial" className="form-label">Fecha inicial:</label>
+                                <input className="form-control" type="date" name="dateInitial" value={filters.dateInitial} onChange={handleChange} />
+                            </div>
+                            <div className="col-md-6">
+                                <label htmlFor="dateLimit" className="form-label">Fecha límite:</label>
+                                <input className="form-control" type="date" name="dateLimit" value={filters.dateLimit} onChange={handleChange} />
+                            </div>
+                        </form>
+                        {metrics && filters.type !== '' && filters.type !== '' ? (
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
@@ -108,13 +108,15 @@ const ActionsMetrics = () => {
                                     </tr>
                                 </tbody>
                             </Table>
-                            <div className="chart-container" style={{ maxWidth: '800px' }}>
-                                <Pie data={pieData} options={pieOptions} />
-                            </div>
+                        ) : (
+                            <p className="text-center">Selecciona un tipo</p>
+                        )}
+                    </div>
+                    <div className="col-md-6">
+                        <div className="chart-container" style={{ maxWidth: '800px' }}>
+                            <Pie data={pieData} options={pieOptions} />
                         </div>
-                    ) : (
-                        <p className="text-center">Selecciona un tipo</p>
-                    )}
+                    </div>
                 </div>
             ) : (
                 <p className="text-center">No hay movimientos que promediar</p>
