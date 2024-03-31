@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
+
+.container-slide{
+    font-family: 'K2D', sans-serif;
+    
+}
+.step-icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+h1,h2,h3,p{
+    font-family: 'K2D', sans-serif;
+}
+  
+  .step-icon-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #219ebc; 
+    color: #fff;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .registration-link {
+    text-decoration: none; 
+    color: inherit; 
+    font-weight: bold;
+  }
+  
