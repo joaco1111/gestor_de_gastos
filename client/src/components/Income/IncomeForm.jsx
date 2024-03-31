@@ -46,7 +46,8 @@ const IncomeForm = () => {
       .required('La fecha es requerida')
       .max(new Date(), 'La fecha no puede ser posterior a la actual'),
     idCategory: Yup.string().required('La categoría es requerida'),
-    description: Yup.string().required('La descripción es requerida'),
+    description: Yup.string()
+    .max(80, 'Máximo 80 caracteres')
   });
 
   const handleSubmit = (values, { resetForm }) => {
