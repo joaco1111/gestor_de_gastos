@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { getUsers } from '../../redux/actions';
 import { Table, Button, Form } from 'react-bootstrap';
-import NavBar from '../NavBar/NavBar';
+// import NavBar from '../NavBar/NavBar';
 import axios from 'axios';
 import ModalsDisable from '../Modals/ModalsDisable';
 import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
+import { useTheme } from '@mui/material/styles';
+import { tokens } from "../../views/Administrador/theme"
 
-//ICONOS
-import { BsEyeFill, BsPersonLock   ,BsPersonFillGear , BsXOctagonFill, BsFillTrashFill   } from "react-icons/bs";
 
-const _URL_UNLOCK = `${import.meta.env.VITE_BASE_URL}/auth/unLockUser/`;
 const _URL_CLEAN = `${import.meta.env.VITE_BASE_URL}/auth/user/`;
 const _URL_RESTORE = `${import.meta.env.VITE_BASE_URL}/auth/user/restore/`;
 const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
@@ -120,6 +119,8 @@ const UserList = ({ users, getUsers}) => {
     return str.map(p => p[0].toUpperCase() + p.slice(1)).join(" ");
   }
 
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   return (
     <div>
@@ -231,15 +232,11 @@ const UserList = ({ users, getUsers}) => {
         )}
 
         {/* MODALS DESHABILITAR USUARIO */}
-        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleUnlockUser} setAccess={setActivated}/>}
-
-        {/* MODALS ELIMINAR USUARIO */}
-        {activatedDelete.access && <ModalsDisable id={activatedDelete.id} activated={activatedDelete.access} title={`Confirmar Eliminación`} body={`¿Seguro que deseas eliminar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivatedDelete}/>}
+        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivated} colors={colors}/>}
 
         {/* MODALS ACTUALIZAR DATOS */}
-        {activatedForm.access && <ModalsForm data={activatedForm.data} activatedForm={activatedForm} setActivatedForm={setActivateForm} setMessage={setMessage}/>}
+        {activatedForm.access && <ModalsForm data={activatedForm.data} activatedForm={activatedForm} setActivatedForm={setActivateForm} setMessage={setMessage} colors={colors}/>}
         
-
         
       </div>
     </div>

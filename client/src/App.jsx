@@ -7,6 +7,7 @@ import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
 import ActionDetail from './components/ActionDetail/ActionDetail';
 import Administrador from './views/Administrador/Administrador';
+import Profile from './components/Perfil/Perfile';
 
 function App() {
     const dispatch = useDispatch();
@@ -14,8 +15,6 @@ function App() {
 
     const user = useSelector(state => state.user);
     const newUser = useSelector(state => state.newUser);
-    console.log(user);
-    console.log(newUser);
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
         if (user.tokenUser || newUser.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
@@ -52,10 +51,11 @@ function App() {
                 <Route path='/home' element={user.tokenUser || newUser.tokenUser ? <Home/> : <Login />}/>
                 <Route path='/actions/:id' element={user.tokenUser || newUser.tokenUser ? <ActionDetail /> : <Login />} />
                 <Route path='/users' element={user.tokenUser || newUser.tokenUser ? <UserList /> : <Login />} />
+                <Route path='/profile' element={user.tokenUser || newUser.tokenUser ? <Profile /> : <Login />} />
                 <Route path='/' element={<Landing />}/>
             </Routes>
         </div>
     )  
-};
+}
 
 export default App;

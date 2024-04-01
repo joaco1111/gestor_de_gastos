@@ -22,8 +22,7 @@ const DashBoard  = () => {
                 <UserList/>
             </Box>
             <Box height="200px">
-                
-                <Team/>
+               
             </Box>
             </Box>
             

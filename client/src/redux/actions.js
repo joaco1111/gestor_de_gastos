@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
 
@@ -107,19 +107,19 @@ export const getCategoryIncome = () => {
 };
 
 
-export const fetchActions = (page = 1, limit = 10, data, type, category) => {
+export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection = 'DESC', orderBy = 'date') => {
     return async function(dispatch) {
         try {
             if(loggedUserJSON) {
                 
-                //ejemplo de como agregar datos a la configuración general 
                 const configuration = {
                     ...config,
-                    params: { page, limit, data, type, category }
+                    params: { page, limit, ...filters, orderDirection, orderBy } // Aquí incluimos orderBy en los parámetros de la solicitud
                 };
     
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
-                console.log(response.data);
+                
+                console.log('Respuesta:', response);
     
                 const { rows, count } = response.data;
     
@@ -130,6 +130,31 @@ export const fetchActions = (page = 1, limit = 10, data, type, category) => {
             }
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
+        }
+    };
+};
+
+export const fetchMetrics = (type, dateInitial, dateLimit) => {
+    return async function(dispatch) {
+        try {
+            if(loggedUserJSON){
+                
+                const configuration = {
+                    ...config,
+                    params: { type, dateInitial, dateLimit }
+                }
+
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas`, configuration);
+
+                console.log('Metricas', response.data);
+
+                if (response.status === 200) {
+                    dispatch({ type: SET_METRICS, payload: response.data });
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            dispatch({ type: 'SET_ERROR', payload: error });
         }
     };
 };

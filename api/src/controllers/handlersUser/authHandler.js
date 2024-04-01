@@ -1,30 +1,56 @@
 const { User } = require('../../db')
 const { validate } = require('../../validations/validationAuthController')
 const bcrypt = require('bcrypt')
-const cloudinary = require('cloudinary')
+const cloudinary = require('../../configCloudinary');
 const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const {sendEmail, getTemplate} = require("../../config/nodemailer")
+
+const getUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        if(!id) return res.status(400).send("No existen parametros");
+
+        const user = await User.findOne({where: {id}});
+
+        if(!user) return res.status(400).send("No existe este usuario");
+
+        return res.status(200).json(user);
+
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
 
 const loginHandler = async (req, res) => {
 
     // Se trae del front email/passw
 
     const { email, password } = req.body
-    
 
     try {
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const { token, idAccess } = await validate(email, password);
+        const { token, idAccess, user } = await validate(email, password);
 
         if (token) {
             //respondemos con el token y el acceso
-            console.log(idAccess);
-            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess })
+            res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name })
             //res.header('token', token).json({access: true, token, user});
+
+            // Se anexa codigo para envio de correos luego de poder leguearse
+            // await transporter.sendMail({
+            //     from: '"Inicio de sesion satisfactorio" <Gestordepagospf@gmail.com>', // sender address
+            //     to: email, // list of receivers
+            //     subject: "Inicio de sesion satisfactorio en Gestor de Pagos", // Subject line
+            //     html: "<b>Ha iniciado secion de manera exitosa en la web Gestor de gastos</b>", // html body
+            //   });
+
+
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
         }
@@ -64,11 +90,14 @@ const registerHandler = async (req, res) => {
         // creo el registro en db
     
         await User.create({ name: name.toLowerCase(), email, password: passwordHash, idAccess: 2 });
-        const { token } = await validate(email, password);
+        const { token, user, idAccess } = await validate(email, password);
 
         if (token) {
+            //se envia el correo
+            const html = getTemplate("bienvenida", name);
+            await sendEmail(email,`Bienvenido ${name}`, html)
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password, idAccess: 2 })
+            res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name });
             //res.header('token', token).json({access: true, token, user});
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
@@ -108,11 +137,11 @@ const updateHandler = async (req, res) => {
         //integracion CLOUDINARY
         //Verificamos si hay una imagen recibida
         //la extraemos
-        if (req.files && req.files.image) {
-            const image = req.files.image;
+        if (req?.file) {
+            const {path} = req.file;
 
             // Subimos  la imagen a Cloudinary
-            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
+            const imageUploadResult = await cloudinary.uploader.upload(path);
 
             // se guarda la URL de la imagen en la base de datos
             updateData["photoProfile"] = imageUploadResult.secure_url;
@@ -278,6 +307,7 @@ module.exports = {
     loginHandler,
     registerHandler,
     updateHandler,
+    getUser,
     getUsers,
     authenticationFromGoogle,
     unLockUser,

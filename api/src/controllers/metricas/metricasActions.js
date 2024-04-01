@@ -26,14 +26,14 @@ const metricasActions = async(req, res) => {
             //promedio general de un tipo de actions ******gastos o ingresos********
             const promedioType  = await Action.sequelize.query(`SELECT AVG("quantity") AS "promedio" FROM "actions" WHERE "idUser" = ${idUser} AND "type" = '${type}'`);
 
-            result['promedioType'] = promedioType[0][0].promedio;
+            result['promedioType'] = parseFloat(promedioType[0][0].promedio).toFixed(2);
 
             //promedio por rango de fecha  ***** dateInitial = fecha que inicia     hasta    dateLimit = fecha que culmina *** 
     
             if(dateInitial && dateLimit ){
                 const promedioFechaDefinida = await Action.sequelize.query(`SELECT AVG("quantity") AS "promedio" FROM "actions" WHERE "date" BETWEEN '${dateInitial}' AND '${dateLimit}' AND  "idUser" = ${idUser} AND "type" = '${type}'`);
 
-                result['promedioFechaDefinida'] = promedioFechaDefinida[0][0].promedio;
+                result['promedioFechaDefinida'] = parseFloat(promedioFechaDefinida[0][0].promedio).toFixed(2);
             }
 
             //total general de un tipo de actions  ******gastos o ingresos *********

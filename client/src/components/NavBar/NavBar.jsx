@@ -1,16 +1,18 @@
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/nav.png';
-import "./navBar.css"
-import { connect } from 'react-redux';
+import "./navBar.css";
+import {  useDispatch, useSelector } from 'react-redux';
+import { BsPersonCircle } from "react-icons/bs";
+import {cleanUser} from '../../redux/actions';
 
 
-function NavBar({user}) {
+function NavBar() {
   // Función que maneja el botón Logout
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
-  console.log(user);
-
-  const handleLogout = (event) => {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
     const obj = {
       tokenUser: '',
@@ -20,10 +22,26 @@ function NavBar({user}) {
     dispatch(cleanUser(obj));
   };
 
+
+   const imageUrl = ""; //poner url
+
+  // imagen si está definida o icono de Font Awesome
+  const renderProfileContent = () => {
+    if (imageUrl) {
+      return (
+        <img src={imageUrl} alt="Perfil" className="profile-image" />
+      );
+    } else {
+      return (
+        <BsPersonCircle />
+      );
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light " style={{ backgroundColor: '#ffb703' }}>
       <div className="container-fluid">
-        <NavLink className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
         </NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,19 +55,24 @@ function NavBar({user}) {
             <li className="nav-item">
               <NavLink className="nav-link" to="/detailsLog">Movimientos</NavLink>
             </li>
-            {user.idAccess === 1 && (
-                <li className="nav-item">
-                  <NavLink className="nav-link" to="/users">Usuarios</NavLink>
-                </li>
-            )}
+            
             <li className="nav-item">
               <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
             </li>
-            <li className="nav-item">
+
+            {user.idAccess === 1 && (
+                <li className="nav-item">
               <NavLink exact className="nav-link" to="/admin">Admin</NavLink>
             </li>
+            )}
+           
           </ul>
           <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/profile">
+                {renderProfileContent()}
+              </NavLink>
+            </li>
             <li className="nav-item">
               <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
             </li>
@@ -60,10 +83,5 @@ function NavBar({user}) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    user: state.user  
-  }
-}
 
-export default connect(mapStateToProps)(NavBar);
+export default NavBar;

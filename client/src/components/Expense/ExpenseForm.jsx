@@ -15,6 +15,7 @@ const ExpenseForm = () => {
     quantity: '',
     date: '',
     idCategory: '',
+    description: ''
   });
 
   const handleClose = () => {
@@ -23,6 +24,7 @@ const ExpenseForm = () => {
       quantity: '',
       date: '',
       idCategory: '',
+      description: ''
     });
   };
   const handleShow = () => setShow(true);
@@ -43,7 +45,9 @@ const ExpenseForm = () => {
     date: Yup.date()
       .required('La fecha es requerida')
       .max(new Date(), 'La fecha no puede ser posterior a la actual'),
-    idCategory: Yup.string().required('La categoría es requerida')
+    idCategory: Yup.string().required('La categoría es requerida'),
+    description: Yup.string()
+    .max(80, 'Máximo 80 caracteres')
   });
   console.log(validationSchema);
   const handleSubmit = (values, { resetForm }) => {
@@ -54,7 +58,8 @@ const ExpenseForm = () => {
     setExpense({                                 
       quantity: values.quantity,
       date: values.date,
-      idCategory: values.idCategory
+      idCategory: values.idCategory,
+      description: values.description
     });
   };
 
@@ -63,7 +68,7 @@ const ExpenseForm = () => {
       <Container>
   
         <Formik
-          initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '' }}
+          initialValues={{ type: 'gastos', quantity: '', date: '', idCategory: '', description: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -111,12 +116,24 @@ const ExpenseForm = () => {
                 <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
               </Form.Group>
 
+              <Form.Group controlId="description">
+                <Form.Label>Descripción:</Form.Label>
+                <Field 
+                  type="text" 
+                  name="description" 
+                  value={values.description} 
+                  onChange={handleChange} 
+                  className={`form-control ${touched.description && errors.description && 'is-invalid'}`} 
+                />
+                <ErrorMessage name="description" component="div" className="invalid-feedback" />
+              </Form.Group>
+
               <Button variant="primary" size="sm" type="submit" onClick={handleShow}>Añadir</Button>
             </Form>
           )}
         </Formik>
       </Container>
-      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
+      {show && expense.quantity && expense.date && expense.idCategory && expense.description && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
     </div>
   );
 };

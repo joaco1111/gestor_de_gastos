@@ -1,10 +1,10 @@
-.page-item.active .page-link .visually-hidden {
+/* .page-item.active .page-link .visually-hidden {
     display: none;
 }
 
 .page-link span[aria-hidden="true"] {
     display: none;
-}
+} */
 
 .pagination-container {
     display: flex;

@@ -1,34 +1,33 @@
-import Table  from "react-bootstrap/Table";
-import Button  from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
+import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import './metricasActions.css'; 
 
-const MetricasActions = ({title, number}) => {
-
+const MetricasActions = ({ title, number }) => {
     const navigate = useNavigate();
 
     return (
-        <>
-            <Table striped>
-                <thead >
-                    <tr>
-                        {title.map(t => {
-                            return <th>{t}</th>
-                        })}
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        
-                        {number.map(n => {
-                            return <td>{n}</td>
-                        })}
-                    </tr>
-                </tbody>
-            </Table>
-            <Button variant="info" onClick={()=> navigate('/detailsLog')}> 
-                Ver más detalles
-            </Button>
-        </>
+        <div className="metricas-container justify-content-center">
+            <div className="metricas-item">
+                <Table striped>
+                    <thead>
+                        <tr>
+                            {title.map((t, index) => <th key={index}>{t}</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {number.map((n, index) => <td key={index}>{n}</td>)}
+                        </tr>
+                    </tbody>
+                </Table>
+            </div>
+            <div className="metricas-item">
+                <Button variant="primary" className="metricas-button" onClick={() => navigate('/detailsLog')}>
+                    Ver más detalles
+                </Button>
+            </div>
+        </div>
     )
 }
 
