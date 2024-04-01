@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMetrics, fetchActions } from '../../redux/actions';
 import Table from 'react-bootstrap/Table';
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart, DoughnutController, ArcElement, CategoryScale, Tooltip, Legend } from 'chart.js';
 import './ActionsMetrics.css';
+
+Chart.register(DoughnutController, ArcElement, CategoryScale, Tooltip, Legend);
 
 const ActionsMetrics = () => {
     const actions = useSelector(state => state.actions);
@@ -40,27 +43,15 @@ const ActionsMetrics = () => {
         dispatch(fetchActions());
     }, [dispatch]);
 
-    const pieData = {
+    const data = {
         labels: ['Cantidad', 'Promedio Entre Fechas', 'Promedio', 'Total'],
         datasets: [
             {
-                data: [
-                    metrics?.count || 0,
-                    metrics?.promedioFechaDefinida || 0,
-                    metrics?.promedioType || 0,
-                    metrics?.total || 0
-                ],
-                backgroundColor: ['gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
+                data: [metrics.count, metrics.promedioFechaDefinida, metrics.promedioType, metrics.total],
+                backgroundColor: ['#36A2EB', '#FFCE56', '#FF6384', '#4BC0C0'],
+                hoverBackgroundColor: ['#36A2EB', '#FFCE56', '#FF6384', '#4BC0C0']
             }
         ]
-    };
-
-    const pieOptions = {
-        plugins: {
-            legend: {
-                position: 'bottom',
-            },
-        },
     };
 
     return (
@@ -113,8 +104,8 @@ const ActionsMetrics = () => {
                         )}
                     </div>
                     <div className="col-md-6">
-                        <div className="chart-container" style={{ maxWidth: '800px' }}>
-                            <Pie data={pieData} options={pieOptions} />
+                        <div className="chart-container" style={{ maxWidth: '500px' }}>
+                            <Doughnut data={data} />
                         </div>
                     </div>
                 </div>
