@@ -23,7 +23,7 @@ const Profile = () => {
       setTimeout(()=> {
         setMessage(null);
       }, 3000)
-    }, [])
+    }, [message])
 
   // Vista previa de la imagen
   const handleImagePreview = (e) => {
@@ -51,8 +51,8 @@ const Profile = () => {
 
         
         try{
-          const id = localToken?.idUser;
-          await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${id}`, formData, config)
+          // const id = localToken?.idUser;
+          // await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${id}`, formData, config)
           
           return setMessage({message: "Foto de perfil actualizada.", variant: "success"});
 
