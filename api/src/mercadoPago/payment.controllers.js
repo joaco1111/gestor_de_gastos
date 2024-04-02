@@ -27,8 +27,8 @@ const createOrder = async (req,res) => {
             }
         ],
         back_urls: {
-            success: "http://localhost:3001/success",
-            failure: "http://localhost:3001/failure",
+            success: "http://localhost:5173/success",
+            failure: "http://localhost:5173/failure",
             pending: "http://localhost:3001/pending"
         },
         notification_url: "https://0322-181-91-2-147.ngrok-free.app/webhook"
