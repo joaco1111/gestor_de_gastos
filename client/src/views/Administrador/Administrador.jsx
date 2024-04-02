@@ -14,7 +14,7 @@ import Pie from "./pie/Pie"
 // import Faq from "./Faq"
 import Calendar from "./Calendar"
 import Geography from "./geo/Geography.jsx";
-
+import Transactions from "./Transactions.jsx";
 
 
 const Administrador  = () => {
@@ -31,6 +31,7 @@ const Administrador  = () => {
                         <Route path="/" element={<DashBoard/>}/>
                         <Route path="/team" element={<Team/>}/>
                         <Route path="/userslist" element={<Users/>}/>
+                        <Route path="/transactions" element={<Transactions/>}/>
                         {/* <Route path="/invoices" element={<Invoices/>}/> */}
                         {/* <Route path="/form" element={<Form/>}/> */}
                         {/* <Route path="/bar" element={<Bar/>}/> */}
@@ -38,8 +39,7 @@ const Administrador  = () => {
                         {/* <Route path="/line" element={<Line/>}/> */}
                         <Route path="/geography" element={<Geography/>}/>
                         {/* <Route path="/faq" element={<Faq/>}/> */}
-                        <Route path="/calendar" element={<Calendar/>}/>
-                        
+                        <Route path="/calendar" element={<Calendar/>}/>      
                     </Routes>
                 </div>
                 

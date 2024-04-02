@@ -4,6 +4,7 @@ import { fetchActionDetail, updateAction, getCategoryExpense, getCategoryIncome 
 import { useParams } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import Modal from './Modal';
+import ModalHome from '../Modals/ModalHome';
 import './ActionDetail.css'
 import NavBar from '../NavBar/NavBar';
 
@@ -24,6 +25,9 @@ const ActionDetail = () => {
 
   console.log(action)
 
+  //Estado para controlar la visiblidad del Modal que informa actualización exitosa
+  const [showModalHome, setShowModalHome] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedData(prevData => ({
@@ -40,6 +44,7 @@ const ActionDetail = () => {
     await dispatch(updateAction(id, updatedData));
     dispatch(fetchActionDetail(id));
     closeModal();
+    setShowModalHome(true);           //Después de que se complete la actualización se muestra el Modal con el mensaje de éxito
   };
 
   const openModal = () => {
@@ -110,6 +115,7 @@ const ActionDetail = () => {
         </Card>
         </div>
       </div>
+      <ModalHome show={showModalHome} handleClose={() => setShowModalHome(false)} />
     </div>
   );
 };
