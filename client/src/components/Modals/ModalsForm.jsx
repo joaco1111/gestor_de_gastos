@@ -4,9 +4,9 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
-const _URL_UPDATE = 'http://localhost:3001/auth/userUpdate/';
+const _URL_UPDATE = `${import.meta.env.VITE_BASE_URL}/auth/userUpdate/`;
 
-const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
       headers: {
         token: localToken?.tokenUser

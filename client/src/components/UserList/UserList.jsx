@@ -9,11 +9,14 @@ import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
 import { useTheme } from '@mui/material/styles';
 import { tokens } from "../../views/Administrador/theme"
+import {BsFillTrashFill, BsPersonLock, BsEyeFill, BsXOctagonFill, BsPersonFillGear} from 'react-icons/bs';
 
 
 const _URL_CLEAN = `${import.meta.env.VITE_BASE_URL}/auth/user/`;
 const _URL_RESTORE = `${import.meta.env.VITE_BASE_URL}/auth/user/restore/`;
-const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+const _URL_UNLOCK = `${import.meta.env.VITE_BASE_URL}/auth//unLockUser/`;
+
+const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
 
 const config = {
       headers: {
@@ -232,7 +235,10 @@ const UserList = ({ users, getUsers}) => {
         )}
 
         {/* MODALS DESHABILITAR USUARIO */}
-        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivated} colors={colors}/>}
+        {activated.access && <ModalsDisable id={activated.id} activated={activated.access} title={`Confirmar Deshabilitación`} body={`¿Seguro que deseas deshabilitar este usuario?`} functionAccess={handleUnlockUser} setAccess={setActivated} colors={colors}/>}
+
+        {/* MODALS ELIMINAR USUARIO */}
+        {activatedDelete.access && <ModalsDisable id={activatedDelete.id} activated={activatedDelete.access} title={`Confirmar Eliminación`} body={`¿Seguro que deseas eliminar este usuario?`} functionAccess={handleCleanUser} setAccess={setActivatedDelete} colors={colors}/>}
 
         {/* MODALS ACTUALIZAR DATOS */}
         {activatedForm.access && <ModalsForm data={activatedForm.data} activatedForm={activatedForm} setActivatedForm={setActivateForm} setMessage={setMessage} colors={colors}/>}
