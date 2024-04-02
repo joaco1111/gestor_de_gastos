@@ -8,6 +8,8 @@ import UserList from './components/UserList/UserList';
 import ActionDetail from './components/ActionDetail/ActionDetail';
 import Administrador from './views/Administrador/Administrador';
 import Profile from './components/Perfil/Perfile';
+import Failure from './views/Collaboration/Failure';
+import Success from './views/Collaboration/Failure';
 
 function App() {
     const dispatch = useDispatch();
@@ -43,6 +45,8 @@ function App() {
     return (
         <div>
             <Routes>
+                <Route path ='/success' element={<Success/>}/>
+                <Route path='/failure' element={<Failure/>}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/log' element={<Log />}/>
                 <Route path='/collaboration' element={user.tokenUser || newUser.tokenUser ? <Collaboration /> : <Login />}/>
