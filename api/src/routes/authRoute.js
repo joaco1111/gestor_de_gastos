@@ -5,8 +5,6 @@ const { admin } = require('../middleware/rolsExtractor')
 const path = require('path')
 const multer = require('multer')
 
-console.log('hola');
-
 const storage = multer.diskStorage({
     destination: function (req,file, cb) {
         const uploadDir = path.join(__dirname, '../../uploads');
