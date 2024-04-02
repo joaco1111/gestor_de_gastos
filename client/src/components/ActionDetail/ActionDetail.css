@@ -44,11 +44,20 @@
 }
 
 .form-group p {
-  max-height: 100px; /* Establecer altura máxima para la descripción */
-  overflow-y: auto; /* Agregar barra de desplazamiento vertical si la descripción es muy larga */
+  max-height: 100px; 
+  overflow-y: auto;
 }
 
 .action-detail-button{
   width: 100%;
   height: 38px; 
 }
+
+
+.back-button button{
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
+}
+
