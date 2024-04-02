@@ -2,7 +2,7 @@ const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, description, idCategory } = req.body;
+    const { type, quantity, date, description = "", idCategory } = req.body;
     const idUser = req.userID;
 
     const typeCategory = {}

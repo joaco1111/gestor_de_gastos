@@ -1,11 +1,28 @@
 const { User } = require('../../db')
 const { validate } = require('../../validations/validationAuthController')
 const bcrypt = require('bcrypt')
-const cloudinary = require('cloudinary')
+const cloudinary = require('../../configCloudinary');
 const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const {sendEmail, getTemplate} = require("../../config/nodemailer")
+
+const getUser = async (req, res) => {
+    try {
+        const {id} = req.params;
+
+        if(!id) return res.status(400).send("No existen parametros");
+
+        const user = await User.findOne({where: {id}});
+
+        if(!user) return res.status(400).send("No existe este usuario");
+
+        return res.status(200).json(user);
+
+    } catch (error) {
+        return res.status(500).json({error: error.message})
+    }
+}
 
 const loginHandler = async (req, res) => {
 
@@ -18,11 +35,11 @@ const loginHandler = async (req, res) => {
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const { token, idAccess } = await validate(email, password);
+        const { token, idAccess, user } = await validate(email, password);
 
         if (token) {
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password})
+            res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name })
             //res.header('token', token).json({access: true, token, user});
 
             // Se anexa codigo para envio de correos luego de poder leguearse
@@ -73,14 +90,14 @@ const registerHandler = async (req, res) => {
         // creo el registro en db
     
         await User.create({ name: name.toLowerCase(), email, password: passwordHash, idAccess: 2 });
-        const { token } = await validate(email, password);
+        const { token, user, idAccess } = await validate(email, password);
 
         if (token) {
             //se envia el correo
             const html = getTemplate("bienvenida", name);
             await sendEmail(email,`Bienvenido ${name}`, html)
             //respondemos con el token y el acceso
-            res.status(200).json({ tokenUser: token, email: email, password: password })
+            res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name });
             //res.header('token', token).json({access: true, token, user});
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
@@ -120,11 +137,11 @@ const updateHandler = async (req, res) => {
         //integracion CLOUDINARY
         //Verificamos si hay una imagen recibida
         //la extraemos
-        if (req.files && req.files.image) {
-            const image = req.files.image;
+        if (req?.file) {
+            const {path} = req.file;
 
             // Subimos  la imagen a Cloudinary
-            const imageUploadResult = await cloudinary.uploader.upload(image.tempFilePath);
+            const imageUploadResult = await cloudinary.uploader.upload(path);
 
             // se guarda la URL de la imagen en la base de datos
             updateData["photoProfile"] = imageUploadResult.secure_url;
@@ -140,17 +157,28 @@ const updateHandler = async (req, res) => {
     }
 }
 
-const deleteUser = async(req, res) => {
+const unLockUser = async(req, res) => {
     try {
         const idUser = req.params.id;
         const user = await User.findOne({where: {id: idUser}});
-        console.log(user);
 
         if(!user) return res.status(400).send("No se encuentra el usuario.")
 
         user.destroy();
-        
-        return res.status(200).json({detroy: true, user});
+        return res.status(200).json({destroy: true, user});
+    } catch (error) {
+        return res.status(500).json({error})
+    }
+}
+const deleteUser = async(req, res) => {
+    try {
+        const idUser = req.params.id;
+        const user = await User.findOne({where: {id: idUser}});
+
+        if(!user) return res.status(400).send("No se encuentra el usuario.")
+
+        user.destroy({force: true});
+        return res.status(200).json({destroy: true, user});
     } catch (error) {
         return res.status(500).json({error})
     }
@@ -217,7 +245,7 @@ const authenticationFromGoogle = async (req,res) => {
 const getUsers = async(req,res) => {
     try {
         const { page = 1, limit = 10, search = "" } = req.query;
-        console.log(search);
+
         const offset = (page - 1) * limit;
 
         //cuando no haya busqueda, devolvemos todos los usuarios
@@ -241,9 +269,7 @@ const getUsers = async(req,res) => {
                 name: {
                     [Op.like]: `%${search}%`
                 }, 
-                idAccess: {
-                    [Op.or]: [1,2]
-                }
+                idAccess: 2
             }, 
             limit, 
             offset, 
@@ -281,8 +307,10 @@ module.exports = {
     loginHandler,
     registerHandler,
     updateHandler,
+    getUser,
     getUsers,
     authenticationFromGoogle,
+    unLockUser,
     deleteUser,
     restoreUser
 }

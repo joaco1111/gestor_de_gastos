@@ -28,7 +28,8 @@ const validate = async (email, password) => {
             const token = jwt.sign(userForToken, SECRET_KEY)
             return {
                 token,
-                idAccess
+                idAccess,
+                user
             }
         } else {
             return false // Contraseña incorrecta

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 
-const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
       headers: {
         token: localToken?.tokenUser
@@ -33,10 +33,10 @@ const Home = () => {
     const [ingresos, setIngresos] = useState([])
 
     useEffect(()=> {
+        if(localToken){
             getMetrica("gastos").then(res => setGastos(res));
             getMetrica("ingresos").then(res => setIngresos(res));
-       
-        
+        }
     },[actions])
 
     return (
