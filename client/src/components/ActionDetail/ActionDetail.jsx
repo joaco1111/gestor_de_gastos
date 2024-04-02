@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchActionDetail, updateAction, getCategoryExpense, getCategoryIncome } from '../../redux/actions';
 import { useParams } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
@@ -7,6 +8,8 @@ import Modal from './Modal';
 import ModalHome from '../Modals/ModalHome';
 import './ActionDetail.css'
 import NavBar from '../NavBar/NavBar';
+import { FaArrowLeft } from 'react-icons/fa';
+
 
 const ActionDetail = () => {
   const dispatch = useDispatch();
@@ -62,6 +65,12 @@ const ActionDetail = () => {
     setIsModalOpen(false);
   };
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(-1); 
+  };
+
   return (
     <div>
       <NavBar/>
@@ -81,8 +90,12 @@ const ActionDetail = () => {
           <Button onClick={closeModal}>Cancelar</Button>
         </Modal>
       )}
+      
       <div className='container-principal'>
         <div className="card-container">
+        <div className='back-button'>
+        <button  onClick={handleClick}><FaArrowLeft /></button>
+        </div>
         <Card className="card shadow-sm">
           <Card.Body className="card-body p-4">
             <Card.Title className='text-center mb-3'>Movimiento</Card.Title>
