@@ -20,9 +20,9 @@ import Transactions from "./Transactions.jsx";
 const Administrador  = () => {
     const [theme, colorMode] = useMode()
     return( 
-        <ColorModeContext.Provider  value={colorMode}>
-            <ThemeProvider theme={theme}>
-                <CssBaseline/>   
+        // <ColorModeContext.Provider  value={colorMode}>
+        //     <ThemeProvider theme={theme}>
+                // <CssBaseline/>   
             <div style={{display: 'flex'}}>
                 <SideBar/>     
                 <div className="content">
@@ -45,8 +45,8 @@ const Administrador  = () => {
                 
             </div>
 
-            </ThemeProvider>
-        </ColorModeContext.Provider>
+           //</ThemeProvider>
+       // </ColorModeContext.Provider> 
     )
 }
 export default Administrador;
