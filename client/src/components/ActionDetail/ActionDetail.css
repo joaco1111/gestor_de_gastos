@@ -1,8 +1,15 @@
 .container-principal {
+  position: relative; /* Añadido para establecer un contexto de posicionamiento */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 50px;
+}
+
+.back-link-container {
+  position: absolute;
+  top: 3%; /* Ajuste responsive */
+  left: 20%; /* Ajuste responsive */
 }
 
 .card-container {

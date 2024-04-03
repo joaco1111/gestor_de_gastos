@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions, deleteAction } from '../../redux/actions';
 import ActionsPagination from '../Pagination/ActionsPagination';
 import { BiTrash, BiDetail } from 'react-icons/bi';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Table } from 'react-bootstrap'; // Importar componente de tabla de Bootstrap
+import { Table } from 'react-bootstrap';
 import './IncomeExpenseLog.css'
 
 const IncomeExpenseLog = () => {
@@ -21,7 +21,7 @@ const IncomeExpenseLog = () => {
       category: '',
     });
     const [orderDirection, setOrderDirection] = useState('DESC');
-    const [orderBy, setOrderBy] = useState('createdAt'); // Nuevo estado para el campo de ordenamiento
+    const [orderBy, setOrderBy] = useState(''); // Cambiado a valor vacío para seleccionar por defecto 'Seleccionar' en el select de ordenar por
 
     useEffect(() => {
       dispatch(fetchActions(currentPage, limitPerPage, filters, orderDirection, orderBy)); // Incluir el nuevo estado 'orderBy' en la llamada a fetchActions
@@ -141,7 +141,8 @@ const IncomeExpenseLog = () => {
         <div className="col-md-3 mb-3">
           <label htmlFor="orderBy" className="form-label">Ordenar por:</label>
           <select className="form-select" id="orderBy" name="orderBy" value={orderBy} onChange={handleOrderChange}>
-            <option value="createdAt">Fecha</option>
+            <option value="">Seleccionar</option>
+            <option value="date">Fecha</option>
             <option value="quantity">Cantidad</option>
           </select>
         </div>

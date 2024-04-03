@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED } from './action-types';
 import axios from 'axios';
 
 
@@ -107,14 +107,21 @@ export const getCategoryIncome = () => {
 };
 
 
-export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection = 'DESC', orderBy = 'date') => {
+export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection, orderBy) => {
     return async function(dispatch) {
         try {
             if(loggedUserJSON) {
-                
+                const params = { page, limit, ...filters };
+                if (orderDirection) {
+                    params.orderDirection = orderDirection;
+                }
+                if (orderBy) {
+                    params.orderBy = orderBy;
+                }
+
                 const configuration = {
                     ...config,
-                    params: { page, limit, ...filters, orderDirection, orderBy } // Aquí incluimos orderBy en los parámetros de la solicitud
+                    params
                 };
     
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
@@ -133,6 +140,8 @@ export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection 
         }
     };
 };
+
+
 
 export const fetchMetrics = (type, dateInitial, dateLimit) => {
     return async function(dispatch) {
@@ -241,4 +250,29 @@ export const fetchActionDetail = (id) => {
   
 export const cleanUser = (emptyUser) => {
     return { type: CLEAN_USER, payload: emptyUser }
+};
+
+export const fetchTransactions = () => {
+    return async function(dispatch) {
+      try {
+
+        if(loggedUserJSON) {
+      
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, config);
+
+            console.log('Trnsactions', response.data);
+      
+            dispatch({
+              type: GET_TRANSACTIONS,
+              payload: response.data
+            });
+        }
+      } catch (error) {
+        console.error('Error al obtener las transacciones:', error);
+        dispatch({
+          type: FETCH_TRANSACTIONS_ERROR,
+          payload: error.message
+        });
+      }
+    };
 };
