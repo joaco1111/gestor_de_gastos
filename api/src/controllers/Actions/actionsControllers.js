@@ -59,7 +59,7 @@ const createActions = async (req, res) => {
 
 const getActions = async (req, res) => {
   try {
-    const { page = 1, limit = 5, data, type, category, orderBy, orderDirection } = req.query;
+    const { page = 1, limit = 5, date, type, category, orderBy, orderDirection } = req.query;
     const idUser = req.userID;
 
     const offset = (page - 1) * limit;
@@ -69,8 +69,8 @@ const getActions = async (req, res) => {
       "idUser": idUser,
     };
 
-    if (data) {
-      where.data = data;
+    if (date) {
+      where.date = date;
     }
     
     if (type) {
@@ -86,20 +86,29 @@ const getActions = async (req, res) => {
     }
 
     const order = [];
-    let selectedOrderBy = 'date'; // Campo por defecto para ordenar
-
-    if (orderBy === 'date' || orderBy === 'quantity') {
-      selectedOrderBy = orderBy;
+    if (orderBy && orderDirection) {
+      let selectedOrderBy = '';
+      let selectedOrderDirection = '';
+      
+      if (orderBy === 'date' || orderBy === 'quantity') {
+        selectedOrderBy = orderBy;
+      }
+    
+      if (orderDirection === 'ASC' || orderDirection === 'DESC') {
+        selectedOrderDirection = orderDirection;
+      }
+      
+      if (selectedOrderBy && selectedOrderDirection) {
+        order.push([selectedOrderBy, selectedOrderDirection.toUpperCase()]);
+      }
     }
-
-    order.push([selectedOrderBy, orderDirection.toUpperCase()]);
-
+    
     const resultFilter = await Action.findAndCountAll({
       where: { ...where },
       limit,
       offset,
       include: [{ model: CategoryBills }, { model: CategoryIncome }],
-      order: order,
+      order: order.length > 0 ? order : undefined, // Si no hay orden, se pasa undefined
       attributes: { include: ['description'] },
     });
 
@@ -112,6 +121,9 @@ const getActions = async (req, res) => {
     return res.status(500).send(error.message);
   }
 }
+
+
+
 
 
 
