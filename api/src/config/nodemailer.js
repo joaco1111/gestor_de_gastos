@@ -28,8 +28,8 @@ const transporter = nodemailer.createTransport({
             subject,
             html,
     attachments: [{
-        filename: 'GDG_fondo_blanco.jpeg',
-        path: __dirname+ '/GDG_fondo_blanco.jpeg',
+        filename: 'GDG_fondo_blanco.png',
+        path: __dirname+ '/GDG_fondo_blanco.png',
         cid: 'GDG_fondo_blanco' //same cid value as in the html img src
     }],
       });
@@ -47,7 +47,7 @@ const transporter = nodemailer.createTransport({
 
 const getBienvenida = (name) => {
   return `
-  <img src='cid:GDG_fondo_blanco'>
+  <img src='cid:GDG_fondo_blanco' width="150" height="110"/>
       <h2>Hola, ${name || 'Usuario'}</h2>
       <p>Gracias por preferirnos.</p>
       <p>Ahora que estás regitrado/a, te contamos mas de la aplicacion</p>
@@ -60,21 +60,29 @@ const getBienvenida = (name) => {
       </ul>
     
       <h3 style="margin: auto;">¡Gestor de Gastos estamos para ayudarte!
+
+      <p>
+      <strong>
+      Atte. <a
+      href="https://gestor-de-gastos-front.vercel.app/" target="_blank"
+      style="text-decoration: none;">Gestor de Gastos</a>
+      </strong>
+  </p>
       `;
 }
 
 const getUserEliminado = (name) => {
   return `
-  <img src='https://i.ibb.co/MN512MH/logo-Hen-Ry-Library.jpg' alt='HenryLibraryLogo'>
+ 
   <h2>Estimado/a ${name}, tu cuenta ha sido eliminada satisfactoriamente.
       <br>
-      Si esta solicitud no la hiciste tú, escríbenos a <a href="mailito:henrylibrary@gmail.com">henrylibrary@gmail.com</a>
+      Si esta solicitud no la hiciste tú, escríbenos a <a href="mailito:gestordegastospf@gmail.com">Gestor de Gastos</a>
   </h2>
   <p>
       <strong>
       Atte. <a
-      href="http://henry-library.netlify.app/" target="_blank"
-      style="text-decoration: none;">Librería Henry</a>
+      href="https://gestor-de-gastos-front.vercel.app/" target="_blank"
+      style="text-decoration: none;">Gestor de Gastos</a>
       </strong>
   </p>
   `

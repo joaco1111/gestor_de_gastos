@@ -148,7 +148,7 @@ const updateHandler = async (req, res) => {
         }
 
 
-        userExists.update(updateData);
+        userExists.update(updateData); 
 
         return res.status(200).send("Datos actualizados correctamente.");
 
@@ -209,6 +209,9 @@ const authenticationFromGoogle = async (req,res) => {
                 let token = jwt.sign(userForToken, SECRET_KEY)
 
                 if (token) {
+                    //se envia el correo
+            const html = getTemplate("bienvenida", email);
+            await sendEmail(email,`Bienvenido ${email}`, html)
                     res.status(200).json({ access: true, tokenUser: token, idAccess: 2})
                 }
             } else {
