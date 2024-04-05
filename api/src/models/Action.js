@@ -19,8 +19,11 @@ module.exports = (sequelize) => {
         allowNull: false
     },
     date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING
     }
  
 }, { timestamps: false })

@@ -4,16 +4,16 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
 
-const _URL_UPDATE = 'http://localhost:3001/auth/userUpdate/';
+const _URL_UPDATE = `${import.meta.env.VITE_BASE_URL}/auth/userUpdate/`;
 
-const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
       headers: {
         token: localToken?.tokenUser
       }
 }
 
-const ModalsForm = ({data, activatedForm, setActivatedForm, setMessage}) => {
+const ModalsForm = ({data, activatedForm, setActivatedForm, setMessage, colors}) => {
     const {id, name, email, password} = data;
     const [form, setForm] = useState({
         name,
@@ -48,11 +48,11 @@ const ModalsForm = ({data, activatedForm, setActivatedForm, setMessage}) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered>
 
-        <Modal.Header>
+        <Modal.Header style={{ backgroundColor: colors.primary[900], color: colors.grey[100] }}>
           <Modal.Title>Formulario de Actualización de Datos</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
+        <Modal.Body style={{ backgroundColor: colors.grey[700], color: colors.grey[100] }}>
             <Form>
                 <Form.Group className="mb-3" controlId="name">
                     <Form.Label>Usuario</Form.Label>
@@ -70,7 +70,7 @@ const ModalsForm = ({data, activatedForm, setActivatedForm, setMessage}) => {
             
         </Modal.Body>
 
-        <Modal.Footer>
+        <Modal.Footer style={{ backgroundColor: colors.primary[900], borderTop: `1px solid ${colors.grey[200]}` }}>
           <Button variant="danger" onClick={()=> setActivatedForm({access: false, data: ''})}>
             Cancelar
           </Button>

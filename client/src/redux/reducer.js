@@ -1,4 +1,4 @@
-import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
+import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, SET_METRICS, SET_ERROR, GET_TRANSACTIONS, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
 
 const initialState = {
     users: [],
@@ -7,10 +7,11 @@ const initialState = {
     expenses: [],
     categorieExpense: [],
     categorieIncome: [],
+    transactions: [],
     actions: [],
     totalCount: 0,
     loginError: '',
-    logError: '',
+    logError: ''
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -48,6 +49,7 @@ const rootReducer = (state = initialState, action) => {
                 categorieIncome: action.payload
             };
         case GET_ACTIONS:
+            console.log('GET_ACTIONS', action.payload);
             const { actions, totalCount } = action.payload;
             return {
                 ...state,
@@ -58,6 +60,12 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 actionDetail: action.payload
+            };
+        case GET_TRANSACTIONS:
+            console.log('GET_TRANSACTIONS', action.payload);
+            return {
+                ...state,
+                transactions: action.payload
             };
         case CLEAN_USER:
             return {
@@ -86,6 +94,16 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state,
                 updateActionError: action.payload
+            };
+        case SET_METRICS:
+            return {
+                ...state,
+                metrics: action.payload
+            };
+        case SET_ERROR:
+            return {
+                ...state,
+                error: action.payload
             };
         case LOG_FAILED:
             return {

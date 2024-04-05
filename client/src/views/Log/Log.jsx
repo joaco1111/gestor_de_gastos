@@ -2,14 +2,15 @@ import { useState } from 'react';
 import { validate } from '../../utils';
 //import axios from 'axios';
 import  './log.css';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Container,Form, Row, Col, Button } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
 import { authenticationFromGoogle } from '../../redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
 import { log } from '../../redux/actions';
-import { FaUser, FaEnvelope, FaLock} from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
@@ -98,13 +99,17 @@ const Log = () => {
     };
     
     return (
-        <Container>
+        <div className='container-one'>
+            <div className='container-two'>
         {loggedIn && <Navigate to="/home" />}
-        <Row className="justify-content-center align-items-center 'login-container'">
-            <Col xs={12} md={6}>
-                {/* <h1>Log</h1> */}
-                <form onSubmit={handleSubmit} className='log-form'>
-                    <div><h2>Log</h2></div>
+        <Row >
+            <Col>
+                    
+                <Form onSubmit={handleSubmit} className='log-form'>
+                <Link to="/" className="go-back">
+                        <FaArrowLeft />   
+                    </Link>
+                    <div><h2>Sign Up</h2></div>
                     <div className="mb-3">
                         <label className="form-label"><FaUser/> Name:</label>
                         <input type='text' className="form-control" value={form.name} onChange={handleChange} name='name' />
@@ -121,13 +126,15 @@ const Log = () => {
                         <input type='password' className="form-control" value={form.password} onChange={handleChange} name='password' />
                         {errors.password && <span className="text-danger">{errors.password}</span>}
                     </div>
-                    <button type='submit' className="btn btn-primary" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</button>
-                </form>
-                <h4>or</h4>
-                <button onClick={handleGoogleSignIn} className="btn btn-danger mt-3">Sign in with Google</button>
+                    <Button type='submit' variant="primary" className="submit" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</Button>
+                    <h6>or</h6>
+                <Button onClick={handleGoogleSignIn} variant='danger' className="submit">Sign in with Google</Button>
+                </Form>
+                
             </Col>
         </Row>
-    </Container>
+        </div>
+    </div>
     );
 };
 

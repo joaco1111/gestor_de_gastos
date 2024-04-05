@@ -3,11 +3,13 @@
   margin: 10px;
   border-radius: 16px;
   padding: 0.5rem;
+  
 }
 
 .navbar-toggler {
   border: none;
 }
+
 
 .navbar-nav .nav-link {
   color: #666777;
@@ -29,6 +31,14 @@
   position: relative;
   z-index: 1; 
 }
+
+.profile-image {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
 
 @media (min-width: 991px) {
   .navbar-nav .nav-link:before {

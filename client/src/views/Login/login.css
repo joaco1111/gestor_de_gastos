@@ -50,6 +50,7 @@ body {
 
   .submit-button {
     width: 100%; 
+    margin-bottom: 10px;
   }
 
   .error-message {

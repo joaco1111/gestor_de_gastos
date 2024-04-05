@@ -1,11 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login } from '../../redux/actions';
+import { login, authenticationFromGoogle } from '../../redux/actions';
 import { validate } from '../../utils';
 import './Login.css';
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
-import { FaLock, FaUser } from 'react-icons/fa';
+import { FaLock, FaUser, FaArrowLeft } from 'react-icons/fa';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
+    authDomain: "gestor-de-pago.firebaseapp.com",
+    projectId: "gestor-de-pago",
+    storageBucket: "gestor-de-pago.appspot.com",
+    messagingSenderId: "357483683234",
+    appId: "1:357483683234:web:d5ce922a345680f14326fb",
+    measurementId: "G-D15CHFV0VP"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 
 const Login = () => {
@@ -35,8 +52,26 @@ const Login = () => {
             email: userData.email,
             password: userData.password
         };
-        console.log(credentials);
+        //console.log(credentials);
         await dispatch(login(credentials));
+    };
+
+    const handleGoogleSignIn = () => {
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                const user = result.user;
+                const { email, displayName, uid } = user; 
+
+                const credentials = {
+                    email,
+                    displayName,
+                    uid
+                }
+                dispatch(authenticationFromGoogle(credentials))
+                setLoggedIn(true);
+            }).catch((error) => {
+                console.error(error);
+            });
     };
 
     return(
@@ -44,7 +79,11 @@ const Login = () => {
             <div className="container-second">
             <Row>
                 <Col>
+                    
                     <Form className="login-form" onSubmit={handleSubmit}>
+                        <Link to="/" className="go-back-button">
+                            <FaArrowLeft />  
+                        </Link>
                         {/* <h1 className="text-center mb-4">Login</h1> */}
                         {loginError && <p className="error-message">{loginError}</p>}
                         <Form.Group controlId="formBasicEmail">
@@ -61,6 +100,7 @@ const Login = () => {
                         <Button variant="primary" type="submit" className="submit-button">
                             Login
                         </Button>
+                        <Button variant='danger' className="submit-button google" onClick={handleGoogleSignIn}>Sign in with Google</Button>
                         <div className="mt-3 text-center">
                             <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
                         </div>
@@ -69,6 +109,7 @@ const Login = () => {
                             <Link to="/log">Register Now</Link>
                         </div>
                     </Form>
+                    
                 </Col>
             </Row>
             </div>

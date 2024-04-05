@@ -11,7 +11,8 @@ const userExtractor = require('../middleware/userExtractor')
 const { filters } = require('../controllers/Filtres/Filters');
 const { getCategoryBills, getCategoryIncomes } = require('../controllers/Categories/Category');
 const {getCollaborations} = require('../controllers/Collaborations/Collaborations')
-const {createOrder, receiveWebHook} = require('../mercadoPago/payment.controllers')
+const {createOrder, receiveWebHook} = require('../mercadoPago/payment.controllers');
+const { metricasActions } = require('../controllers/metricas/metricasActions');
 const router = Router();
 
 //CATEGORIAS BILLS
@@ -30,6 +31,8 @@ router.put('/actions/:id', userExtractor, updateAction)
 router.get('/action/:id', userExtractor, getActionById)
 //Ruta eliminar algun dato de la Actions
 router.delete('/action/:id', userExtractor, deleteAction)
+//Ruta metricas de actions 
+router.get('/actions/metricas', userExtractor, metricasActions);
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas

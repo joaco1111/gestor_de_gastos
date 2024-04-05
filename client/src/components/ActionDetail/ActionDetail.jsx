@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { fetchActionDetail, updateAction, getCategoryExpense, getCategoryIncome } from '../../redux/actions';
 import { useParams } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 import Modal from './Modal';
+import ModalHome from '../Modals/ModalHome';
 import './ActionDetail.css'
 import NavBar from '../NavBar/NavBar';
+import { FaArrowLeft } from 'react-icons/fa';
+
 
 const ActionDetail = () => {
   const dispatch = useDispatch();
@@ -24,6 +28,9 @@ const ActionDetail = () => {
 
   console.log(action)
 
+  //Estado para controlar la visiblidad del Modal que informa actualización exitosa
+  const [showModalHome, setShowModalHome] = useState(false);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedData(prevData => ({
@@ -40,6 +47,7 @@ const ActionDetail = () => {
     await dispatch(updateAction(id, updatedData));
     dispatch(fetchActionDetail(id));
     closeModal();
+    setShowModalHome(true);           //Después de que se complete la actualización se muestra el Modal con el mensaje de éxito
   };
 
   const openModal = () => {
@@ -47,7 +55,8 @@ const ActionDetail = () => {
     setUpdatedData({
       date: fechaFormateada,
       quantity: action.quantity,
-      idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id
+      idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id,
+      description: action.description
     });
     setIsModalOpen(true);
   };
@@ -56,42 +65,70 @@ const ActionDetail = () => {
     setIsModalOpen(false);
   };
 
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(-1); 
+  };
+
   return (
     <div>
       <NavBar/>
+      {isModalOpen && (
+        <Modal 
+        onClose={closeModal} 
+        updatedData={updatedData} 
+        handleInputChange={handleInputChange} 
+        handleUpdate={handleUpdate}
+        action={action}
+        incomeCategories={incomeCategories}
+        expenseCategories={expenseCategories}
+        >
+          <input type="date" name="date" value={updatedData.date || ''} onChange={handleInputChange} />
+          <input type="text" name="quantity" value={updatedData.quantity || ''} onChange={handleInputChange} />
+          <Button onClick={handleUpdate}>Actualizar</Button>
+          <Button onClick={closeModal}>Cancelar</Button>
+        </Modal>
+      )}
+      
       <div className='container-principal'>
         <div className="card-container">
-          <Card>
-            <Card.Body>
-              <Card.Title className='text-center'>Movimiento</Card.Title>
-              <Card.Text>
-                Tipo: {action?.type} <br />
-                Fecha: {fechaFormateada} <br />
-                Cantidad: {action?.quantity} <br />
-                Categoría: {action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name}
-              </Card.Text>
-              <Button className="action-detail-button" onClick={openModal}>Editar</Button>
-            </Card.Body>
-          </Card>
-          
-          {isModalOpen && (
-            <Modal 
-            onClose={closeModal} 
-            updatedData={updatedData} 
-            handleInputChange={handleInputChange} 
-            handleUpdate={handleUpdate}
-            action={action}
-            incomeCategories={incomeCategories}
-            expenseCategories={expenseCategories}
-            >
-              <input type="date" name="date" value={updatedData.date || ''} onChange={handleInputChange} />
-              <input type="text" name="quantity" value={updatedData.quantity || ''} onChange={handleInputChange} />
-              <Button onClick={handleUpdate}>Actualizar</Button>
-              <Button onClick={closeModal}>Cancelar</Button>
-            </Modal>
-          )}
+        <div className='back-button'>
+        <button  onClick={handleClick}><FaArrowLeft /></button>
+        </div>
+        <Card className="card shadow-sm">
+          <Card.Body className="card-body p-4">
+            <Card.Title className='text-center mb-3'>Movimiento</Card.Title>
+            <Card.Text>
+              <div className="form-group">
+                <label>Tipo:</label>
+                <input type="text" className="form-control" value={action?.type} disabled />
+              </div>
+              <div className="form-group">
+                <label>Fecha:</label>
+                <input type="text" className="form-control" value={fechaFormateada} disabled />
+              </div>
+              <div className="form-group">
+                <label>Cantidad:</label>
+                <input type="text" className="form-control" value={action?.quantity} disabled />
+              </div>
+              <div className="form-group">
+                <label>Categoría:</label>
+                <input type="text" className="form-control" value={action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name} disabled />
+              </div>
+              <div className="form-group">
+                <label>Descripción:</label>
+                <p>{action?.description}</p>
+              </div>
+            </Card.Text>
+            <div className="d-grid gap-2">
+              <Button className="action-detail-button d-block" onClick={openModal}>Editar</Button>
+            </div>
+          </Card.Body>
+        </Card>
         </div>
       </div>
+      <ModalHome show={showModalHome} handleClose={() => setShowModalHome(false)} />
     </div>
   );
 };

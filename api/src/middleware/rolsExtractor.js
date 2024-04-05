@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const admin = async (req,res,next) => {
     const token = req.headers['token'];
-    console.log(token);
+    
     if (!token) {
         return res.status(401).json({error: "JsonWebTokenError: jwt malformed"})
     }
