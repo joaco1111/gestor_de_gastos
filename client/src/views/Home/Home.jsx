@@ -32,6 +32,8 @@ const Home = () => {
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
 
+    console.log(actions);
+
     useEffect(()=> {
         if(localToken){
             getMetrica("gastos").then(res => setGastos(res));

@@ -1,8 +1,11 @@
-import { Card, Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Card, Form, Container, Row, Col, Button, CardHeader, CardTitle, CardSubtitle } from 'react-bootstrap';
 import './Perfile.css'; 
 import NavBar from "../../components/NavBar/NavBar";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Image from 'react-bootstrap/Image';
+import CloseButton from 'react-bootstrap/CloseButton';
 
 const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
 
@@ -14,7 +17,9 @@ const config = {
 
 
 const Profile = () => {
+  const userData = useSelector(state => state.user);
   const [previewImage, setPreviewImage ] = useState(null);
+  const [actived, setActived] = useState(false)
   const [imagen, setImagen] = useState('');
   const [userState, setUserState] = useState({
     name: "",
@@ -25,7 +30,7 @@ const Profile = () => {
 
   const getUser = async()=> {
     try {
-      const user = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/user/${localToken?.idUser}`, config);
+      const user = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/user/${userData.idUser}`, config);
 
       setUserState({
         name: user.data.name,
@@ -78,10 +83,18 @@ const Profile = () => {
 
     } catch (error) {
       setMessage({ message: "Error al actualizar la foto de perfil.", variant: "danger" });
+      setPreviewImage(null)
     }
   }
 
-
+  const handleButtonProfile = (e) => {
+    if(e.target.value === "Guardar") {
+      handleSubmit(e);
+      return setActived(false)
+    }
+    
+    return setActived(true)
+  }
 
   return (
     <>
@@ -93,29 +106,48 @@ const Profile = () => {
         <Col md={6}>
           <Card className="profile-card text-center">
             <Card.Body>
-              <Card.Title className="text-center">Perfil</Card.Title>
+              <Card.Title className="text-center mb-4">Perfil</Card.Title>
 
+              {/* mensaje fallido o de exito */}
               {message && <div className={`alert alert-${message.variant}`} role="alert">{message.message}</div>}
 
-              <Form.Group>
-                <Form.Label htmlFor="profile-image">Foto de Perfil:</Form.Label>
+              {
+                actived && 
+                <Form.Group className='position-relative mb-4'>
+                  {/* boton cancelar editacion de perfil */}
+                <CloseButton onClick={()=> {
+                  setActived(false)
+                  setPreviewImage(null)
+                }} className='position-absolute top-0 end-0'/>
+                {/* input seleccionar una foto */}
+                <Form.Label htmlFor="profile-image">Editar foto de Perfil:</Form.Label>
                 <Form.Control id="profile-image" type="file" accept="image/*" onChange={handleImagePreview} />
-                
+
+              </Form.Group>
+              }
+
+              <Form.Group className='mb-4 position-relative'>
+                {/* visualizar la imagen  */}
                 {previewImage === null ? (
-                  userState.urlPhoto && <img src={userState.urlPhoto} alt="Vista previa de la imagen" className="profile-preview-image" /> 
+                  userState.urlPhoto && <Image thumbnail  src={userState.urlPhoto} alt="Vista previa de la imagen" className="profile-preview-image" /> 
                 ) : (
-                <img src={previewImage } alt="Vista previa de la imagen" className="profile-preview-image" />) }
+                <Image thumbnail  src={previewImage } alt="Vista previa de la imagen" className="profile-preview-image" />) }
+                <br />
+                  {/* boton editar o guardar la imagen */}
+                <Button onClick={handleButtonProfile} variant="primary" value={actived ? "Guardar" : "Editar"} className='w-25  d-inline-block'>{actived ? "Guardar" : "Editar"}</Button>
 
-                {/* {previewImage && <img src={previewImage || userState?.photoProfile} alt="Vista previa de la imagen" className="profile-preview-image" />} */}
+              </Form.Group>
 
+              <Form.Group className='mb-4 '>
+                <CardSubtitle>Usuario:</CardSubtitle>
+                <CardTitle>{userState.name}</CardTitle>
               </Form.Group>
-              <Form.Group>
-                <Form.Label>Nombre de Usuario: {userState.name}</Form.Label>
+
+              <Form.Group className='mb-4'>
+                <CardSubtitle>Correo Electrónico:</CardSubtitle>
+                <CardTitle>{userState.email}</CardTitle>
               </Form.Group>
-              <Form.Group>
-                <Form.Label>Correo Electrónico: {userState.email}</Form.Label>
-              </Form.Group>
-              <Button onClick={handleSubmit} variant="primary">Guardar</Button>
+
             </Card.Body>
           </Card>
         </Col>

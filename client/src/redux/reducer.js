@@ -11,7 +11,7 @@ const initialState = {
     actions: [],
     totalCount: 0,
     loginError: '',
-    logError: '',
+    logError: ''
 };
 
 const rootReducer = (state = initialState, action) => {

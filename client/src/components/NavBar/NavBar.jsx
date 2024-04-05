@@ -5,13 +5,26 @@ import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
 import { BsPersonCircle } from "react-icons/bs";
 import {cleanUser} from '../../redux/actions';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
+
+
+const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
+
+const config = {
+    headers: {
+      token: localToken?.tokenUser
+    }
+};
 
 function NavBar() {
   // Función que maneja el botón Logout
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-
+  const [urlImage, setUrlImage] = useState(null);
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
     const obj = {
@@ -22,14 +35,25 @@ function NavBar() {
     dispatch(cleanUser(obj));
   };
 
+  const getUser = async()=> {
+    try {
+      const userResult = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/user/${user.idUser}`, config);
 
-   const imageUrl = ""; //poner url
+      setUrlImage(userResult.data.photoProfile);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   // imagen si está definida o icono de Font Awesome
   const renderProfileContent = () => {
-    if (imageUrl) {
+    if (urlImage) {
       return (
-        <img src={imageUrl} alt="Perfil" className="profile-image" />
+        <img src={urlImage} alt="Perfil" className="profile-image" />
       );
     } else {
       return (
@@ -68,13 +92,23 @@ function NavBar() {
            
           </ul>
           <ul className="navbar-nav">
+
+              {/* foto de perfil del usuario con su nombre  */}
+              
+           {/* <li className="nav-item nav-perfil">
+                {renderProfileContent()} 
+                  nombre del usuario o admin
+                {user.name}
+            </li> */}
             <li className="nav-item">
-              <NavLink className="nav-link" to="/profile">
-                {renderProfileContent()}
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
+            <DropdownButton title="Menú">
+              <Dropdown.Item href="">
+                <NavLink className="nav-link" to="/profile">Perfil</NavLink>
+              </Dropdown.Item>
+              <Dropdown.Item href="#">
+                <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
+              </Dropdown.Item>
+            </DropdownButton>
             </li>
           </ul>
         </div>
