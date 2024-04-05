@@ -1,10 +1,11 @@
 // import React, { useEffect } from 'react';
 // import { useSelector, useDispatch } from 'react-redux';
 // import { fetchTransactions } from "../../redux/actions";
+// import { Table } from 'react-bootstrap';
 
 // const Transactions = () => {
 //   const dispatch = useDispatch();
-//   const transactions = useSelector(state => state.transactions.transactions);
+//   const transactions = useSelector(state => state.transactions);
 
 //   console.log('Transactions', transactions);
 
@@ -15,7 +16,7 @@
 //   return (
 //     <div className="container">
 //       <h2>Transacciones</h2>
-//       <table className="table table-striped">
+//       <Table className="table table-striped">
 //         <thead>
 //           <tr>
 //             <th>Nombre</th>
@@ -34,7 +35,7 @@
 //             </tr>
 //         ))}
 //         </tbody>
-//       </table>
+//       </Table>
 //     </div>
 //   );
 // }

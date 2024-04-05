@@ -107,7 +107,7 @@ export const getCategoryIncome = () => {
 };
 
 
-export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection, orderBy) => {
+export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, orderBy) => {
     return async function(dispatch) {
         try {
             if(loggedUserJSON) {
@@ -252,27 +252,35 @@ export const cleanUser = (emptyUser) => {
     return { type: CLEAN_USER, payload: emptyUser }
 };
 
-export const fetchTransactions = () => {
+
+export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, orderDirection) => {
     return async function(dispatch) {
-      try {
+        try {
+            if(loggedUserJSON) {
+                const params = { page, limit, search };
+                if (orderDirection) {
+                    params.orderDirection = orderDirection;
+                }
+                if (orderBy) {
+                    params.orderBy = orderBy;
+                }
 
-        if(loggedUserJSON) {
-      
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, config);
+                const configuration = {
+                    ...config,
+                    params
+                };
 
-            console.log('Trnsactions', response.data);
-      
-            dispatch({
-              type: GET_TRANSACTIONS,
-              payload: response.data
-            });
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, configuration);
+
+                console.log('Transactions:', response.data);
+          
+                dispatch({
+                    type: GET_TRANSACTIONS,
+                    payload: response.data.collaborations
+                });
+            }
+        } catch (error) {
+            console.error('Error al obtener las transacciones:', error);
         }
-      } catch (error) {
-        console.error('Error al obtener las transacciones:', error);
-        dispatch({
-          type: FETCH_TRANSACTIONS_ERROR,
-          payload: error.message
-        });
-      }
     };
 };
