@@ -56,16 +56,16 @@ const rootReducer = (state = initialState, action) => {
                 actions,
                 totalCount
             };
+        case GET_ACTION_DETAIL:
+            return {
+                ...state,
+                actionDetail: action.payload
+            };
         case GET_TRANSACTIONS:
             console.log('GET_TRANSACTIONS', action.payload);
             return {
                 ...state,
                 transactions: action.payload
-            };
-        case GET_ACTION_DETAIL:
-            return {
-                ...state,
-                actionDetail: action.payload
             };
         case CLEAN_USER:
             return {

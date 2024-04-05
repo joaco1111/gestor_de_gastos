@@ -17,6 +17,7 @@ import Geography from "./geo/Geography.jsx";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../redux/actions.js";
+import Transactions from "./Transactions.jsx";
 
 
 const Administrador  = () => {
