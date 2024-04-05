@@ -44,8 +44,7 @@ const UserList = ({ users, getUsers}) => {
   })
 
   useEffect(() => {
-    getUsers("");
-
+    getUsers("")
     if(message.message !== ''){
       setTimeout(()=> {
         setMessage({

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addExpenseIncome, getCategoryExpense, getCategoryIncome } from '../../redux/actions';
+import { addExpenseIncome, fetchActions, getCategoryExpense, getCategoryIncome } from '../../redux/actions';
 import PieCharts from '../Charts/PieCharts';
 import { Form, Button, Container } from 'react-bootstrap';
 
@@ -44,7 +44,6 @@ const ExpenseIncomeForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(addExpenseIncome(formData));
-    
     setFormData({
       type: 'gastos',
       quantity: '',

@@ -19,7 +19,8 @@ function App() {
     const newUser = useSelector(state => state.newUser);
 
     useEffect(() => {                                                                           //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (user.tokenUser || newUser.tokenUser) {                                                                   //Me dirige a /home con el 1er click en el botón Loggin
+        if (user.tokenUser || newUser.tokenUser) {     
+            console.log(user);                                                              //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', user.tokenUser ? JSON.stringify(user) : JSON.stringify(newUser)
             );     
