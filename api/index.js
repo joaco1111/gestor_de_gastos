@@ -1,5 +1,22 @@
-const server = require('./src/app.js');
+const app = require('./src/app.js');
 const { conn } = require('./src/db.js');
+
+//socket.io
+
+const { Server } = require('socket.io')
+const { createServer } = require('node:http')
+
+const server = createServer(app)
+const io = new Server(server)
+
+io.on('connection', (socket) => {
+  console.log('a user has connected')
+
+  socket.on('disconnect', () => {
+    console.log('an user is disconnected');
+  })
+})
+
 //obtener los datos del json¡
 const { ingresos, gastos} = require('./categories.json');
 //tabla User
@@ -27,8 +44,10 @@ conn.sync({ force: false }).then(async() => {
     await Access.findOrCreate({where: {name: element}})
   })
 
-   await User.findOrCreate({where: {name: 'admin', email: 'admin@gmail.com', password: '$2b$10$aLPR0WQjxrtcLftujnZyG.em/0x8/y6OnNRDkE/jY3lC4LVT4DhqC', idAccess: 1}})
+  await User.findOrCreate({where: {name: 'admin', email: 'admin@gmail.com', password: '$2b$10$aLPR0WQjxrtcLftujnZyG.em/0x8/y6OnNRDkE/jY3lC4LVT4DhqC', idAccess: 1}})
   
+
+
   server.listen(3001, () => {
     console.log('%s listening at 3001');
    // eslint-disable-line no-console
