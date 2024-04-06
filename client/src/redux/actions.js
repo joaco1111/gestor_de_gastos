@@ -1,10 +1,9 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION } from './action-types';
 import axios from 'axios';
 
 
 //token del local Storage
 const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-
 //config general, si necesitas otra configuración como params, agregala dentro de tu función
 var config = {}
 if(loggedUserJSON){
@@ -12,6 +11,12 @@ if(loggedUserJSON){
     config["headers"] = {
             token: token.tokenUser,
         }
+}
+
+export const incrementNumberPuntuacion = (value)=> {
+    return (dispatch)=> {
+        dispatch({type: INCREMENT_NUMBER_PUNTUACION, payload: value})
+    }
 }
 
 
@@ -112,6 +117,7 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
         try {
             if(loggedUserJSON) {
                 const params = { page, limit, ...filters };
+                
                 if (orderDirection) {
                     params.orderDirection = orderDirection;
                 }
@@ -123,7 +129,9 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     ...config,
                     params
                 };
-    
+
+          
+                
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
                 console.log('Respuesta:', response);
