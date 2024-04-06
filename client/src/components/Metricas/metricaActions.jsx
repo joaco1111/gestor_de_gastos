@@ -17,7 +17,9 @@ const MetricasActions = ({ title, number }) => {
                     </thead>
                     <tbody>
                         <tr>
-                            {number.map((n, index) => <td key={index}>{n}</td>)}
+                            {number.map((n, index) => {
+                                console.log(n);
+                            return <td key={index}>{n}</td>})}
                         </tr>
                     </tbody>
                 </Table>

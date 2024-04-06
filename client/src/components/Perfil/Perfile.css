@@ -40,9 +40,8 @@
 }
 
 .profile-preview-image {
-    max-width: 100px;
-    width: 300px;
-    max-height: 100px;
-    height: 300px;
-    border-radius: 50%;
+    max-width: 300px;
+    width: auto;
+    height: auto;
+    max-height: 200px;
 }

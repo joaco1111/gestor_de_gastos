@@ -1,86 +1,97 @@
-import { Box, Typography, useTheme } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid"
-import { tokens } from "./theme"
-import { mockDataInvoices, mockDataContacts } from "./data/mockData";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchTransactions } from "../../redux/actions";
+import { Table, Form } from 'react-bootstrap';
+import { Box } from "@mui/material";
 import Header from "./Header";
 
 const Transactions = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-        field: "cost",
-        headerName: "Cost",
-        flex: 1,
-        renderCell: (params) => (
-            <Typography color={colors.greenAccent[500]}>
-                ${params.row.cost}
-            </Typography>
-        )
-    },
-    {
-        field: "date",
-        headerName: "Date",
-        flex: 1,
-    },
-  ];
+  const dispatch = useDispatch();
+  const transactions = useSelector(state => state.transactions);
+
+  console.log(transactions);
+
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState("");
+  const [orderDirection, setOrderDirection] = useState('DESC');
+  const [orderBy, setOrderBy] = useState('');
+
+  useEffect(() => {
+    dispatch(fetchTransactions(page, limit, search, orderBy, orderDirection));
+  }, [dispatch, page, limit, search, orderBy, orderDirection]);
+
+  const handleSearchChange = (event) => {
+    setSearch(event.target.value);
+  };
+
+  const handleOrderChange = (e) => {
+    const { value } = e.target;
+    setOrderBy(value);
+  };
+  
+  const handleOrderDirectionChange = (e) => {
+    const { value } = e.target;
+    setOrderDirection(value);
+  };
+
+  const renderTransactions = () => {
+    return (
+      <div className='container'>
+        <Form className="d-flex align-items-end" role="search">
+          <Form.Group className="me-3 mb-3">
+            <Form.Control className="form-control my-2" placeholder='Buscar Usuario...' type='text' onChange={handleSearchChange}/>
+          </Form.Group>
+          <Form.Group className="me-3 mb-4">
+            <label htmlFor="orderBy" className="form-label">Ordenar por:</label>
+            <select className="form-select" id="orderBy" name="orderBy" value={orderBy} onChange={handleOrderChange}>
+              <option value="">Seleccionar</option>
+              <option value="date">Fecha</option>
+              <option value="name">Name</option>
+              <option value="amount">Cantidad</option>
+            </select>
+          </Form.Group>
+          <Form.Group className="me-3 mb-4">
+            <label htmlFor="orderDirection" className="form-label">Ordenar:</label>
+            <select className="form-select" id="orderDirection" name="orderDirection" value={orderDirection} onChange={handleOrderDirectionChange}>
+              <option value="DESC">Descendente</option>
+              <option value="ASC">Ascendente</option>
+            </select>
+          </Form.Group>
+        </Form>
+        <Table striped hover variant="secondary">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Amount</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {transactions && transactions.map(transaction => (
+              <tr key={transaction.transactionId}>
+                <td>{transaction.transactionId}</td>
+                <td>{transaction.name}</td>
+                <td>{transaction.amount}</td>
+                <td>{transaction.date}</td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    );
+  };
 
   return (
     <Box m="20px">
-      <Header title="TRANSACTIONS" subtitle="Details of Transactions" />
-      <Box
-        display="flex"
-        m="40px 0 0 0"
-        width="100vh"
-        height="75vh"
-        sx={{
-          "& .MuiDataGrid-root": {
-            border: "none",
-          },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "none",
-          },
-          "& .name-column--cell": {
-            color: colors.greenAccent[300],
-          },
-          "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[700],
-            borderBottom: "none",
-          },
-          "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.primary[400],
-          },
-          "& .MuiDataGrid-footerContainer": {
-            borderTop: "none",
-            backgroundColor: colors.blueAccent[700],
-          },
-          "& .MuiCheckbox-root": {
-            color: `${colors.greenAccent[200]} !important`,
-          },
-          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
-          },
-        }}
-      >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} components={{ Toolbar: GridToolbar }} />
+      <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Header title="TRANSACTIONS" subtitle="Details of Transactions" />
       </Box>
+      <div className='container'>
+        <h2 className='text-center my-4'>Lista de los usuarios que han donado</h2>
+        {renderTransactions()}
+      </div>
     </Box>
   );
 };
