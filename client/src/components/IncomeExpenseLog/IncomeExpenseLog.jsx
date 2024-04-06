@@ -9,23 +9,24 @@ import { Table } from 'react-bootstrap';
 import './IncomeExpenseLog.css'
 
 const IncomeExpenseLog = () => {
-    const dispatch = useDispatch();
-    const actions = useSelector(state => state.actions);
-    const totalCount = useSelector(state => state.totalCount);
-    const [currentPage, setCurrentPage] = useState(1);
-    const limitPerPage = 5;
-    const loading = useSelector(state => state.loading);
-    const [filters, setFilters] = useState({
-      date: '',
-      type: '',
-      category: '',
-    });
-    const [orderDirection, setOrderDirection] = useState('DESC');
-    const [orderBy, setOrderBy] = useState(''); // Cambiado a valor vacío para seleccionar por defecto 'Seleccionar' en el select de ordenar por
+  const dispatch = useDispatch();
+  const actions = useSelector(state => state.actions);
+  const totalCount = useSelector(state => state.totalCount);
+  const [currentPage, setCurrentPage] = useState(1); // Inicializar currentPage en 1
+  const limitPerPage = 5;
+  const loading = useSelector(state => state.loading);
+  const [filters, setFilters] = useState({
+    date: '',
+    type: '',
+    category: '',
+  });
+  const [orderDirection, setOrderDirection] = useState('DESC');
+  const [orderBy, setOrderBy] = useState(''); // Cambiado a valor vacío para seleccionar por defecto 'Seleccionar' en el select de ordenar por
 
     useEffect(() => {
       dispatch(fetchActions(currentPage, limitPerPage, filters, orderDirection, orderBy)); // Incluir el nuevo estado 'orderBy' en la llamada a fetchActions
     }, [dispatch, currentPage, filters, orderDirection, orderBy]);
+    
   
     // Función para manejar cambios en los filtros
     const handleFilterChange = (e) => {
@@ -60,6 +61,11 @@ const IncomeExpenseLog = () => {
 
   // Función para aplicar los filtros
   const applyFilters = (data, filters) => {
+
+    if (!Array.isArray(data)) {
+      // console.error('data no es un array:', data);
+      return [];
+    }
     // Si no hay ningún filtro aplicado, mostrar todos los datos
     if (Object.values(filters).every(value => value === '')) {
       return data;
@@ -126,8 +132,6 @@ const IncomeExpenseLog = () => {
     setCurrentPage(page);
     dispatch(fetchActions(page, limitPerPage, filters));
   };
-
-  console.log("Acciones filtradas:", filteredActions);
 
   return (
     <div className='container'>

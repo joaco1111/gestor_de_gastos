@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
+import { addExpenseIncome, fetchActions, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
 import ModalHome from '../Modals/ModalHome';
 import "./expenseForm.css";
@@ -53,6 +53,7 @@ const ExpenseForm = () => {
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario:', values)
     dispatch(addExpenseIncome(values));
+    dispatch(fetchActions())
     resetForm();
 
     setExpense({                                 
