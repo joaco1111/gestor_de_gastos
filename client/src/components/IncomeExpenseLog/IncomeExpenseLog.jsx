@@ -26,6 +26,7 @@ const IncomeExpenseLog = () => {
     useEffect(() => {
       dispatch(fetchActions(currentPage, limitPerPage, filters, orderDirection, orderBy)); // Incluir el nuevo estado 'orderBy' en la llamada a fetchActions
     }, [dispatch, currentPage, filters, orderDirection, orderBy]);
+    
   
     // Función para manejar cambios en los filtros
     const handleFilterChange = (e) => {
