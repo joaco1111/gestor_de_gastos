@@ -3,6 +3,7 @@ import ExpenseForm from "../../components/Expense/ExpenseForm";
 import IncomeForm from "../../components/Income/IncomeForm";
 import style from './Home.module.css';
 import MetricasActions from "../../components/Metricas/metricaActions";
+import Chat from '../../components/Chat/Chat'
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -66,7 +67,7 @@ const Home = () => {
                 </div>
             </div>
 
-
+        <Chat/>
         </div>
     )
 };
