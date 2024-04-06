@@ -134,7 +134,7 @@ const ExpenseForm = () => {
           )}
         </Formik>
       </Container>
-      {show && expense.quantity && expense.date && expense.idCategory && expense.description && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
+      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
     </div>
   );
 };

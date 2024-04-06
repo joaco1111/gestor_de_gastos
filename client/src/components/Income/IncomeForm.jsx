@@ -134,7 +134,7 @@ const IncomeForm = () => {
         </Formik>
         {/* <PieCharts data={[]} /> */}
       </Container>
-      {show && expense.quantity && expense.date && expense.idCategory && expense.description && <ModalHome show={show} handleClose={handleClose} />}
+      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}
     </div>
   );
 };
