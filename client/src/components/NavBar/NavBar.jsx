@@ -4,22 +4,18 @@ import nav from '../../assets/nav.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
 import { BsPersonCircle } from "react-icons/bs";
-import {cleanUser} from '../../redux/actions';
-
+import { cleanUser, cleanActions } from '../../redux/actions';
 
 function NavBar() {
   // Función que maneja el botón Logout
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  const actions = useSelector(state => state.actions);
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
-    const obj = {
-      tokenUser: '',
-      email: '',
-      password: ''
-    };
-    dispatch(cleanUser(obj));
+    dispatch(cleanUser({}));
+    dispatch(cleanActions());
   };
 
 
@@ -74,7 +70,7 @@ function NavBar() {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
+              <NavLink className="nav-link" to="/login" onClick={handleLogout}>Logout</NavLink>
             </li>
           </ul>
         </div>

@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, CLEAN_ACTIONS } from './action-types';
 import axios from 'axios';
 
 
@@ -21,6 +21,7 @@ export const login = (credentials) => {
             const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
             // console.log(user);
             dispatch({ type: LOGIN, payload: user });
+            //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
         } catch (error) {
             //console.error('Error en la solicitud de inicio de sesión:', error);
             // Envío el error al estado para manejarlo en el componente Login
@@ -249,7 +250,7 @@ export const fetchActionDetail = (id) => {
   };
   
 export const cleanUser = (emptyUser) => {
-    return { type: CLEAN_USER, payload: emptyUser }
+    return { type: CLEAN_USER, payload: emptyUser };
 };
 
 export const fetchTransactions = () => {
@@ -275,4 +276,8 @@ export const fetchTransactions = () => {
         });
       }
     };
+};
+
+export const cleanActions = () => {
+    return { type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } };
 };
