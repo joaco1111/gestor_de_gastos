@@ -52,8 +52,9 @@ const Login = () => {
             email: userData.email,
             password: userData.password
         };
-        //console.log(credentials);
+
         await dispatch(login(credentials));
+        window.location.reload();
     };
 
     const handleGoogleSignIn = () => {

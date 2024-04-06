@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { Collaboration, Log, Login, Home, Landing } from './views';
 import { login } from './redux/actions';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
@@ -14,6 +14,7 @@ import Success from './views/Collaboration/Failure';
 function App() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const user = useSelector(state => state.user);
     const newUser = useSelector(state => state.newUser);
@@ -23,8 +24,12 @@ function App() {
                                                                     //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem(
                 'loggedNoteAppUser', user.tokenUser ? JSON.stringify(user) : JSON.stringify(newUser)
-            );     
-            navigate('/home');                                                                              
+            );   
+            //navigate('/home'); 
+            if(location.pathname === '/login' || location.pathname === '/log' ) navigate('/home');
+            if(location.pathname === '/detailsLog') navigate('/detailsLog');
+            if(location.pathname === '/collaboration') navigate('/collaboration');   
+            if(location.pathname === '/admin/*') navigate('/admin/*');                                                                           
         }
     }, [user, newUser]);
     
@@ -35,8 +40,8 @@ function App() {
             const user = JSON.parse(loggedUserJSON);
             
             const credentials = {
-                email: user./*user.*/email,
-                password: user./*user.*/password
+                email: user.email,
+                password: user.password
             };
             
             if(user.tokenUser) dispatch(login(credentials));                                               //Actualizo el user del estado global
