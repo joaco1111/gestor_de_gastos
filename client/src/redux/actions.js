@@ -39,8 +39,7 @@ export const log = (newUser) => {
     return async function(dispatch) {      
         try {
             const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser)).data;
-            console.log(response);
-            console.log(typeof response);
+            
             if(typeof response !== 'string') {
                 return dispatch({ type: LOG, payload: response });
             }
@@ -69,6 +68,8 @@ export const addExpenseIncome = (payload) => {
                 const apiData = await axios.post(`${import.meta.env.VITE_BASE_URL}/actions`, payload, config);
 
                 const expense = apiData.data
+
+                console.log('Respuesta del servidor al agregar gasto o ingreso:', expense); 
     
                 return dispatch({
                     type: ADD_EXPENSE_INCOME,
@@ -83,6 +84,7 @@ export const addExpenseIncome = (payload) => {
 };
 
 export const getCategoryExpense = () => {
+    
     return async function(dispatch) {
         try {
             const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryBills`)).data;
@@ -101,6 +103,7 @@ export const getCategoryIncome = () => {
     return async function(dispatch) {
         try {
             const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryIncome`)).data;
+
             dispatch({
                  type: GET_CATEGORIES_INCOME,
                   payload: categories 
@@ -135,7 +138,8 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
-                console.log('Respuesta:', response);
+                console.log('Respuesta del servidor:', response.data);
+                
     
                 const { rows, count } = response.data;
     
@@ -143,6 +147,8 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     type: GET_ACTIONS,
                     payload: { actions: rows, totalCount: count }
                 });
+
+                return { rows, count };
             }
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
@@ -164,7 +170,7 @@ export const fetchMetrics = (type, dateInitial, dateLimit) => {
 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas`, configuration);
 
-                console.log('Metricas', response.data);
+                // console.log('Metricas', response.data);
 
                 if (response.status === 200) {
                     dispatch({ type: SET_METRICS, payload: response.data });
@@ -200,7 +206,7 @@ export const authenticationFromGoogle = (credentials) => {
     return async (dispatch) => {
         try{
             const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/fromGoogle`,credentials)).data
-            console.log(user);
+            // console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch(error){
             console.error('Error en la solicitud de inicio de sesión:', error);
@@ -240,7 +246,7 @@ export const fetchActionDetail = (id) => {
         if(loggedUserJSON) {
   
         const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
-        console.log(response.data)
+        
   
             dispatch({
             type: UPDATE_ACTION,

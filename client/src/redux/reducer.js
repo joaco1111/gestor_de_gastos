@@ -35,6 +35,7 @@ const rootReducer = (state = initialState, action) => {
                 users: action.payload.rows
             };
         case ADD_EXPENSE_INCOME:
+            console.log("Nuevo gasto o ingreso agregado:", action.payload);
             return {
                 ...state,
                 expenses: [...state.expenses, action.payload]
@@ -50,7 +51,7 @@ const rootReducer = (state = initialState, action) => {
                 categorieIncome: action.payload
             };
         case GET_ACTIONS:
-            console.log('GET_ACTIONS', action.payload);
+            // console.log('GET_ACTIONS', action.payload);
             const { actions, totalCount } = action.payload;
             return {
                 ...state,
@@ -63,7 +64,7 @@ const rootReducer = (state = initialState, action) => {
                 actionDetail: action.payload
             };
         case GET_TRANSACTIONS:
-            console.log('GET_TRANSACTIONS', action.payload);
+            // console.log('GET_TRANSACTIONS', action.payload);
             return {
                 ...state,
                 transactions: action.payload
@@ -120,6 +121,7 @@ const rootReducer = (state = initialState, action) => {
                 actions: action.payload.actions,
                 totalCount: action.payload.totalCount
             }
+        
         default:
             return state;
     }

@@ -81,7 +81,7 @@ function NavBar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light " style={{ backgroundColor: '#ffb703' }}>
+    <nav className="navbar navbar-expand-lg  " style={{ backgroundColor: '#ffb703' }}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />

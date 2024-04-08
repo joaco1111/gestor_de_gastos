@@ -1,0 +1,64 @@
+.custom-calendar {
+  border-radius: 10px;
+  
+}
+
+.selected-actions h2 {
+  font-size: 15px;
+
+}
+
+.selected-actions li {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+
+/* .calendar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20px;
+    border-radius: 5px;
+  }
+  
+  .selected-actions {
+    margin-top: 20px;
+  }
+  
+  .selected-actions h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .selected-actions ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .selected-actions li {
+    margin-bottom: 5px;
+    font-size: 16px;
+  }
+  
+  .selected-actions li span {
+    font-weight: bold;
+  }
+  
+
+  .react-calendar__tile--hasAction {
+    position: relative;
+  }
+  
+  .react-calendar__tile--hasAction::before {
+    content: '';
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: red; 
+    border-radius: 50%;
+    top: 2px; 
+    right: 2px; 
+  }
+   */

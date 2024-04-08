@@ -10,6 +10,7 @@ import Administrador from './views/Administrador/Administrador';
 import Profile from './components/Perfil/Perfile';
 import Failure from './views/Collaboration/Failure';
 import Success from './views/Collaboration/Failure';
+import "./App.css"
 
 function App() {
     const dispatch = useDispatch();
