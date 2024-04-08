@@ -5,6 +5,7 @@ const cloudinary = require('../../configCloudinary');
 const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const formidable = require('formidable');
 const {sendEmail, getTemplate} = require("../../config/nodemailer")
 
 const getUser = async (req, res) => {
@@ -108,9 +109,9 @@ const registerHandler = async (req, res) => {
     }
 }
 
-const updateHandler = async (req, res) => {
+const updateHandler = async(req, res) => {
+    const formFile = new formidable.IncomingForm();
     try {
-        //id del usuario por token
         let idUser = req.params.id;
 
         if(!idUser) idUser = req.userID;
@@ -133,24 +134,47 @@ const updateHandler = async (req, res) => {
         } else {
             updateData = { ...req.body };
         }
-
-        //integracion CLOUDINARY
-        //Verificamos si hay una imagen recibida
-        //la extraemos
-        if (req?.file) {
-            const {path} = req.file;
-
-            // Subimos  la imagen a Cloudinary
-            const imageUploadResult = await cloudinary.uploader.upload(path);
-
-            // se guarda la URL de la imagen en la base de datos
-            updateData["photoProfile"] = imageUploadResult.secure_url;
-        }
-
-
+        console.log(updateData);
         userExists.update(updateData);
 
-        return res.status(200).send("Datos actualizados correctamente.");
+        res.status(200).send("Datos actualizados correctamente.");
+
+
+         // utilizando fromidable para obtener las imagenes para actualizar desde la parte del usuario
+        formFile.parse(req, async(err, fields, files) => {
+            if(err) return res.status(400).json(err);
+            //id del usuario por token
+            let idUser = req.params.id;
+            
+            let filePath = files?.image[0].filepath;
+            
+            if(!idUser) idUser = req.userID;
+
+            const userExists = await User.findOne({ where: { id: idUser } });
+            let updateDataFile = {}
+
+            //validamos que si exista el usuario
+            if (!userExists) return res.status(400).send("Usuario no existente.!");
+
+            //integracion CLOUDINARY
+            //Verificamos si hay una imagen recibida
+            //la extraemos
+
+            
+
+            if (filePath) {
+                // Subimos  la imagen a Cloudinary
+                const imageUploadResult = await cloudinary.uploader.upload(filePath);
+                // se guarda la URL de la imagen en la base de datos
+                updateDataFile["photoProfile"] = imageUploadResult.secure_url;
+            }
+
+
+            userExists.update(updateDataFile);
+
+            return res.status(200).send("Datos actualizados correctamente.");
+
+            })
 
     } catch (error) {
         return res.status(500).send('Error al actualizar: ', error.message)

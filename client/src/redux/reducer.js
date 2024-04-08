@@ -1,4 +1,4 @@
-import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, SET_METRICS, SET_ERROR, GET_TRANSACTIONS, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL } from './action-types';
+import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, SET_METRICS, SET_ERROR, GET_TRANSACTIONS, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
 
 const initialState = {
     users: [],
@@ -12,6 +12,7 @@ const initialState = {
     totalCount: 0,
     loginError: '',
     logError: '',
+    numberPuntuacion: 5,
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -56,16 +57,16 @@ const rootReducer = (state = initialState, action) => {
                 actions,
                 totalCount
             };
+        case GET_ACTION_DETAIL:
+            return {
+                ...state,
+                actionDetail: action.payload
+            };
         case GET_TRANSACTIONS:
             console.log('GET_TRANSACTIONS', action.payload);
             return {
                 ...state,
                 transactions: action.payload
-            };
-        case GET_ACTION_DETAIL:
-            return {
-                ...state,
-                actionDetail: action.payload
             };
         case CLEAN_USER:
             return {
@@ -108,6 +109,16 @@ const rootReducer = (state = initialState, action) => {
         case LOG_FAILED:
             return {
                 ...state, logError: action.payload
+            };
+        case INCREMENT_NUMBER_PUNTUACION:
+            return {
+                ...state, numberPuntuacion: action.payload
+            };
+        case CLEAN_ACTIONS:
+            return {
+                ...state,
+                actions: action.payload.actions,
+                totalCount: action.payload.totalCount
             }
         default:
             return state;

@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addExpenseIncome, getCategoryExpense } from '../../redux/actions'; 
+import { addExpenseIncome, fetchActions, getCategoryExpense } from '../../redux/actions'; 
 import { Container, Button, Form } from 'react-bootstrap'; 
 import ModalHome from '../Modals/ModalHome';
 import "./expenseForm.css";
 
 const ExpenseForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
-  console.log(show);
+  
 
   const [expense, setExpense] = useState({        //Estado para no permitir que aparezca el Modal, si los 3 inputs NO están llenos
     quantity: '',
@@ -49,10 +49,11 @@ const ExpenseForm = () => {
     description: Yup.string()
     .max(80, 'Máximo 80 caracteres')
   });
-  console.log(validationSchema);
+  
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario:', values)
     dispatch(addExpenseIncome(values));
+    dispatch(fetchActions())
     resetForm();
 
     setExpense({                                 
@@ -133,7 +134,7 @@ const ExpenseForm = () => {
           )}
         </Formik>
       </Container>
-      {show && expense.quantity && expense.date && expense.idCategory && expense.description && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
+      {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}    {/*Condiciono el renderizado del Modal*/}
     </div>
   );
 };

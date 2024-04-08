@@ -13,13 +13,21 @@ import Users from "./Users"
 // import Pie from "./pie/Pie"
 // import Pie from "./pie/Pie"
 // import Faq from "./Faq"
-// import Calendar from "./Calendar"
-// import Geography from "./geo/Geography.jsx";
+import Calendar from "./Calendar"
+import Geography from "./geo/Geography.jsx";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getUsers } from "../../redux/actions.js";
 import Transactions from "./Transactions.jsx";
 
 
 const Administrador  = () => {
     const [theme, colorMode] = useMode()
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUsers(""));
+    }, []);
     return( 
         // <ColorModeContext.Provider  value={colorMode}>
         //     <ThemeProvider theme={theme}>

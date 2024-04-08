@@ -1,10 +1,9 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED } from './action-types';
+import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
 import axios from 'axios';
 
 
 //token del local Storage
 const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
-
 //config general, si necesitas otra configuración como params, agregala dentro de tu función
 var config = {}
 if(loggedUserJSON){
@@ -14,6 +13,12 @@ if(loggedUserJSON){
         }
 }
 
+export const incrementNumberPuntuacion = (value)=> {
+    return (dispatch)=> {
+        dispatch({type: INCREMENT_NUMBER_PUNTUACION, payload: value})
+    }
+}
+
 
 export const login = (credentials) => {                                         
     return async function(dispatch) {      
@@ -21,6 +26,7 @@ export const login = (credentials) => {
             const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
             // console.log(user);
             dispatch({ type: LOGIN, payload: user });
+            //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
         } catch (error) {
             //console.error('Error en la solicitud de inicio de sesión:', error);
             // Envío el error al estado para manejarlo en el componente Login
@@ -107,11 +113,12 @@ export const getCategoryIncome = () => {
 };
 
 
-export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection, orderBy) => {
+export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, orderBy) => {
     return async function(dispatch) {
         try {
             if(loggedUserJSON) {
                 const params = { page, limit, ...filters };
+                
                 if (orderDirection) {
                     params.orderDirection = orderDirection;
                 }
@@ -123,7 +130,9 @@ export const fetchActions = (page = 1, limit = 10, filters = {}, orderDirection,
                     ...config,
                     params
                 };
-    
+
+          
+                
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
                 console.log('Respuesta:', response);
@@ -249,30 +258,43 @@ export const fetchActionDetail = (id) => {
   };
   
 export const cleanUser = (emptyUser) => {
-    return { type: CLEAN_USER, payload: emptyUser }
+    return { type: CLEAN_USER, payload: emptyUser };
 };
 
-export const fetchTransactions = () => {
+
+export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, orderDirection) => {
     return async function(dispatch) {
-      try {
+        try {
+            if(loggedUserJSON) {
+                const params = { page, limit, search };
+                if (orderDirection) {
+                    params.orderDirection = orderDirection;
+                }
+                if (orderBy) {
+                    params.orderBy = orderBy;
+                }
 
-        if(loggedUserJSON) {
-      
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, config);
+                const configuration = {
+                    ...config,
+                    params
+                };
 
-            console.log('Trnsactions', response.data);
-      
-            dispatch({
-              type: GET_TRANSACTIONS,
-              payload: response.data
-            });
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, configuration);
+
+                console.log('Transactions:', response.data);
+          
+                dispatch({
+                    type: GET_TRANSACTIONS,
+                    payload: response.data.collaborations
+                });
+            }
+        } catch (error) {
+            console.error('Error al obtener las transacciones:', error);
         }
-      } catch (error) {
-        console.error('Error al obtener las transacciones:', error);
-        dispatch({
-          type: FETCH_TRANSACTIONS_ERROR,
-          payload: error.message
-        });
-      }
     };
+};
+
+
+export const cleanActions = () => {
+    return { type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } };
 };

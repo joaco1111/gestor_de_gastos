@@ -12,6 +12,7 @@ const metricasActions = async(req, res) => {
             type
         }
 
+
         if(type){
 
             //numero de actions registradas  ****gastos o ingresos ********
