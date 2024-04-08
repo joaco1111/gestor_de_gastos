@@ -2,12 +2,8 @@ import NavBar from "../../components/NavBar/NavBar";
 import ExpenseForm from "../../components/Expense/ExpenseForm";
 import IncomeForm from "../../components/Income/IncomeForm";
 import style from './Home.module.css';
-<<<<<<< Updated upstream
 import MetricasActions from "../../components/Metricas/metricaActions";
 import Chat from '../../components/Chat/Chat'
-=======
-// import MetricasActions from "../../components/Metricas/metricaActions";
->>>>>>> Stashed changes
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -17,34 +13,24 @@ import { Box, Grid, Typography} from "@mui/material";
 import PieChartC from "../../components/Charts/PieChart"
 // import { fetchActions } from "../../redux/actions";
 
-// const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
-// const config = {
-//       headers: {
-//         token: localToken?.tokenUser
-//       }
-//     }
+const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
+const config = {
+      headers: {
+        token: localToken?.tokenUser
+      }
+    }
 
-// const getMetrica = async(type) => {
-//     try {
+const getMetrica = async(type) => {
+    try {
         
-//         const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
+        const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
         
-<<<<<<< Updated upstream
         if(typeof data === "string") return [0,0];
-        
         return [data.count, data.total];
     } catch (error) {
         console.log(error);
     }
 }
-=======
-//         if(typeof data === "string") return [0,0];
-//         return [data.count, data.total];
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
->>>>>>> Stashed changes
 
 
 const Home = () => {
@@ -52,7 +38,6 @@ const Home = () => {
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
 
-<<<<<<< Updated upstream
 
     useEffect(()=> {
         if(localToken){
@@ -60,20 +45,6 @@ const Home = () => {
             getMetrica("ingresos").then(res => setIngresos(res));
         }
     },[actions])
-=======
-    // useEffect(()=> {
-    //     if(localToken){
-    //         getMetrica("gastos").then(res => setGastos(res));
-    //         getMetrica("ingresos").then(res => setIngresos(res));
-    //     }
-    // },[actions])
-
-    // const dispatch = useDispatch();
-
-    // useEffect (() =>{
-    //     dispatch(fetchActions(1,100))
-    // }, [dispatch])
->>>>>>> Stashed changes
 
     return (
         //Grid container es la fila
@@ -90,12 +61,7 @@ const Home = () => {
                 </Box>
             </Grid>
             
-            {/* <Grid item xs={12} sm={7} md={4}>
-                <Box p={3}>
-                    <CalendarComponent />
-                </Box>
-            </Grid>
-             */}
+           
         </Grid>
 
         <Grid container spacing={1} justifyContent="center">
@@ -115,7 +81,6 @@ const Home = () => {
 
         <PieChartC/>
 
-{/* 
         <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12} sm={6} md={3}>
                 <Box p={2}>
@@ -124,11 +89,16 @@ const Home = () => {
                     <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
                 </Box>
             </Grid>
-        </Grid> */}
+        </Grid>
+
+        
+
+
+        <Chat/>
 
     </Box>
 
-
+    )
 
         // <div className={style.homeContainer}>
           
@@ -164,14 +134,7 @@ const Home = () => {
         //     </Box>
             
 
-<<<<<<< Updated upstream
-        <Chat/>
-        </div>
-=======
+}  
 
-        // </div>
->>>>>>> Stashed changes
-    )
-};
 
 export default Home;
