@@ -3,6 +3,7 @@ import ExpenseForm from "../../components/Expense/ExpenseForm";
 import IncomeForm from "../../components/Income/IncomeForm";
 import style from './Home.module.css';
 import MetricasActions from "../../components/Metricas/metricaActions";
+import Chat from '../../components/Chat/Chat'
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -20,6 +21,7 @@ const getMetrica = async(type) => {
         const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
         
         if(typeof data === "string") return [0,0];
+        
         return [data.count, data.total];
     } catch (error) {
         console.log(error);
@@ -32,7 +34,6 @@ const Home = () => {
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
 
-    console.log(actions);
 
     useEffect(()=> {
         if(localToken){
@@ -66,7 +67,7 @@ const Home = () => {
                 </div>
             </div>
 
-
+        <Chat/>
         </div>
     )
 };

@@ -175,7 +175,7 @@ const Profile = () => {
               <Form.Group className='mb-4 position-relative'>
                 {/* visualizar la imagen  */}
                 {previewImage === null ? (
-                  userState.urlPhoto && <Image thumbnail  src={userState.urlPhoto} alt="Vista previa de la imagen" className="profile-preview-image" /> 
+                  userState.urlPhoto ? <Image thumbnail  src={userState.urlPhoto} alt="Vista previa de la imagen" className="profile-preview-image" /> :  <Image thumbnail  src={userState.urlPhoto} alt="Vista previa de la imagen" className="profile-preview-image" />
                 ) : (
                 <Image thumbnail  src={previewImage } alt="Vista previa de la imagen" className="profile-preview-image" />) }
                 <br />

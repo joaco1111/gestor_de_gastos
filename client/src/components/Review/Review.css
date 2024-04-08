@@ -1,0 +1,79 @@
+.opiniones-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .opinion {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    white-space: nowrap; 
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+  }
+  
+  .cliente-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .texto-opinion {
+    font-style: italic;
+  }
+  
+  .nuevo-comentario textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .nuevo-comentario button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .nuevo-comentario button:hover {
+    background-color: #0056b3;
+  }
+
+/* ---------------------------PUNTUACION--------------------------------------- */
+
+  .puntuacion {
+    margin-top: 10px;
+  }
+  
+  .puntuacion label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+  }
+  
+  .puntuacion input[type="radio"] {
+    display: none;
+  }
+  
+  .puntuacion .icon {
+    display: inline-block;
+  }
+  
+  .puntuacion input[type="radio"]:checked ~ .icon {
+    color: #f39c12;
+  }

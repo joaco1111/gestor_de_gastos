@@ -4,11 +4,13 @@ import nav from '../../assets/nav.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
 import { BsPersonCircle } from "react-icons/bs";
-import {cleanUser} from '../../redux/actions';
+import {cleanUser, incrementNumberPuntuacion} from '../../redux/actions';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Button from 'react-bootstrap/Button';
 
 
 
@@ -21,10 +23,16 @@ const config = {
 };
 
 function NavBar() {
+
   // Función que maneja el botón Logout
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
+  //limite para mostrar la puntuación
+  const numberPuntuacion = useSelector(state => state.numberPuntuacion);
+  const totalCount = useSelector(state => state.totalCount);
   const [urlImage, setUrlImage] = useState(null);
+  const [activedOffcanvas, setActivedOffcanvas] = useState(false);
+
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
     const obj = {
@@ -47,6 +55,8 @@ function NavBar() {
 
   useEffect(() => {
     getUser();
+    //validamos un limite de movimientos para mostrar el offcanvas --> puntuación
+    if(totalCount >= numberPuntuacion) setActivedOffcanvas(true);
   }, []);
 
   // imagen si está definida o icono de Font Awesome
@@ -61,6 +71,14 @@ function NavBar() {
       );
     }
   };
+
+  // funcionalidad de offcanvas para la puntuacion
+  const handleClose = (string)=> {
+    if(string === "aplazar")  {
+      dispatch(incrementNumberPuntuacion(numberPuntuacion + 5))
+    }
+    setActivedOffcanvas(false)
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light " style={{ backgroundColor: '#ffb703' }}>
@@ -98,16 +116,27 @@ function NavBar() {
 
               {/* foto de perfil del usuario con su nombre  */}
               
+<<<<<<< HEAD
            {/* <li className="nav-item nav-perfil">
                 {renderProfileContent()} 
                   nombre del usuario o admin
                 {user.name}
             </li> */}
 >>>>>>> 21334f20f6b4acd9de8ac8362c0598f62f39bb61
+=======
+           <li className="nav-item nav-perfil">
+                 
+                  {/* nombre del usuario o admin */}
+                <h3 className="nav-link" to="#">{renderProfileContent()}{user.name} </h3>
+            </li>
+>>>>>>> ef1a0c66c54f81882712f6d4c87ca521d431d732
             <li className="nav-item">
             <DropdownButton title="Menú">
               <Dropdown.Item href="">
                 <NavLink className="nav-link" to="/profile">Perfil</NavLink>
+              </Dropdown.Item>
+              <Dropdown.Item href="#">
+                <NavLink className="nav-link" to="#" onClick={()=> setActivedOffcanvas(true)}>Puntuación</NavLink>
               </Dropdown.Item>
               <Dropdown.Item href="#">
                 <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
@@ -117,6 +146,17 @@ function NavBar() {
           </ul>
         </div>
       </div>
+      <Offcanvas show={activedOffcanvas} onHide={()=> handleClose("aplazar")} placement='bottom'>
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title className='text-center'>Nivel de satisfacción</Offcanvas.Title>
+      </Offcanvas.Header>
+        <Offcanvas.Body>
+          Aca iría las estrellas y un textArea para que el usuario nos deje un comentario
+          <br />
+            <Button variant='success' onClick={()=> setActivedOffcanvas(false)}>Continuar</Button>
+            <Button variant='danger' onClick={()=> setActivedOffcanvas(false)}g>Cancelar</Button>
+        </Offcanvas.Body>
+    </Offcanvas>
     </nav>
   );
 }
