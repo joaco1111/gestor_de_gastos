@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, SET_METRICS, SET_ERROR, GET_TRANSACTIONS, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
-=======
-import { LOG, LOGIN, DELETE_ACTION, GET_USERS, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, CLEAN_USER, LOGIN_FAILED, LOG_FAILED, UPDATE_ACTION, SET_METRICS, SET_ERROR, GET_TRANSACTIONS, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, UPDATE_BALANCE} from './action-types';
->>>>>>> Stashed changes
 
 const initialState = {
     users: [],
@@ -16,11 +12,7 @@ const initialState = {
     totalCount: 0,
     loginError: '',
     logError: '',
-<<<<<<< Updated upstream
     numberPuntuacion: 5,
-=======
-    balance: 0
->>>>>>> Stashed changes
 };
 
 const rootReducer = (state = initialState, action) => {

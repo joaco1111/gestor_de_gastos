@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
-=======
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, UPDATE_BALANCE } from './action-types';
->>>>>>> Stashed changes
 import axios from 'axios';
 
 
@@ -289,7 +285,6 @@ export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, or
                     params
                 };
 
-<<<<<<< Updated upstream
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, configuration);
 
                 console.log('Transactions:', response.data);
@@ -301,22 +296,11 @@ export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, or
             }
         } catch (error) {
             console.error('Error al obtener las transacciones:', error);
-=======
-            // console.log('Trnsactions', response.data);
-      
-            dispatch({
-              type: GET_TRANSACTIONS,
-              payload: response.data
-            });
->>>>>>> Stashed changes
         }
     };
 };
 
-<<<<<<< Updated upstream
 
 export const cleanActions = () => {
     return { type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } };
 };
-=======
->>>>>>> Stashed changes
