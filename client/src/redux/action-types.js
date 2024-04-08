@@ -16,5 +16,9 @@ export const GET_CATEGORIES_INCOME = 'GET_CATEGORIES_INCOME'
 export const CLEAN_USER = 'CLEAN_USER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOG_FAILED = 'LOG_FAILED';
+<<<<<<< Updated upstream
 export const INCREMENT_NUMBER_PUNTUACION = "INCREMENT_NUMBER_PUNTUACION";
 export const CLEAN_ACTIONS = 'CLEAN_ACTIONS';
+=======
+export const UPDATE_BALANCE = 'UPDATE_BALANCE'
+>>>>>>> Stashed changes
