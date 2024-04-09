@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Chat = () => {
 
@@ -56,7 +58,7 @@ const Chat = () => {
   return (
     <div>
       <button onClick={toggleChat} style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 9999, border: "1px solid black", borderRadius: "10px", color: 'blue' }}>
-        {showChat ? 'Cerrar Chat' : 'Abrir Chat'}
+        {showChat ? <CloseIcon fontSize='large'/> : <ChatBubbleIcon fontSize='large'/>}
       </button>
       {showChat && (
         <div

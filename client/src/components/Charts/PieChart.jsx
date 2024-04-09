@@ -68,10 +68,10 @@ const PieChartComponent = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <Paper elevation={8}  sx={{ margin: 2, borderRadius:6, padding:2}}>
+      <Paper elevation={8}  sx={{ margin: 2, borderRadius:6, padding:2 , maxWidth: 450}}>
       <Typography variant='h6'>Gastos por categoria</Typography>
         {/* <Box display="flex" justifyContent="center"> */}
-        <PieChart width={400} height={400}>
+        <PieChart width={400} height={400} responsive>
           
           <Pie
             data={Object.entries(expenseData).map(([label, value]) => ({ name: label, value }))}
@@ -93,10 +93,10 @@ const PieChartComponent = () => {
         </PieChart>
         </Paper>
       {/* </Box> */}
-      <Paper elevation={3}  sx={{ margin: 2, borderRadius:6, padding:2 }}>
+      <Paper elevation={3}  sx={{ margin: 2, borderRadius:6, padding:2 , maxWidth: 450}}>
       <Typography variant='h6'>Ingresos por categoria</Typography>
       {/* <Box display="flex" justifyContent="center"> */}
-        <PieChart width={400} height={400}>
+        <PieChart width={400} height={400} responsive>
           <Pie
             data={Object.entries(incomeData).map(([label, value]) => ({ name: label, value }))}
             dataKey="value"
