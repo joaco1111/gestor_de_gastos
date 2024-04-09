@@ -7,6 +7,8 @@ import { addExpenseIncome, getCategoryIncome } from '../../redux/actions';
 import { Container, Button, Form } from 'react-bootstrap'; 
 import ModalHome from '../Modals/ModalHome';
 import "./incomeForm.css";
+import { Paper } from "@mui/material"
+
 
 const IncomeForm = () => {
   const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
@@ -53,7 +55,7 @@ const IncomeForm = () => {
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario INGRESOS:', values)
     dispatch(addExpenseIncome(values));
-    dispatch(fetchActions())
+    dispatch(fetchActions(1,100))
     resetForm();
 
     setExpense({                                 
@@ -67,6 +69,7 @@ const IncomeForm = () => {
   return (
     <div>
       <Container>
+        <Paper elevation={8} sx={{ p:5, borderRadius: 6}}>
         <Formik
           initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '', description: '' }}
           validationSchema={validationSchema}
@@ -133,6 +136,7 @@ const IncomeForm = () => {
           )}
         </Formik>
         {/* <PieCharts data={[]} /> */}
+        </Paper>
       </Container>
       {show && expense.quantity && expense.date && expense.idCategory && <ModalHome show={show} handleClose={handleClose} />}
     </div>

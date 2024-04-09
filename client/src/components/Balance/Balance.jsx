@@ -24,7 +24,7 @@ const Balance = () => {
         return actions.reduce((total, action) => {
             if (action.type === 'ingresos') {
                 return total + action.quantity;
-            }
+            } 
             return total;
         }, 0);
     };
