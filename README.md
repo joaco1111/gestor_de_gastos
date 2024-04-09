@@ -2,7 +2,7 @@
 # Gestor de Gastos - Proyecto Final
 
 ## GG
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
 ## Resumen
 
 La aplicación de gestión de gastos, "ExpenseTracker", es una herramienta diseñada para ayudarte a controlar y administrar tus finanzas personales de manera eficiente.
@@ -27,7 +27,7 @@ Con "ExpenseTracker", gestionar tus finanzas nunca ha sido tan fácil y efectivo
 -   Ingresar a tu perfil.
 -   Collaboration , si desea hacer una donacion
 -   Movimientos , para ver los gastos e ingresos
-______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
 ### Administrador
 
 -   Ver listado completo de usuarios, comentarios y donaciones.
