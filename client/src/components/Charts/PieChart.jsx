@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions, getCategoryExpense, getCategoryIncome } from '../../redux/actions';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import{ colors, incomeColors } from "./useColor"
-import { Box, Grid, Typography, Paper} from "@mui/material";
+import { colors, incomeColors } from "./useColor";
+import { Box, Typography, Paper } from "@mui/material";
+import grafico from "../../assets/grafico.png"
 
 const PieChartComponent = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const [dataLoaded, setDataLoaded] = useState(false); // Nuevo estado para indicar si todas las acciones y categorías han sido cargadas
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [expenseData, setExpenseData] = useState([]);
   const [incomeData, setIncomeData] = useState([]);
-
 
   const actions = useSelector(state => state.actions);
   const categoriesIncome = useSelector(state => state.categorieIncome);
@@ -25,7 +25,7 @@ const PieChartComponent = () => {
         dispatch(fetchActions(1,100))
       ]);
       setLoading(false);
-      setDataLoaded(true); 
+      setDataLoaded(true);
     };
 
     fetchData();
@@ -33,10 +33,7 @@ const PieChartComponent = () => {
 
   useEffect(() => {
     if (dataLoaded && categoriesExpense && categoriesExpense.length > 0 && categoriesIncome && categoriesIncome.length > 0 && actions && actions.length > 0) {
-     
-        
-     
-        const expenseCategoryTotals = {};
+      const expenseCategoryTotals = {};
       const incomeCategoryTotals = {};
 
       actions.forEach(action => {
@@ -59,63 +56,80 @@ const PieChartComponent = () => {
     return category ? category.name : 'Desconocido';
   };
 
-  
-
-
   if (loading) {
     return <div>Cargando...</div>;
   }
 
   return (
     <Box display="flex" justifyContent="center">
-      <Paper elevation={8}  sx={{ margin: 2, borderRadius:6, padding:2 , maxWidth: 450}}>
-      <Typography variant='h6'>Gastos por categoria</Typography>
-        {/* <Box display="flex" justifyContent="center"> */}
-        <PieChart width={400} height={400} responsive>
+      <Paper elevation={8} sx={{ margin: 2, borderRadius: 6, padding: 2, maxWidth: 450 }}>
+        <Typography variant='h6'>Gastos por categoría</Typography>
+        {Object.keys(expenseData).length > 0 ? (
+          <PieChart width={400} height={400} responsive>
+            <Pie
+              data={Object.entries(expenseData).map(([label, value]) => ({ name: label, value }))}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              innerRadius={40}
+              fill="#8884d8"
+            >
+              {Object.keys(expenseData).map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        ) : (
+          <Box>
+            <img src={grafico} style={{ height: 'auto' }}/>
+            <p style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
+              No hay gastos.
+            </p>
+            <p style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
+              Agrega tus gastos para ver tus gráficos.
+            </p>
+              
+          </Box>
           
-          <Pie
-            data={Object.entries(expenseData).map(([label, value]) => ({ name: label, value }))}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={80}
-            innerRadius={40}
-            fill="#8884d8"
-            // label
-          >
-            {Object.keys(expenseData).map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-        </Paper>
-      {/* </Box> */}
-      <Paper elevation={3}  sx={{ margin: 2, borderRadius:6, padding:2 , maxWidth: 450}}>
-      <Typography variant='h6'>Ingresos por categoria</Typography>
-      {/* <Box display="flex" justifyContent="center"> */}
-        <PieChart width={400} height={400} responsive>
-          <Pie
-            data={Object.entries(incomeData).map(([label, value]) => ({ name: label, value }))}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={80}
-            innerRadius={40}
-            fill="#8884d8"
-            // label
-          >
-            {Object.keys(incomeData).map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={incomeColors[index % incomeColors.length]} />
-            ))}
-          </Pie>
-          <Tooltip />
-          <Legend />
-        </PieChart>
-        {/* </Box> */}
+        )}
+      </Paper>
+      <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2, maxWidth: 450 }}>
+        <Typography variant='h6'>Ingresos por categoría</Typography>
+        {Object.keys(incomeData).length > 0 ? (
+          <PieChart width={400} height={400} responsive>
+            <Pie
+              data={Object.entries(incomeData).map(([label, value]) => ({ name: label, value }))}
+              dataKey="value"
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              innerRadius={40}
+              fill="#8884d8"
+            >
+              {Object.keys(incomeData).map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={incomeColors[index % incomeColors.length]} />
+              ))}
+            </Pie>
+            <Tooltip />
+            <Legend />
+          </PieChart>
+        ) : (
+          <Box>
+            <img src={grafico} style={{ height: 'auto' }}/>
+            
+          <Typography style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
+            No hay ingresos.
+          </Typography>
+          <Typography style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
+            Agrega tus ganancias  para ver tus gráficos.
+          </Typography>
+          </Box>
+        )}
       </Paper>
     </Box>
   );
