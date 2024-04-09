@@ -1,16 +1,16 @@
 
-# Gestor de Gastos - Proyecto Final
+# GastoGenius - Proyecto Final
 
-## GG
+## GG (logo)
 
 ## Resumen
 
-La aplicación de gestión de gastos, "ExpenseTracker", es una herramienta diseñada para ayudarte a controlar y administrar tus finanzas personales de manera eficiente.
+La aplicación de gestión de gastos, "GastoGenius", es una herramienta diseñada para ayudarte a controlar y administrar tus finanzas personales de manera eficiente.
  Con características intuitivas y fáciles de usar, te permite realizar un seguimiento detallado de tus ingresos y gastos, establecer presupuestos y recibir notificaciones 
 sobre tus hábitos de gasto. Con gráficos visuales y resúmenes claros, te brinda una visión clara de tu situación financiera y te ayuda a tomar 
 decisiones informadas para alcanzar tus objetivos financieros.
 
-Con "ExpenseTracker", gestionar tus finanzas nunca ha sido tan fácil y efectivo.
+Con "GastoGenius", gestionar tus finanzas nunca ha sido tan fácil y efectivo.
 
 ## Funcionalidades
 
