@@ -6,6 +6,7 @@ import MetricasActions from "../../components/Metricas/metricaActions";
 import Chat from '../../components/Chat/Chat'
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Balance from "../../components/Balance/Balance";
 import { Box, Grid, Typography} from "@mui/material";
@@ -20,17 +21,17 @@ const config = {
       }
     }
 
-const getMetrica = async(type) => {
-    try {
+// const getMetrica = async(type) => {
+//     try {
         
-        const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
+//         const {data} = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas?type=${type}`, config)
         
-        if(typeof data === "string") return [0,0];
-        return [data.count, data.total];
-    } catch (error) {
-        console.log(error);
-    }
-}
+//         if(typeof data === "string") return [0,0];
+//         return [data.count, data.total];
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
 
 
 const Home = () => {
@@ -39,12 +40,19 @@ const Home = () => {
     const [ingresos, setIngresos] = useState([])
 
 
-    useEffect(()=> {
-        if(localToken){
-            getMetrica("gastos").then(res => setGastos(res));
-            getMetrica("ingresos").then(res => setIngresos(res));
-        }
-    },[actions])
+
+    // useEffect(()=> {
+    //     if(localToken){
+    //         getMetrica("gastos").then(res => setGastos(res));
+    //         getMetrica("ingresos").then(res => setIngresos(res));
+    //     }
+    // },[actions])
+
+    // const dispatch = useDispatch();
+
+    // useEffect (() =>{
+    //     dispatch(fetchActions(1,100))
+    // }, [dispatch])
 
     return (
         //Grid container es la fila
