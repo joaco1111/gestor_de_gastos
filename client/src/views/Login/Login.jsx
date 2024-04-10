@@ -9,23 +9,36 @@ import { FaLock, FaUser, FaArrowLeft } from 'react-icons/fa';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
-    authDomain: "gestor-de-pago.firebaseapp.com",
-    projectId: "gestor-de-pago",
-    storageBucket: "gestor-de-pago.appspot.com",
-    messagingSenderId: "357483683234",
-    appId: "1:357483683234:web:d5ce922a345680f14326fb",
-    measurementId: "G-D15CHFV0VP"
-};
+
+// datos desde variable de entorno.
+const { 
+    VITE_API_KEY: apiKey,
+    VITE_AUTH_DOMAIN: authDomain,
+    VITE_PROJECT_ID: projectId,
+    VITE_STORAGE_BUCKET: storageBucket,
+    VITE_MESSAGING_SENDER_ID: messagingSenderId,
+    VITE_APP_ID: appId,
+    VITE_MEASUREMENT_ID: measurementId
+} = import.meta.env;
+
+const fireBaseConfig = {
+    apiKey,
+    authDomain,
+    projectId,
+    storageBucket,
+    messagingSenderId,
+    appId,
+    measurementId
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(fireBaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
 
 const Login = () => {
+    console.log(import.meta.env.VITE_API_KEY);
     const dispatch = useDispatch();
     const loginError = useSelector(state => state.loginError);
 
