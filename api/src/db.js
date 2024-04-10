@@ -28,7 +28,7 @@ fs.readdirSync(path.join(__dirname, '/models'))
   sequelize.models = Object.fromEntries(capsEntries);
   
 //Hacer destructuring de los models  const {} = sequelize.models
-const {Action, Notification, Review, User, CategoryIncome, CategoryBills, Access, Collaborations} = sequelize.models;
+const {Action, Notification, Review, User, CategoryIncome, CategoryBills, Access, Collaborations, Chat} = sequelize.models;
 
 //Hacer las relaciones
 // -------------relacion de user-action
@@ -58,6 +58,11 @@ Notification.belongsTo(User, { foreignKey: 'idUser' });
 //----------relación DONATION - USER
 Collaborations.belongsTo(User, {foreignKey: 'idUser'})
 User.hasMany(Collaborations, {foreignKey: 'idUser'})
+
+//---------- relacion de chat de usuarios - admin
+
+Chat.belongsTo(User, { as: 'sender'}) // relacion usuario - chat al enviar un msg
+Chat.belongsTo(User, { as: 'receiver'}) // relacion usuario - chat al recibir un msg
 
 
   module.exports = {
