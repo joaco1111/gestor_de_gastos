@@ -3,8 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/nav.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from "react-icons/bs";
-import {cleanUser, incrementNumberPuntuacion} from '../../redux/actions';
+import {cleanUser, fetchActions, incrementNumberPuntuacion} from '../../redux/actions';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -35,12 +36,7 @@ function NavBar() {
 
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
-    const obj = {
-      tokenUser: '',
-      email: '',
-      password: ''
-    };
-    dispatch(cleanUser(obj));
+    dispatch(cleanUser());
   };
 
   const getUser = async()=> {

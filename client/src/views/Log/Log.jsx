@@ -3,13 +3,12 @@ import { validate } from '../../utils';
 //import axios from 'axios';
 import  './log.css';
 import { Link } from 'react-router-dom';
-import { Container,Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
-import { authenticationFromGoogle } from '../../redux/actions'
+import { authenticationFromGoogle, login } from '../../redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
-import { log } from '../../redux/actions';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 
 const firebaseConfig = {
@@ -77,7 +76,8 @@ const Log = () => {
             password: form.password,
         }
 
-        await dispatch(log(newUser));
+        dispatch(login(newUser, "register"));
+        // window.location.reload();
     };
 
     const handleGoogleSignIn = () => {

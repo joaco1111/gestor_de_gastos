@@ -48,13 +48,14 @@ const Login = () => {
 
     const handleSubmit = async(event) => {
         event.preventDefault();
+        
         const credentials = {
             email: userData.email,
             password: userData.password
         };
 
-        await dispatch(login(credentials));
-        window.location.reload();
+        dispatch(login(credentials, "login"));
+        // window.location.reload();
     };
 
     const handleGoogleSignIn = () => {

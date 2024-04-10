@@ -5,8 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const Chat = () => {
 
-    const token = JSON.parse(localStorage.getItem('loggedNoteAppUser')).name;
-
+  const token = JSON.parse(localStorage.getItem('loggedNoteAppUser'))?.name;
 
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState(() => {
@@ -21,15 +20,15 @@ const Chat = () => {
     }
   });
 
- useEffect(() => {
-    socket.on('chat_message', (data) => {
-      setMessages((prevMessages) => {
-        const newMessages = [...prevMessages, data];
-        localStorage.setItem('chatMessages', JSON.stringify(newMessages));
-        return newMessages;
+    useEffect(() => {
+
+      socket.on('chat_message', (data) => {
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages, data];
+          localStorage.setItem('chatMessages', JSON.stringify(newMessages));
+          return newMessages;
       });
     });
-
 
     return () => {
       socket.disconnect();
