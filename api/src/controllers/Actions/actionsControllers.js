@@ -61,7 +61,7 @@ const getActions = async (req, res) => {
   try {
     const { page = 1, limit = 5, date, type, category, orderBy, orderDirection } = req.query;
     const idUser = req.userID;
-
+    console.log(idUser);
     const offset = (page - 1) * limit;
 
     // Creamos el objeto condicional que debe tener el id del usuario para buscar solo las actions con ese id
@@ -113,7 +113,7 @@ const getActions = async (req, res) => {
     });
 
     if (resultFilter.rows.length === 0) {
-      return res.status(200).send("No se encontraron acciones con los filtros proporcionados");
+      return res.status(400).send("No se encontraron acciones con los filtros proporcionados");
     }
 
     return res.status(200).json(resultFilter);

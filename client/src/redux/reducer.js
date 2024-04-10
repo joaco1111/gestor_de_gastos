@@ -70,10 +70,7 @@ const rootReducer = (state = initialState, action) => {
                 transactions: action.payload
             };
         case CLEAN_USER:
-            return {
-                ...state,
-                user: action.payload
-            };
+            return action.payload;
         case LOGIN_FAILED:
             return {
                 ...state,

@@ -1,4 +1,4 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
+import { GET_USERS, LOGIN,  ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
 import axios from 'axios';
 
 
@@ -20,13 +20,23 @@ export const incrementNumberPuntuacion = (value)=> {
 }
 
 
-export const login = (credentials) => {                                         
+export const login = (credentials, type) => {                                         
     return async function(dispatch) {      
         try {
-            const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
-            // console.log(user);
-            dispatch({ type: LOGIN, payload: user });
-            //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
+            if(type === "login"){
+                const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
+                // console.log(user);
+                dispatch({ type: LOGIN, payload: user });
+                //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
+            }else {
+                const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, credentials)).data;
+            
+                if(typeof response !== 'string') {
+                    return dispatch({ type: LOGIN, payload: response });
+                }
+
+                dispatch({ type: LOG_FAILED, payload: response });
+            }
         } catch (error) {
             //console.error('Error en la solicitud de inicio de sesión:', error);
             // Envío el error al estado para manejarlo en el componente Login
@@ -35,20 +45,6 @@ export const login = (credentials) => {
     }
 };
 
-export const log = (newUser) => {
-    return async function(dispatch) {      
-        try {
-            const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser)).data;
-            
-            if(typeof response !== 'string') {
-                return dispatch({ type: LOG, payload: response });
-            }
-            dispatch({ type: LOG_FAILED, payload: response });
-        } catch (error) {
-            console.error('Error al registrar en la DB:', error);
-        }                                     
-    }
-};
 
 export const getUsers = (value) => {
     return async function(dispatch) {
@@ -133,11 +129,10 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     ...config,
                     params
                 };
-
-          
-                
+                console.log(params);
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
+                console.log(response);
                 console.log('Respuesta del servidor:', response.data);
                 
     
@@ -263,8 +258,21 @@ export const fetchActionDetail = (id) => {
     };
   };
   
-export const cleanUser = (emptyUser) => {
-    return { type: CLEAN_USER, payload: emptyUser };
+export const cleanUser = () => {
+    return { type: CLEAN_USER, payload: {
+    users: [],
+    user: {},
+    newUser: {},
+    expenses: [],
+    categorieExpense: [],
+    categorieIncome: [],
+    transactions: [],
+    actions: [],
+    totalCount: 0,
+    loginError: '',
+    logError: '',
+    numberPuntuacion: 5,
+} };
 };
 
 
