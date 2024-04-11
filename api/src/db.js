@@ -28,7 +28,7 @@ fs.readdirSync(path.join(__dirname, '/models'))
   sequelize.models = Object.fromEntries(capsEntries);
   
 //Hacer destructuring de los models  const {} = sequelize.models
-const {Action, Notification, Review, User, CategoryIncome, CategoryBills, Access, Collaborations, Chat} = sequelize.models;
+const {Action, Notification, Review, User, CategoryIncome, CategoryBills, Access, Collaborations, Chat, CreditCard} = sequelize.models;
 
 //Hacer las relaciones
 // -------------relacion de user-action
@@ -64,6 +64,10 @@ User.hasMany(Collaborations, {foreignKey: 'idUser'})
 Chat.belongsTo(User, { as: 'sender'}) // relacion usuario - chat al enviar un msg
 Chat.belongsTo(User, { as: 'receiver'}) // relacion usuario - chat al recibir un msg
 
+
+// Relacion Action CreditCard
+Action.belongsTo(CreditCard, { foreignKey: 'creditCardId' });
+CreditCard.hasMany(Action, { foreignKey: 'creditCardId' });
 
   module.exports = {
     ...sequelize.models, 
