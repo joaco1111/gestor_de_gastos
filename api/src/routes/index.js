@@ -4,7 +4,7 @@ const {createActions,
         getActionById,
         updateAction,
     deleteAction} = require('../controllers/Actions/actionsControllers')
-const {createReview, getReview, updateReview, deleteReview} = require('../controllers/Review/review');
+const {createReview, getReview, updateReview, deleteReview, unLockReview, restoreReview} = require('../controllers/Review/review');
 //traigo mis rutas
 const authRouter = require('./authRoute');
 const userExtractor = require('../middleware/userExtractor')
@@ -36,13 +36,17 @@ router.get('/actions/metricas', userExtractor, metricasActions);
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas
-router.get('/review', getReview)
+router.get('/review', userExtractor, getReview)
 //Ruta para crear una reseña
-// router.post('/review', createReview);
+router.post('/review', userExtractor, createReview);
 //Ruta para actualizar la reseña
-router.put('/review/:id', updateReview);
+router.put('/review/:id', userExtractor, updateReview);
+//Ruta para bloquear una review
+router.delete('/unLockReview/:id', userExtractor, unLockReview);
 //Ruta para eliminar una reseña
-router.delete('/review/:id', deleteReview);
+router.delete('/review/:id', userExtractor, deleteReview);
+//Ruta para restaurar una review
+router.post('/restoreReview/:id', userExtractor, restoreReview);
 
 //ruta para crear las colaboraciones(donacion)
 

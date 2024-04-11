@@ -129,10 +129,9 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     ...config,
                     params
                 };
-                console.log(params);
+                
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
-                console.log(response);
                 console.log('Respuesta del servidor:', response.data);
                 
     
