@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/nav.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from "react-icons/bs";
 import {cleanUser, fetchActions, incrementNumberPuntuacion} from '../../redux/actions';
 import axios from 'axios';
@@ -11,6 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
+
 
 
 const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
@@ -22,7 +24,7 @@ const config = {
 };
 
 function NavBar() {
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   // Función que maneja el botón Logout
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
@@ -35,6 +37,10 @@ function NavBar() {
   const handleLogout = () => {
     window.localStorage.removeItem('loggedNoteAppUser');
     dispatch(cleanUser());
+  };
+
+  const handleToggleMenu = () => {
+    setIsMenuOpen(prevState => !prevState);
   };
 
   const getUser = async()=> {
@@ -80,10 +86,10 @@ function NavBar() {
         <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
         </NavLink>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="navbar-toggler" type="button" onClick={handleToggleMenu}>
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <div className={`collapse navbar-collapse${isMenuOpen ? ' show' : ''}`} id="navbarNav">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
               <NavLink exact className="nav-link" to="/home">Home</NavLink>

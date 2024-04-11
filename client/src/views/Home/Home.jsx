@@ -10,8 +10,11 @@ import axios from "axios";
 import Balance from "../../components/Balance/Balance";
 import { Box, Grid, Typography} from "@mui/material";
 // import CalendarComponent from "../../components/Calendar/CalendarComponent";
-import PieChartC from "../../components/Charts/PieChart"
-// import { fetchActions } from "../../redux/actions";
+// import PieChartC from "../../components/Charts/PieChart"
+import { fetchActions } from "../../redux/actions";
+import ExpensePieChart from "../../components/Charts/ExpensePieChart";
+import IncomePieChart from "../../components/Charts/IncomePieChart";
+import BalanceMensual from "../../components/Balance/BalanceMensual";
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -37,6 +40,8 @@ const Home = () => {
     const actions = useSelector(state => state.actions);
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
+    const currentMonth = new Date().getMonth();
+
 
 
     useEffect(()=> {
@@ -46,6 +51,12 @@ const Home = () => {
         }
     },[actions])
 
+    const dispatch = useDispatch();
+
+    useEffect (() =>{
+        dispatch(fetchActions(1,100))
+    }, [dispatch])
+
     return (
         //Grid container es la fila
         //Grid item representa a la columna
@@ -53,6 +64,7 @@ const Home = () => {
             <Grid item xs={12}>
                 <NavBar />
             </Grid>
+
         <Grid container spacing={2} justifyContent="center">
             
             <Grid item xs={12} sm={6} md={3}>
@@ -78,19 +90,38 @@ const Home = () => {
             </Grid>
             
         </Grid>
-
-        <PieChartC/>
-
-        <Grid container spacing={2} justifyContent="center">
-        <Grid item xs={12} sm={6} md={3}>
-                <Box p={2}>
-                    <Typography variant="h5">Descripcion Movimientos </Typography>
-                    <MetricasActions title={["Número Gastos", "Total Gastos"]} number={gastos} />
-                    <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
+        <Grid container spacing={1} justifyContent="center">
+            <Grid item xs={12} sm={6} md={6} lg={3.4}>
+                <Box p={3}>
+                    <ExpensePieChart/>  
+                </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={3.4}>
+                <Box p={3}>
+                    <IncomePieChart/>
                 </Box>
             </Grid>
         </Grid>
 
+       
+
+        <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12} sm={6} md={3}>
+                    <Box p={2}>
+                        <Typography variant="h5">Descripcion Movimientos </Typography>
+                        <MetricasActions title={["Número Gastos", "Total Gastos"]} number={gastos} />
+                        <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
+                    </Box>
+            </Grid>
+        </Grid>
+
+        <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} md={3}>
+                    <Box p={3}>
+                        <BalanceMensual selectedMonth={currentMonth} /> 
+                    </Box>
+                </Grid>
+        </Grid>
         
 
 
