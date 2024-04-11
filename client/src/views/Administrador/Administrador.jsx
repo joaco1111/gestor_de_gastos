@@ -19,6 +19,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../../redux/actions.js";
 import Transactions from "./Transactions.jsx";
+import Categories from "./Categories.jsx";
 
 
 const Administrador  = () => {
@@ -50,7 +51,8 @@ const Administrador  = () => {
                         {/* <Route path="/geography" element={<Geography/>}/> */}
                         {/* <Route path="/geography" element={<Geography/>}/> */}
                         {/* <Route path="/faq" element={<Faq/>}/> */}
-                        {/* <Route path="/calendar" element={<Calendar/>}/>       */}
+                        {/* <Route path="/calendar" element={<Calendar/>}/> */}
+                        <Route path="/categories" element={<Categories/>}/>      
                     </Routes>
                 </div>
                 

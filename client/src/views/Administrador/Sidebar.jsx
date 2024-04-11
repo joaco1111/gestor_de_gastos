@@ -160,7 +160,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 selected={selected}
                 setSelected={setSelected}
               />
-  
+              <Item
+                title="Categorías"
+                to="/admin/categories"
+                
+               
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               {/* <Typography
                 variant="h6"
                 color={colors.grey[300]}

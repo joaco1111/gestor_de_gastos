@@ -3,7 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/nav.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { BsPersonCircle } from "react-icons/bs";
 import {cleanUser, fetchActions, incrementNumberPuntuacion} from '../../redux/actions';
 import axios from 'axios';
@@ -12,7 +11,6 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
-
 
 
 const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
