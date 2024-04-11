@@ -62,7 +62,7 @@ const PieChartComponent = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <Paper elevation={8} sx={{ margin: 2, borderRadius: 6, padding: 2, maxWidth: 450 }}>
+      <Paper elevation={8} sx={{ margin: 2, borderRadius: 6, padding: 2 }}>
         <Typography variant='h6'>Gastos por categoría</Typography>
         {Object.keys(expenseData).length > 0 ? (
           <PieChart width={400} height={400} responsive>
@@ -84,15 +84,21 @@ const PieChartComponent = () => {
             <Legend />
           </PieChart>
         ) : (
-          <Box>
-            <img src={grafico} style={{ height: 'auto' }}/>
-            <p style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
-              No hay gastos.
-            </p>
-            <p style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
-              Agrega tus gastos para ver tus gráficos.
-            </p>
-              
+          <Box width={380} height={380} responsive sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+            <Box>
+              <img src={grafico} style={{ height: 'auto' }}/>
+            </Box>
+            <Box>
+              <Typography style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
+                No hay gastos
+              </Typography>
+            </Box>
+           <Box>
+              <Typography style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
+                Agrega tus gastos para ver tus gráficos.
+              </Typography>
+           </Box>
+            
           </Box>
           
         )}
@@ -119,15 +125,21 @@ const PieChartComponent = () => {
             <Legend />
           </PieChart>
         ) : (
-          <Box>
-            <img src={grafico} style={{ height: 'auto' }}/>
+          <Box width={380} height={380} responsive sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'center' }}>
+            <Box>
+              <img src={grafico} style={{ height: 'auto' }}/>
+            </Box>
             
-          <Typography style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
-            No hay ingresos.
-          </Typography>
-          <Typography style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
-            Agrega tus ganancias  para ver tus gráficos.
-          </Typography>
+              <Typography style={{ fontSize: '16px', color: '#757575', marginBottom: '8px', textAlign:"center" }}>
+                No hay ingresos
+              </Typography>
+            
+
+              <Typography style={{ fontSize: '14px', color: '#757575', marginBottom: '8px' }}>
+                Agrega tus ganancias para ver tus gráficos.
+              </Typography>
+           
+            
           </Box>
         )}
       </Paper>

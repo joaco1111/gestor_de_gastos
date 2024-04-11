@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { Collaboration, Log, Login, Home, Landing } from './views';
+import { Collaboration, Log, Login, Home, Landing, Informes } from './views';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
 import ActionDetail from './components/ActionDetail/ActionDetail';
@@ -64,6 +64,7 @@ function App() {
                 <Route path='/actions/:id' element={user.tokenUser ? <ActionDetail /> : <Login />} />
                 <Route path='/users' element={user.tokenUser ? <UserList /> : <Login />} />
                 <Route path='/profile' element={user.tokenUser ? <Profile /> : <Login />} />
+                <Route path='/informes' element={user.tokenUser ? <Informes /> : <Login />} />
                 <Route path='/' element={user.tokenUser ? <Landing /> : <Landing />}/>
             </Routes>
         </div>
