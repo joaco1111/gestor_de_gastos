@@ -9,17 +9,21 @@ const {createReview, getReview, updateReview, deleteReview, unLockReview, restor
 const authRouter = require('./authRoute');
 const userExtractor = require('../middleware/userExtractor')
 const { filters } = require('../controllers/Filtres/Filters');
-const { getCategoryBills, getCategoryIncomes } = require('../controllers/Categories/Category');
+const { getCategoryBills, getCategoryIncomes, createCategoryBills, createCategoryIncomes, deleteCategoryBills, deleteCategoryIncomes } = require('../controllers/Categories/Category');
 const {getCollaborations} = require('../controllers/Collaborations/Collaborations')
 const {createOrder, receiveWebHook} = require('../mercadoPago/payment.controllers');
 const { metricasActions } = require('../controllers/metricas/metricasActions');
+const { admin } = require('../middleware/rolsExtractor');
 const router = Router();
 
 //CATEGORIAS BILLS
-router.get('/categoryBills', getCategoryBills);
+router.get('/categoryBills', getCategoryBills); 
+router.post('/categoryBills', admin, createCategoryBills);
+router.delete('/categoryBills/:id', admin, deleteCategoryBills);
 //CATEGORIAS INCOME
 router.get('/categoryIncome', getCategoryIncomes);
-
+router.post('/categoryIncome', admin, createCategoryIncomes);
+router.delete('/categoryIncome/:id', admin, deleteCategoryIncomes);
 //ACTIONS
 //Ruta crear una Actions
 router.post('/actions', userExtractor, createActions)
