@@ -1,8 +1,8 @@
-const { Action, CategoryBills, CategoryIncome} = require('../../db.js');
+const { Action, CategoryBills, CategoryIncome, CreditCard} = require('../../db.js');
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, description = "", idCategory } = req.body;
+    const { type, quantity, date, description = "", idCategory, cuotas, creditCardName, paymentMethod, creditCardId } = req.body;
     const idUser = req.userID;
 
     const typeCategory = {}
@@ -37,16 +37,25 @@ const createActions = async (req, res) => {
 
       typeCategory['idCategoryBills'] = idCategory;
     }
+  
+    let creditcardFound = await CreditCard.findOne({ where: { name: creditCardName } })
+
+    if (!creditcardFound) {
+      creditcardFound = await CreditCard.create({ name: creditCardName })
+    }
 
     const newAction = await Action.create({
-      type, 
-      date, 
+      type,
+      date,
       quantity,
       description,
+      cuotas,
+      creditCardName,
+      paymentMethod,
+      creditCardId: creditcardFound.id,
       ...typeCategory,
       idUser: idUser
     })
-
     return res.status(200).json(newAction);
 
 
@@ -107,7 +116,7 @@ const getActions = async (req, res) => {
       where: { ...where },
       limit,
       offset,
-      include: [{ model: CategoryBills }, { model: CategoryIncome }],
+      include: [{ model: CategoryBills }, { model: CategoryIncome }, {model: CreditCard}],
       order: order.length > 0 ? order : undefined, // Si no hay orden, se pasa undefined
       attributes: { include: ['description'] },
     });
@@ -133,7 +142,7 @@ const getActions = async (req, res) => {
   
       const action = await Action.findOne({
         where: { id },
-        attributes: ["id", "type", "date", "quantity", "description"],
+        attributes: ["id", "type", "date", "quantity", "description", "cuotas", "paymentMethod"],
         include: [
           {
             model: CategoryBills,
@@ -141,6 +150,10 @@ const getActions = async (req, res) => {
           },
           {
             model: CategoryIncome,
+            attributes: ["name"]
+          },
+          {
+            model: CreditCard,
             attributes: ["name"]
           }
         ]
@@ -160,62 +173,57 @@ const getActions = async (req, res) => {
   
 
 
-const updateAction = async (req, res) => {
-  try {
-    //id de actions a modificar
-    const { id } = req.params;
-
-    const action = await Action.findByPk(id)
-
-    if (!action) {
-      return res.status(404).json({ error: 'Acción no encontrada' })
-    }
-
-    const type = action.dataValues.type;
-    //condiciones para saber en que caso modificar un ingreso o un gasto cuando haya un id_category
-    if(type === "ingresos"){
-      if(req.body?.idCategory ){
-        const idCategory = req.body.idCategory;
-        const data = { idCategoryIncome: idCategory , ...req.body}
-
-        //buscamos en la categoria que exista el id que nos mandaron
-        const category = await CategoryIncome.findOne({where: {id: idCategory}})
-        
-        //en caso que no error
-        if(!category) return res.status(400).send("No coinciden los datos")
-
-        const updateActions = await action.update(data)
-
-        return res.status(200).json(updateActions);
+  const updateAction = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const action = await Action.findByPk(id);
+  
+      if (!action) {
+        return res.status(404).json({ error: 'Acción no encontrada' });
       }
-    }
-    else{
-      if(req.body?.idCategory ){
+  
+      const type = action.dataValues.type;
+      let data = {};
+  
+      if (type === "ingresos" && req.body.idCategory) {
         const idCategory = req.body.idCategory;
-        const data = { idCategoryBills: idCategory , ...req.body}
-
-        //buscamos en la categoria que exista el id que nos mandaron
-        const category = await CategoryBills.findOne({where: {id: idCategory}})
-        
-        //en caso que no error
-        if(!category) return res.status(400).send("No coinciden los datos")
-
-        const updateActions = await action.update(data)
-
-        return res.status(200).json(updateActions);
+        const category = await CategoryIncome.findOne({ where: { id: idCategory } });
+  
+        if (!category) {
+          return res.status(400).send("No coinciden los datos de la categoría de ingresos");
+        }
+  
+        data = { idCategoryIncome: idCategory, ...req.body };
+      } else if (type !== "ingresos" && req.body.idCategory) {
+        const idCategory = req.body.idCategory;
+        const category = await CategoryBills.findOne({ where: { id: idCategory } });
+  
+        if (!category) {
+          return res.status(400).send("No coinciden los datos de la categoría de gastos");
+        }
+  
+        data = { idCategoryBills: idCategory, ...req.body };
       }
+  
+      if (req.body.creditCardId) {
+        const creditCardId = req.body.creditCardId;
+        const creditCard = await CreditCard.findOne({ where: { id: creditCardId } });
+  
+        if (!creditCard) {
+          return res.status(400).send("No coinciden los datos de la tarjeta de crédito");
+        }
+  
+        data = { creditCardId, ...data };
+      }
+  
+      const updateAction = await action.update(data);
+  
+      return res.status(200).json(updateAction);
+    } catch (error) {
+      console.error('Error al actualizar la acción:', error);
+      res.status(500).json({ error: 'Error al actualizar la acción' });
     }
-    
-    action.set(req.body);
-    await action.save();
-
-    return res.status(200).json({ mensaje: 'Acción actualizada exitosamente', action })
-  } catch (error) {
-    console.error('Error al actualizar la acción:', error);
-    res.status(500).json({ error: 'Error al actualizar la acción' })
-  }
-}
-
+  };
   
   const deleteAction = async (req, res) => {
     try {
