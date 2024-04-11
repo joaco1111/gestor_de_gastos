@@ -50,7 +50,7 @@ const IncomePieChart = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <Link to= "/informes" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to= "/activity" style={{ textDecoration: 'none', color: 'inherit' }}>
       <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2, maxWidth: 450 }}>
         <Typography variant='h6'>Ingresos por categoría</Typography>
         {Object.keys(incomeData).length > 0 ? (

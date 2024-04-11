@@ -51,7 +51,7 @@ const ExpensePieChart = () => {
 
   return (
     <Box display="flex" justifyContent="center">
-      <Link to= "/informes" style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to= "/activity" style={{ textDecoration: 'none', color: 'inherit' }}>
       <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2 }}>
         <Typography variant='h6'>Gastos por categoría</Typography>
         {Object.keys(expenseData).length > 0 ? (

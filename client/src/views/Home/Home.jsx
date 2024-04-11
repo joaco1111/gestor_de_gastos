@@ -14,6 +14,7 @@ import { Box, Grid, Typography} from "@mui/material";
 import { fetchActions } from "../../redux/actions";
 import ExpensePieChart from "../../components/Charts/ExpensePieChart";
 import IncomePieChart from "../../components/Charts/IncomePieChart";
+import BalanceMensual from "../../components/Balance/BalanceMensual";
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -39,6 +40,7 @@ const Home = () => {
     const actions = useSelector(state => state.actions);
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
+    const currentMonth = new Date().getMonth();
 
 
 
@@ -101,6 +103,8 @@ const Home = () => {
             </Grid>
         </Grid>
 
+       
+
         <Grid container spacing={2} justifyContent="center">
             <Grid item xs={12} sm={6} md={3}>
                     <Box p={2}>
@@ -111,6 +115,13 @@ const Home = () => {
             </Grid>
         </Grid>
 
+        <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} md={3}>
+                    <Box p={3}>
+                        <BalanceMensual selectedMonth={currentMonth} /> 
+                    </Box>
+                </Grid>
+        </Grid>
         
 
 

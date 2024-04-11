@@ -3,6 +3,7 @@ import Log from './Log/Log';
 import Login from './Login/Login';
 import Home from './Home/Home';
 import Landing from './Landing/Landing';
-import Informes from './Informes/Informes';
+import Activity from './Informes/Activity';
+import Balanz from './Balanz/Balanz'
 
-export { Collaboration, Log, Login, Home, Landing, Informes};
+export { Collaboration, Log, Login, Home, Landing, Activity, Balanz};
