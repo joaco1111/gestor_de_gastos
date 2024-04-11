@@ -1,4 +1,5 @@
 import { GET_USERS, LOGIN,  ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
+
 import axios from 'axios';
 
 
@@ -45,6 +46,20 @@ export const login = (credentials, type) => {
     }
 };
 
+export const log = (newUser) => {
+    return async function(dispatch) {      
+        try {
+            const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser)).data;
+            
+            if(typeof response !== 'string') {
+                return dispatch({ type: LOG, payload: response });
+            }
+            dispatch({ type: LOG_FAILED, payload: response });
+        } catch (error) {
+            console.error('Error al registrar en la DB:', error);
+        }                                     
+    }
+};
 
 export const getUsers = (value) => {
     return async function(dispatch) {
@@ -294,20 +309,20 @@ export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, or
 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, configuration);
 
-                console.log('Transactions:', response.data);
-          
-                dispatch({
-                    type: GET_TRANSACTIONS,
-                    payload: response.data.collaborations
-                });
-            }
-        } catch (error) {
-            console.error('Error al obtener las transacciones:', error);
+            // console.log('Trnsactions', response.data);
+      
+            dispatch({
+              type: GET_TRANSACTIONS,
+              payload: response.data
+            });
         }
+      } catch (error) {
+        console.error('Error al obtener las transacciones:', error);
+        dispatch({
+          type: FETCH_TRANSACTIONS_ERROR,
+          payload: error.message
+        });
+      }
     };
 };
 
-
-export const cleanActions = () => {
-    return { type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } };
-};

@@ -10,3 +10,4 @@ const colors = [
   ]
   
   export {colors, incomeColors}
+
