@@ -104,8 +104,14 @@ function NavBar() {
 
             {user.idAccess === 1 && (
                 <li className="nav-item">
-              <NavLink exact className="nav-link" to="/admin">Admin</NavLink>
-            </li>
+                  <NavLink exact className="nav-link" to="/admin">Admin</NavLink>
+                </li>
+            )}
+
+            {user.idAccess === 1 && (
+              <li className='nav-item'>
+                <NavLink className="nav-link" to='/chat'>ChatAdmin</NavLink>
+              </li>
             )}
            
           </ul>
