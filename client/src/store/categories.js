@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import create from 'zustand';
-=======
-import  create  from 'zustand';
->>>>>>> Stashed changes
 import axios from 'axios';
 
 //Recupero el token del local Storage

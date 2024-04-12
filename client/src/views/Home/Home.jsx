@@ -15,6 +15,7 @@ import { fetchActions } from "../../redux/actions";
 import ExpensePieChart from "../../components/Charts/ExpensePieChart";
 import IncomePieChart from "../../components/Charts/IncomePieChart";
 import BalanceMensual from "../../components/Balance/BalanceMensual";
+import ChatAdmin from '../ChatAdmin/ChatAdmin'
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -40,6 +41,7 @@ const Home = () => {
     const actions = useSelector(state => state.actions);
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
+    const user = useSelector(state => state.user);
     const currentMonth = new Date().getMonth();
 
 
@@ -125,14 +127,19 @@ const Home = () => {
         
 
 
-        <Chat/>
+        
+
+        {user.idAccess === 1 ? (
+            <ChatAdmin/>
+        ) : (
+            <Chat/> 
+        )}
 
     </Box>
 
     )
 
         // <div className={style.homeContainer}>
-          
         //     <NavBar />
         //     <Box display="flex" flexDirection="column" alignItems="center">
               
