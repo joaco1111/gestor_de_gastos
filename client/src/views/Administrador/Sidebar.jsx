@@ -2,7 +2,7 @@ import { useState } from "react"
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import 'react-pro-sidebar/dist/css/styles.css';
 import { Box, IconButton, Typography, useTheme } from '@mui/material'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { tokens } from "./theme"
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -16,7 +16,10 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import adminprofile from "../../assets/profileadmin.svg"
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -41,6 +44,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
+    const navigate = useNavigate();
   
     return (
       <Box
@@ -81,9 +85,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h3" color={colors.grey[100]}>
-                    ADMINS
-                  </Typography>
+                  <IconButton onClick={()=> navigate("/home")}>
+                      <ArrowBackIosNewIcon />
+                  </IconButton>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
                   </IconButton>
@@ -161,6 +165,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 setSelected={setSelected}
               />
               <Item
+                title="Community"
+                to="/admin/review"
+                
+                icon={<InsertCommentIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+
+              <Item
                 title="Categorías"
                 to="/admin/categories"
                 
@@ -169,6 +182,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 selected={selected}
                 setSelected={setSelected}
               />
+  
               {/* <Typography
                 variant="h6"
                 color={colors.grey[300]}

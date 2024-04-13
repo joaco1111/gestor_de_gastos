@@ -20,6 +20,8 @@ import { useDispatch } from "react-redux";
 import { getUsers } from "../../redux/actions.js";
 import Transactions from "./Transactions.jsx";
 import Categories from "./Categories.jsx";
+import ReviewAdmin from "./Review.jsx";
+
 
 
 const Administrador  = () => {
@@ -42,6 +44,7 @@ const Administrador  = () => {
                         {/* <Route path="/team" element={<Team/>}/> */}
                         <Route path="/userslist" element={<Users/>}/>
                         <Route path="/transactions" element={<Transactions/>}/>
+                        <Route path="/review" element={<ReviewAdmin/>}/>
                         {/* <Route path="/invoices" element={<Invoices/>}/> */}
                         {/* <Route path="/form" element={<Form/>}/> */}
                         {/* <Route path="/bar" element={<Bar/>}/> */}
