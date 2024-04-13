@@ -1,4 +1,5 @@
 const { Review, User} = require('../../db');
+const { Op } = require("sequelize");
 require('dotenv').config();
 
 const createReview = async(req, res) => {
@@ -36,6 +37,9 @@ const getReview = async(req, res) => {
 
     try {
         const reviews = await Review.findAll({
+            where: {deletedAt: {
+                [Op.eq]: null
+            }},
             include: User
         });
 
@@ -115,11 +119,29 @@ const restoreReview = async(req, res) => {
     }
 }
 
+const getUnlockReview = async(req, res)=> {
+    try {
+        const result = await Review.findAll({where: {deletedAt: {
+                [Op.ne]: null
+            }},
+            paranoid: false,
+            include: User
+        })
+
+        if(result.length < 1) return res.status(400).send("No se encontraron comentarios bloqueados.")
+        return res.status(200).json(result);
+
+    } catch (error) {
+        return res.status(500).send(error.message);
+    }
+}
+
 module.exports = {
     createReview,
     getReview,
     updateReview,
     deleteReview,
     unLockReview,
-    restoreReview
+    restoreReview,
+    getUnlockReview
 };
