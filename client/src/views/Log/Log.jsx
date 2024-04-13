@@ -3,27 +3,37 @@ import { validate } from '../../utils';
 //import axios from 'axios';
 import  './log.css';
 import { Link } from 'react-router-dom';
-import { Container,Form, Row, Col, Button } from 'react-bootstrap';
+import { Form, Row, Col, Button } from 'react-bootstrap';
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { Navigate } from 'react-router-dom';
-import { authenticationFromGoogle } from '../../redux/actions'
+import { authenticationFromGoogle, login } from '../../redux/actions'
 import { useDispatch, useSelector } from 'react-redux';
-import { log } from '../../redux/actions';
 import { FaUser, FaEnvelope, FaLock, FaArrowLeft } from 'react-icons/fa';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAqsU0vjIZ1BfA_oeiLOpaGHZONUt02uMk",
-  authDomain: "gestor-de-pago.firebaseapp.com",
-  projectId: "gestor-de-pago",
-  storageBucket: "gestor-de-pago.appspot.com",
-  messagingSenderId: "357483683234",
-  appId: "1:357483683234:web:d5ce922a345680f14326fb",
-  measurementId: "G-D15CHFV0VP"
-};
+// datos desde variable de entorno.
+const { 
+    VITE_API_KEY: apiKey,
+    VITE_AUTH_DOMAIN: authDomain,
+    VITE_PROJECT_ID: projectId,
+    VITE_STORAGE_BUCKET: storageBucket,
+    VITE_MESSAGING_SENDER_ID: messagingSenderId,
+    VITE_APP_ID: appId,
+    VITE_MEASUREMENT_ID: measurementId
+} = import.meta.env;
+
+const fireBaseConfig = {
+    apiKey,
+    authDomain,
+    projectId,
+    storageBucket,
+    messagingSenderId,
+    appId,
+    measurementId
+}
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(fireBaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();
 
@@ -77,7 +87,8 @@ const Log = () => {
             password: form.password,
         }
 
-        await dispatch(log(newUser));
+        dispatch(login(newUser, "register"));
+        // window.location.reload();
     };
 
     const handleGoogleSignIn = () => {

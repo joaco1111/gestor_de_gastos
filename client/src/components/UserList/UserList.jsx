@@ -7,9 +7,10 @@ import axios from 'axios';
 import ModalsDisable from '../Modals/ModalsDisable';
 import Alert from 'react-bootstrap/Alert';
 import ModalsForm from '../Modals/ModalsForm';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 import { useTheme } from '@mui/material/styles';
 import { tokens } from "../../views/Administrador/theme"
-import {BsFillTrashFill, BsPersonLock, BsEyeFill, BsXOctagonFill, BsPersonFillGear} from 'react-icons/bs';
+import {BsFillTrashFill, BsPersonLock, BsXOctagonFill, BsPersonFillGear} from 'react-icons/bs';
 
 
 const _URL_CLEAN = `${import.meta.env.VITE_BASE_URL}/auth/user/`;
@@ -154,6 +155,9 @@ const UserList = ({ users, getUsers}) => {
                 <th>Activo</th>
                 <th>Fecha de creación</th>
                 <th>Fecha desactivado</th>
+                <th></th>
+                <th></th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -168,7 +172,7 @@ const UserList = ({ users, getUsers}) => {
                   <td>
                     {user.deletedAt !== null ? (
                       <Button variant="danger"  onClick={() => handleRestoreUser(user.id)}>
-                      < BsPersonLock   />
+                        < PersonOffIcon   />
                     </Button>
                     ): (
                       <Button variant="success" onClick={() =>{
@@ -176,8 +180,8 @@ const UserList = ({ users, getUsers}) => {
                           access: true,
                           id: user.id
                         })
-                         }}>
-                      <BsEyeFill />
+                      }}>
+                        < BsPersonLock/>
                     </Button>
                     )}
                     

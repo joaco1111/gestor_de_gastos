@@ -24,7 +24,14 @@ module.exports = (sequelize) => {
     },
     description: {
       type: DataTypes.STRING
+    },
+    cuotas: {
+      type: DataTypes.INTEGER
+    },
+    paymentMethod: {
+      type: DataTypes.STRING
     }
  
 }, { timestamps: false })
 }
+    

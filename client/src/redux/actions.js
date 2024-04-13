@@ -1,4 +1,5 @@
-import { GET_USERS, LOGIN, LOG, ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
+import { GET_USERS, LOGIN,  ADD_EXPENSE_INCOME, GET_CATEGORIES_EXPENSE, GET_CATEGORIES_INCOME, GET_ACTIONS, SET_METRICS, DELETE_ACTION, UPDATE_ACTION, UPDATE_ACTION_ERROR, GET_ACTION_DETAIL, CLEAN_USER, GET_TRANSACTIONS, LOGIN_FAILED, LOG_FAILED, INCREMENT_NUMBER_PUNTUACION, CLEAN_ACTIONS } from './action-types';
+
 import axios from 'axios';
 
 
@@ -20,13 +21,23 @@ export const incrementNumberPuntuacion = (value)=> {
 }
 
 
-export const login = (credentials) => {                                         
+export const login = (credentials, type) => {                                         
     return async function(dispatch) {      
         try {
-            const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
-            // console.log(user);
-            dispatch({ type: LOGIN, payload: user });
-            //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
+            if(type === "login"){
+                const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
+                // console.log(user);
+                dispatch({ type: LOGIN, payload: user });
+                //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
+            }else {
+                const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, credentials)).data;
+            
+                if(typeof response !== 'string') {
+                    return dispatch({ type: LOGIN, payload: response });
+                }
+
+                dispatch({ type: LOG_FAILED, payload: response });
+            }
         } catch (error) {
             //console.error('Error en la solicitud de inicio de sesión:', error);
             // Envío el error al estado para manejarlo en el componente Login
@@ -39,8 +50,7 @@ export const log = (newUser) => {
     return async function(dispatch) {      
         try {
             const response = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/register`, newUser)).data;
-            console.log(response);
-            console.log(typeof response);
+            
             if(typeof response !== 'string') {
                 return dispatch({ type: LOG, payload: response });
             }
@@ -69,6 +79,8 @@ export const addExpenseIncome = (payload) => {
                 const apiData = await axios.post(`${import.meta.env.VITE_BASE_URL}/actions`, payload, config);
 
                 const expense = apiData.data
+
+                console.log('Respuesta del servidor al agregar gasto o ingreso:', expense); 
     
                 return dispatch({
                     type: ADD_EXPENSE_INCOME,
@@ -83,6 +95,7 @@ export const addExpenseIncome = (payload) => {
 };
 
 export const getCategoryExpense = () => {
+    
     return async function(dispatch) {
         try {
             const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryBills`)).data;
@@ -101,6 +114,7 @@ export const getCategoryIncome = () => {
     return async function(dispatch) {
         try {
             const categories = (await axios.get(`${import.meta.env.VITE_BASE_URL}/categoryIncome`)).data;
+
             dispatch({
                  type: GET_CATEGORIES_INCOME,
                   payload: categories 
@@ -130,12 +144,11 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     ...config,
                     params
                 };
-
-          
                 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
-                console.log('Respuesta:', response);
+                console.log('Respuesta del servidor:', response.data);
+                
     
                 const { rows, count } = response.data;
     
@@ -143,6 +156,8 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     type: GET_ACTIONS,
                     payload: { actions: rows, totalCount: count }
                 });
+
+                return { rows, count };
             }
         } catch (error) {
             console.error('Error al obtener las acciones:', error);
@@ -164,7 +179,7 @@ export const fetchMetrics = (type, dateInitial, dateLimit) => {
 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions/metricas`, configuration);
 
-                console.log('Metricas', response.data);
+                // console.log('Metricas', response.data);
 
                 if (response.status === 200) {
                     dispatch({ type: SET_METRICS, payload: response.data });
@@ -200,7 +215,7 @@ export const authenticationFromGoogle = (credentials) => {
     return async (dispatch) => {
         try{
             const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/fromGoogle`,credentials)).data
-            console.log(user);
+            // console.log(user);
             dispatch({ type: LOGIN, payload: user });
         } catch(error){
             console.error('Error en la solicitud de inicio de sesión:', error);
@@ -240,7 +255,7 @@ export const fetchActionDetail = (id) => {
         if(loggedUserJSON) {
   
         const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
-        console.log(response.data)
+        
   
             dispatch({
             type: UPDATE_ACTION,
@@ -257,8 +272,21 @@ export const fetchActionDetail = (id) => {
     };
   };
   
-export const cleanUser = (emptyUser) => {
-    return { type: CLEAN_USER, payload: emptyUser };
+export const cleanUser = () => {
+    return { type: CLEAN_USER, payload: {
+    users: [],
+    user: {},
+    newUser: {},
+    expenses: [],
+    categorieExpense: [],
+    categorieIncome: [],
+    transactions: [],
+    actions: [],
+    totalCount: 0,
+    loginError: '',
+    logError: '',
+    numberPuntuacion: 5,
+} };
 };
 
 
@@ -281,20 +309,20 @@ export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, or
 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/collaboration`, configuration);
 
-                console.log('Transactions:', response.data);
-          
-                dispatch({
-                    type: GET_TRANSACTIONS,
-                    payload: response.data.collaborations
-                });
-            }
-        } catch (error) {
-            console.error('Error al obtener las transacciones:', error);
+            // console.log('Trnsactions', response.data);
+      
+            dispatch({
+              type: GET_TRANSACTIONS,
+              payload: response.data
+            });
         }
+      } catch (error) {
+        console.error('Error al obtener las transacciones:', error);
+        dispatch({
+          type: FETCH_TRANSACTIONS_ERROR,
+          payload: error.message
+        });
+      }
     };
 };
 
-
-export const cleanActions = () => {
-    return { type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } };
-};

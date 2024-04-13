@@ -2,7 +2,7 @@ import { useState } from "react"
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import 'react-pro-sidebar/dist/css/styles.css';
 import { Box, IconButton, Typography, useTheme } from '@mui/material'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { tokens } from "./theme"
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
@@ -16,7 +16,10 @@ import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutl
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
+import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import adminprofile from "../../assets/profileadmin.svg"
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
     const theme = useTheme();
@@ -41,6 +44,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     const colors = tokens(theme.palette.mode);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
+    const navigate = useNavigate();
   
     return (
       <Box
@@ -81,9 +85,9 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                   alignItems="center"
                   ml="15px"
                 >
-                  <Typography variant="h3" color={colors.grey[100]}>
-                    ADMINS
-                  </Typography>
+                  <IconButton onClick={()=> navigate("/home")}>
+                      <ArrowBackIosNewIcon />
+                  </IconButton>
                   <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                     <MenuOutlinedIcon />
                   </IconButton>
@@ -160,6 +164,24 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 selected={selected}
                 setSelected={setSelected}
               />
+              <Item
+                title="Community"
+                to="/admin/review"
+                
+                icon={<InsertCommentIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
+
+              <Item
+                title="Categorías"
+                to="/admin/categories"
+                
+               
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
   
               {/* <Typography
                 variant="h6"
@@ -171,6 +193,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Profile Form"
                 to="/admin/form"
+                to="/admin/form"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -178,12 +201,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Calendar"
                 to="/admin/calendar"
+                to="/admin/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="FAQ Page"
+                to="/admin/faq"
                 to="/admin/faq"
                 icon={<HelpOutlineOutlinedIcon />}
                 selected={selected}
@@ -200,12 +225,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Bar Chart"
                 to="/admin/bar"
+                to="/admin/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Pie Chart"
+                to="/admin/pie"
                 to="/admin/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
@@ -214,12 +241,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Line Chart"
                 to="/admin/line"
+                to="/admin/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Geography Chart"
+                to="/admin/geography"
                 to="/admin/geography"
                 icon={<MapOutlinedIcon />}
                 selected={selected}

@@ -4,22 +4,26 @@ const {createActions,
         getActionById,
         updateAction,
     deleteAction} = require('../controllers/Actions/actionsControllers')
-const {createReview, getReview, updateReview, deleteReview} = require('../controllers/Review/review');
+const {createReview, getReview, updateReview, deleteReview, unLockReview, restoreReview, getUnlockReview} = require('../controllers/Review/review');
 //traigo mis rutas
 const authRouter = require('./authRoute');
 const userExtractor = require('../middleware/userExtractor')
 const { filters } = require('../controllers/Filtres/Filters');
-const { getCategoryBills, getCategoryIncomes } = require('../controllers/Categories/Category');
+const { getCategoryBills, getCategoryIncomes, createCategoryBills, createCategoryIncomes, deleteCategoryBills, deleteCategoryIncomes } = require('../controllers/Categories/Category');
 const {getCollaborations} = require('../controllers/Collaborations/Collaborations')
 const {createOrder, receiveWebHook} = require('../mercadoPago/payment.controllers');
 const { metricasActions } = require('../controllers/metricas/metricasActions');
+const { admin } = require('../middleware/rolsExtractor');
 const router = Router();
 
 //CATEGORIAS BILLS
-router.get('/categoryBills', getCategoryBills);
+router.get('/categoryBills', getCategoryBills); 
+router.post('/categoryBills', admin, createCategoryBills);
+router.delete('/categoryBills/:id', admin, deleteCategoryBills);
 //CATEGORIAS INCOME
 router.get('/categoryIncome', getCategoryIncomes);
-
+router.post('/categoryIncome', admin, createCategoryIncomes);
+router.delete('/categoryIncome/:id', admin, deleteCategoryIncomes);
 //ACTIONS
 //Ruta crear una Actions
 router.post('/actions', userExtractor, createActions)
@@ -36,13 +40,19 @@ router.get('/actions/metricas', userExtractor, metricasActions);
 
 //RESEÑA||REVIEW
 //Ruta para obtener las reseñas
-router.get('/review', getReview)
+router.get('/review', userExtractor, getReview)
+//Ruta para obtener las reseñas
+router.get('/unlockReview', userExtractor, getUnlockReview)
 //Ruta para crear una reseña
-// router.post('/review', createReview);
+router.post('/review', userExtractor, createReview);
 //Ruta para actualizar la reseña
-router.put('/review/:id', updateReview);
+router.put('/review/:id', userExtractor, updateReview);
+//Ruta para bloquear una review
+router.delete('/unLockReview/:id', userExtractor, unLockReview);
 //Ruta para eliminar una reseña
-router.delete('/review/:id', deleteReview);
+router.delete('/review/:id', userExtractor, deleteReview);
+//Ruta para restaurar una review
+router.post('/restoreReview/:id', userExtractor, restoreReview);
 
 //ruta para crear las colaboraciones(donacion)
 

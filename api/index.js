@@ -3,15 +3,21 @@ const { conn } = require('./src/db.js');
 
 //socket.io
 
-const { Server } = require('socket.io')
-const { createServer } = require('node:http')
-
-const server = createServer(app)
-const io = new Server(server)
+// const { Server } = require('socket.io')
+// const { createServer } = require('node:http')
+const http = require('http')
+const server = http.createServer(app)
+const io = require('socket.io')(server, { cors: {origin: '*'}
+})
 
 io.on('connection', (socket) => {
   console.log('a user has connected')
-
+  
+  socket.on('mensaje', (msg) => {
+    
+    io.emit('chat_message', msg);
+  });
+  
   socket.on('disconnect', () => {
     console.log('an user is disconnected');
   })
