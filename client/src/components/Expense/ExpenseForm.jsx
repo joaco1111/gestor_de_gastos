@@ -67,7 +67,14 @@ const ExpenseForm = () => {
   
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario:', values)
-    dispatch(addExpenseIncome(values));
+    const formData = {
+      ...values,
+      creditCardName: values.paymentMethod !== 'tarjeta de crédito' ? '' : values.creditCardName,
+      cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas
+    };
+  
+
+    dispatch(addExpenseIncome(formData));
     dispatch(fetchActions(1,100))
     resetForm();
 
