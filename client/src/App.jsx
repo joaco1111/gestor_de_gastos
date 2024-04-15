@@ -67,7 +67,7 @@ function App() {
                 <Route path='/users' element={user.tokenUser ? <UserList /> : <Login />} />
                 <Route path='/profile' element={user.tokenUser ? <Profile /> : <Login />} />
                 <Route path='/activity' element={user.tokenUser ? <Activity /> : <Login />} />
-                <Route path='/balanz' element={user.tokenUser ? <Balanz /> : <Login />} />
+                <Route path='/balanz' element={user.tokenUser ? <Balanz/> : <Login />} />
                 <Route path='/' element={user.tokenUser ? <Landing /> : <Landing />}/>
                 <Route path='/chat' element={user.token ? <ChatAdmin/> : <ChatAdmin/>}/>
             </Routes>
