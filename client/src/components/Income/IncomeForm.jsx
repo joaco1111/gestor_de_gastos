@@ -57,11 +57,11 @@ const IncomeForm = () => {
       .max(80, 'Máximo 80 caracteres'),
     paymentMethod: Yup.string().required('El método de cobro es requerido'),
     creditCardName: Yup.string().when('paymentMethod', {
-      is: 'tarjeta de crédito',
+      is: 'Tarjeta de Credito',
       then: Yup.string().required('El tipo de tarjeta de crédito es requerido')
     }),
     cuotas: Yup.number().when('paymentMethod', {
-      is: 'tarjeta de crédito',
+      is: 'Tarjeta de Credito',
       then: Yup.number().required('La cantidad de cuotas es requerida')
     })
   });
