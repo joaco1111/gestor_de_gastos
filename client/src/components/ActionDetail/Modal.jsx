@@ -73,7 +73,7 @@ const CustomModal = ({ onClose, updatedData = {}, handleInputChange, handleUpdat
                 <Button variant="secondary" onClick={onClose}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={handleUpdate}>
+                <Button variant="primary" onClick={handleUpdate} disabled={!updatedData.date || !updatedData.quantity || !updatedData.idCategory || !updatedData.paymentMethod}>
                     Actualizar
                 </Button>
             </Modal.Footer>
