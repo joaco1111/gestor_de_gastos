@@ -56,6 +56,7 @@ const ActionDetail = () => {
       date: fechaFormateada,
       quantity: action.quantity,
       idCategory: action.type === 'ingresos' ? action.categoryIncome.id : action.categoryBill.id,
+      paymentMethod: action.paymentMethod,
       description: action.description
     });
     setIsModalOpen(true);
@@ -116,10 +117,22 @@ const ActionDetail = () => {
                 <label>Categoría:</label>
                 <input type="text" className="form-control" value={action?.type === 'ingresos' ? action?.categoryIncome?.name : action?.categoryBill?.name} disabled />
               </div>
-              <div className="form-group">
-                <label>Descripción:</label>
-                <p>{action?.description}</p>
-              </div>
+              {action?.type === 'ingresos'? 
+                <div className="form-group">
+                  <label>Método de cobro:</label>
+                  <input type="text" className="form-control" value={action?.paymentMethod} disabled />
+                </div> :
+                <div className="form-group">
+                  <label>Método de pago:</label>
+                  <input type="text" className="form-control" value={action?.paymentMethod} disabled />
+                </div>
+              }
+              {action?.description && 
+                <div className="form-group">
+                  <label>Descripción:</label>
+                  <p>{action?.description}</p>
+                </div>
+              }
             </Card.Text>
             <div className="d-grid gap-2">
               <Button className="action-detail-button d-block" onClick={openModal}>Editar</Button>
