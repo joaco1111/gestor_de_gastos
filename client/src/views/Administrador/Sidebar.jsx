@@ -160,7 +160,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                 selected={selected}
                 setSelected={setSelected}
               />
-  
+              <Item
+                title="Categorías"
+                to="/admin/categories"
+                
+               
+                icon={<PeopleOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
               {/* <Typography
                 variant="h6"
                 color={colors.grey[300]}
@@ -171,6 +179,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Profile Form"
                 to="/admin/form"
+                to="/admin/form"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
@@ -178,12 +187,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Calendar"
                 to="/admin/calendar"
+                to="/admin/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="FAQ Page"
+                to="/admin/faq"
                 to="/admin/faq"
                 icon={<HelpOutlineOutlinedIcon />}
                 selected={selected}
@@ -200,12 +211,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Bar Chart"
                 to="/admin/bar"
+                to="/admin/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Pie Chart"
+                to="/admin/pie"
                 to="/admin/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
@@ -214,12 +227,14 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               <Item
                 title="Line Chart"
                 to="/admin/line"
+                to="/admin/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
                 title="Geography Chart"
+                to="/admin/geography"
                 to="/admin/geography"
                 icon={<MapOutlinedIcon />}
                 selected={selected}

@@ -3,20 +3,15 @@ const { DataTypes } = require('sequelize')
 // Luego le injectamos la conexion a sequelize.
 module.exports = (sequelize) => {
 
-  sequelize.define('review', {
+  sequelize.define('creditCard', {
     id: {
         type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    ranking: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    comment: {
-        type: DataTypes.STRING,
-        allowNull: false
-    } 
-}, { paranoid: true })
+    name: {
+      type: DataTypes.STRING,
+    }
+}, { timestamps: false })
 }

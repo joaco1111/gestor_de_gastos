@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Chat = () => {
 
-    const token = JSON.parse(localStorage.getItem('loggedNoteAppUser')).name;
-
+  const token = JSON.parse(localStorage.getItem('loggedNoteAppUser'))?.name;
 
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState(() => {
@@ -19,15 +20,15 @@ const Chat = () => {
     }
   });
 
- useEffect(() => {
-    socket.on('chat_message', (data) => {
-      setMessages((prevMessages) => {
-        const newMessages = [...prevMessages, data];
-        localStorage.setItem('chatMessages', JSON.stringify(newMessages));
-        return newMessages;
+    useEffect(() => {
+
+      socket.on('chat_message', (data) => {
+        setMessages((prevMessages) => {
+          const newMessages = [...prevMessages, data];
+          localStorage.setItem('chatMessages', JSON.stringify(newMessages));
+          return newMessages;
       });
     });
-
 
     return () => {
       socket.disconnect();
@@ -56,7 +57,7 @@ const Chat = () => {
   return (
     <div>
       <button onClick={toggleChat} style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 9999, border: "1px solid black", borderRadius: "10px", color: 'blue' }}>
-        {showChat ? 'Cerrar Chat' : 'Abrir Chat'}
+        {showChat ? <CloseIcon fontSize='large'/> : <ChatBubbleIcon fontSize='large'/>}
       </button>
       {showChat && (
         <div
