@@ -38,7 +38,6 @@ const googleProvider = new GoogleAuthProvider();
 
 
 const Login = () => {
-    console.log(import.meta.env.VITE_API_KEY);
     const dispatch = useDispatch();
     const loginError = useSelector(state => state.loginError);
 

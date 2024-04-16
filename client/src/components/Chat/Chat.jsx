@@ -12,7 +12,7 @@ const Chat = () => {
     const storedMessages = localStorage.getItem('chatMessages');
     return storedMessages ? JSON.parse(storedMessages) : [];
   });
-
+  console.log(messages);
   const [inputMessage, setInputMessage] = useState('');
   const socket = io('http://localhost:3001', {
     auth: {

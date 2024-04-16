@@ -24,10 +24,17 @@ const getCategoryIncomes = async( req, res) => {
 const createCategoryBills = async(req, res) => {
     try {
         const { name } = req.body;
-        const newCategoryBills = await CategoryBills.create({
-            name
+        const existingCategory = await CategoryBills.findAll({
+            where: { name }
         });
-        return res.status(201).json(newCategoryBills);
+        console.log(existingCategory);
+        if(!existingCategory.length) {
+            const newCategoryBills = await CategoryBills.create({
+                name
+            });
+            return res.status(201).json(newCategoryBills);
+        }
+        return res.status(400).send('Categoría de gastos existente');
     } catch (error) {
         return res.status(500).send(error.message);
     }
@@ -36,10 +43,17 @@ const createCategoryBills = async(req, res) => {
 const createCategoryIncomes = async(req, res) => {
     try {
         const { name } = req.body;
-        const newCategoryIncomes = await CategoryIncome.create({
-            name
+        const existingCategory = await CategoryIncome.findAll({
+            where: { name }
         });
-        return res.status(201).json(newCategoryIncomes);
+        console.log(existingCategory);
+        if(!existingCategory.length) {
+            const newCategoryIncomes = await CategoryIncome.create({
+                name
+            });
+            return res.status(201).json(newCategoryIncomes);
+        }
+        return res.status(400).send('Categoría de ingresos existente');
     } catch (error) {
         return res.status(500).send(error.message);
     }

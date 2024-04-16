@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
 import create from 'zustand';
-=======
-import  create  from 'zustand';
->>>>>>> Stashed changes
 import axios from 'axios';
 
 //Recupero el token del local Storage
@@ -18,17 +14,30 @@ if(loggedUserJSON){
 }
 
 export const useCategoriesStore = create((set, get) => ({
-    categoryBills: {},          //Estos 3 estados pueden ser innecesarios
-    categoryIncomes: {},        //Estos 3 estados pueden ser innecesarios
-    deletedCategory: {},        //Estos 3 estados pueden ser innecesarios
+    categoryBills: {},         
+    categoryIncomes: {},        
+    deletedCategory: {},        
+    incomeError: '',
+    billError: '',
     createCategory: async(categoryType, category) => {
         if(categoryType === 'income') {
-            const categoryIncomes = (await axios.post(`${import.meta.env.VITE_BASE_URL}/categoryIncome`, category, config)).data;
-            set({ categoryIncomes });
+            try {
+                const categoryIncomes = (await axios.post(`${import.meta.env.VITE_BASE_URL}/categoryIncome`, category, config)).data;
+                console.log(categoryIncomes)
+                set({ categoryIncomes });
+            } catch (error) {
+                console.log(error);
+                set({ incomeError: error.response.data});
+            }
         }
         if(categoryType === 'bill') {
-            const categoryBills = (await axios.post(`${import.meta.env.VITE_BASE_URL}/categoryBills`, category, config)).data;   
-            set({ categoryBills });
+            try {
+                const categoryBills = (await axios.post(`${import.meta.env.VITE_BASE_URL}/categoryBills`, category, config)).data;  
+                console.log(categoryBills);
+                set({ categoryBills });
+            } catch (error) {
+                set({ billError: error.response.data});
+            }
         }
     },
     deleteCategory: async(categoryType, id) => {
@@ -42,5 +51,11 @@ export const useCategoriesStore = create((set, get) => ({
             console.log(incomeCategoryRemoved);
             set({ deletedCategory: incomeCategoryRemoved});
         }
-    }
+    },
+    updateIncomeError: () => {
+        set({ incomeError: '' });
+    },
+    updateBillError: () => {
+        set({ billError: '' });
+    },
 }));

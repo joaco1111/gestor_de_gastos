@@ -121,10 +121,11 @@ const Profile = () => {
   const handleSubmit = async () => {
     const formData = new FormData();
     formData.append('image', imagen);
+    formData.append('type', 'imagen')
 
     try {
 
-      await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${localToken?.idUser}`, formData, config);
+      await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${localToken?.idUser}?type=imagen`, formData, config);
       setMessage({ message: "Foto de perfil actualizada.", variant: "success" });
 
     } catch (error) {

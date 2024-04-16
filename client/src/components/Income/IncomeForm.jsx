@@ -3,21 +3,22 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addExpenseIncome, fetchActions, getCategoryIncome } from '../../redux/actions'; 
-// import PieCharts from '../Charts/PieCharts';
 import { Container, Button, Form } from 'react-bootstrap'; 
 import ModalHome from '../Modals/ModalHome';
 import "./incomeForm.css";
 import { Paper } from "@mui/material"
 
-
 const IncomeForm = () => {
-  const [show, setShow] = useState(false);        //Estado para mostrar y ocultar el Modal
+  const [show, setShow] = useState(false);        
 
-  const [income, setIncome] = useState({        //Estado para no permitir que aparezca el Modal, si los 3 inputs NO están llenos
+  const [income, setIncome] = useState({        
     quantity: '',
     date: '',
     idCategory: '',
-    description: ''
+    description: '',
+    paymentMethod:'',
+    creditCardName: '',
+    cuotas:''
   });
 
   const handleClose = () => {
@@ -26,9 +27,13 @@ const IncomeForm = () => {
       quantity: '',
       date: '',
       idCategory: '',
-      description: ''
+      description: '',
+      paymentMethod:'',
+      creditCardName: '',
+      cuotas:''
     });
   };
+  
   const handleShow = () => setShow(true);
 
 
@@ -49,12 +54,28 @@ const IncomeForm = () => {
       .max(new Date(), 'La fecha no puede ser posterior a la actual'),
     idCategory: Yup.string().required('La categoría es requerida'),
     description: Yup.string()
-    .max(80, 'Máximo 80 caracteres')
+      .max(80, 'Máximo 80 caracteres'),
+    paymentMethod: Yup.string().required('El método de cobro es requerido'),
+    creditCardName: Yup.string().when('paymentMethod', {
+      is: 'Tarjeta de Credito',
+      then: Yup.string().required('El tipo de tarjeta de crédito es requerido')
+    }),
+    cuotas: Yup.number().when('paymentMethod', {
+      is: 'Tarjeta de Credito',
+      then: Yup.number().required('La cantidad de cuotas es requerida')
+    })
   });
-
+  
   const handleSubmit = (values, { resetForm }) => {
     console.log('Datos del formulario INGRESOS:', values)
-    dispatch(addExpenseIncome(values));
+
+    const formData = {
+      ...values,
+      creditCardName: values.paymentMethod !== 'tarjeta de crédito' ? '' : values.creditCardName,
+      cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas
+    };
+
+    dispatch(addExpenseIncome(formData));
     dispatch(fetchActions(1,100))
     resetForm();
 
@@ -62,8 +83,15 @@ const IncomeForm = () => {
       quantity: values.quantity,
       date: values.date,
       idCategory: values.idCategory,
-      description: values.description
+      description: values.description,
+      paymentMethod: values.paymentMethod,
+      creditCardName: values.creditCardName,
+      cuotas: values.cuotas 
     });
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
   return (
@@ -71,7 +99,7 @@ const IncomeForm = () => {
       <Container>
         <Paper elevation={8} sx={{ p:5, borderRadius: 6}}>
         <Formik
-          initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '', description: '' }}
+          initialValues={{ type: 'ingresos', quantity: '', date: '', idCategory: '', description: '', paymentMethod: '', creditCardName: '', cuotas: '' }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
@@ -113,22 +141,80 @@ const IncomeForm = () => {
                 >
                   <option value="">Seleccionar categoría</option>
                   {categoriesIncome.map(category => (
-                    <option key={category.id} value={category.id}>{category.name}</option>
+                    <option key={category.id} value={category.id}>{capitalizeFirstLetter(category.name)}</option>
                   ))}
                 </Field>
                 <ErrorMessage name="idCategory" component="div" className="invalid-feedback" />
               </Form.Group>
 
-              <Form.Group controlId="description">
-                <Form.Label>Descripción:</Form.Label>
+              <Form.Group controlId="paymentMethod">
+                <Form.Label>Método de cobro:</Form.Label>
                 <Field 
-                  type="text" 
-                  name="description" 
-                  value={values.description} 
+                  as="select" 
+                  name="paymentMethod" 
+                  value={values.paymentMethod} 
                   onChange={handleChange} 
-                  className={`form-control  ${touched.description && errors.description && 'is-invalid'}`} 
-                />
-                <ErrorMessage name="description" component="div" className="invalid-feedback" />
+                  className={`form-control ${touched.paymentMethod && errors.paymentMethod && 'is-invalid'}`} 
+                >
+                  <option value="">Seleccionar método de pago</option>
+                  <option value="efectivo/debito">Efectivo/Debito</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta de crédito">Tarjeta de Crédito</option>
+                </Field>
+                <ErrorMessage name="paymentMethod" component="div" className="invalid-feedback" />
+              </Form.Group>
+
+              {values.paymentMethod === 'tarjeta de crédito' && (
+                <div>
+                  <Form.Group controlId="creditCardName">
+                    <Form.Label>Tipo de Tarjeta:</Form.Label>
+                    <Field 
+                      as="select" 
+                      name="creditCardName" 
+                      value={values.creditCardName} 
+                      onChange={handleChange} 
+                      className={`form-control ${touched.creditCardName && errors.creditCardName && 'is-invalid'}`} 
+                    >
+                      <option value="">Seleccionar tipo de tarjeta</option>
+                      <option value="Visa">Visa</option>
+                      <option value="Mastercard">Mastercard</option>
+                      <option value="American Express">American Express</option>
+                      <option value="Otra">Otra</option>
+                    </Field>
+                    <ErrorMessage name="creditCardName" component="div" className="invalid-feedback" />
+                  </Form.Group>
+
+                  <Form.Group controlId="cuotas">
+                    <Form.Label>Cuotas:</Form.Label>
+                    <Field 
+                      as="select" 
+                      name="cuotas" 
+                      value={values.cuotas} 
+                      onChange={handleChange} 
+                      className={`form-control ${touched.cuotas && errors.cuotas && 'is-invalid'}`} 
+                    >
+                      <option value="">Seleccionar cantidad de cuotas</option>
+                      <option value="1">1</option>
+                      <option value="3">3</option>
+                      <option value="6">6</option>
+                      <option value="9">9</option>
+                      <option value="12">12</option>
+                    </Field>
+                    <ErrorMessage name="cuotas" component="div" className="invalid-feedback" />
+                  </Form.Group>
+                </div>
+              )}
+
+                <Form.Group controlId="description">
+                  <Form.Label>Descripción:</Form.Label>
+                  <Field 
+                    type="text" 
+                    name="description" 
+                    value={values.description} 
+                    onChange={handleChange} 
+                    className={`form-control ${touched.description && errors.description && 'is-invalid'}`} 
+                  />
+                  <ErrorMessage name="description" component="div" className="invalid-feedback" />
               </Form.Group>
 
               <Button variant="primary" size="sm" type="submit" onClick={handleShow}>Añadir</Button>

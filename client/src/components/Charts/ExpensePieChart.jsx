@@ -52,7 +52,7 @@ const ExpensePieChart = () => {
   return (
     <Box display="flex" justifyContent="center">
       <Link to= "/activity" style={{ textDecoration: 'none', color: 'inherit' }}>
-      <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2 }}>
+      <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2}}>
         <Typography variant='h6'>Gastos por categoría</Typography>
         {Object.keys(expenseData).length > 0 ? (
          <ResponsiveContainer width={chartWidth} height={chartHeight}>

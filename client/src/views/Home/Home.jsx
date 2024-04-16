@@ -9,12 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Balance from "../../components/Balance/Balance";
 import { Box, Grid, Typography} from "@mui/material";
-// import CalendarComponent from "../../components/Calendar/CalendarComponent";
-// import PieChartC from "../../components/Charts/PieChart"
 import { fetchActions } from "../../redux/actions";
 import ExpensePieChart from "../../components/Charts/ExpensePieChart";
 import IncomePieChart from "../../components/Charts/IncomePieChart";
 import BalanceMensual from "../../components/Balance/BalanceMensual";
+import ChatAdmin from '../ChatAdmin/ChatAdmin'
+import Account from "../../components/Account/Account";
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -40,8 +40,8 @@ const Home = () => {
     const actions = useSelector(state => state.actions);
     const [gastos, setGastos] = useState([])
     const [ingresos, setIngresos] = useState([])
+    const user = useSelector(state => state.user);
     const currentMonth = new Date().getMonth();
-
 
 
     useEffect(()=> {
@@ -115,24 +115,39 @@ const Home = () => {
             </Grid>
         </Grid>
 
+        {/* <BalanceMensual selectedMonth={currentMonth}/> */}
+
         <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <Box p={3}>
                         <BalanceMensual selectedMonth={currentMonth} /> 
+                    </Box>
+                </Grid>
+        </Grid>
+
+        <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} md={4}>
+                    <Box p={3}>
+                        <Account/>
                     </Box>
                 </Grid>
         </Grid>
         
 
 
-        <Chat/>
+        
+
+        {user.idAccess === 1 ? (
+            <ChatAdmin/>
+        ) : (
+            <Chat/> 
+        )}
 
     </Box>
 
     )
 
         // <div className={style.homeContainer}>
-          
         //     <NavBar />
         //     <Box display="flex" flexDirection="column" alignItems="center">
               
