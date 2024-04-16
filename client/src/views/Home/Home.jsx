@@ -15,6 +15,7 @@ import IncomePieChart from "../../components/Charts/IncomePieChart";
 import BalanceMensual from "../../components/Balance/BalanceMensual";
 import ChatAdmin from '../ChatAdmin/ChatAdmin'
 import Account from "../../components/Account/Account";
+import DetailsAccount from "../../views/AccountDetail/DetailsAccount"
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -126,12 +127,14 @@ const Home = () => {
         </Grid>
 
         <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={4}>
+                <Grid item xs={12} sm={6} md={3}>
                     <Box p={3}>
                         <Account/>
                     </Box>
                 </Grid>
         </Grid>
+
+      
         
 
 

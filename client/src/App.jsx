@@ -13,6 +13,7 @@ import Success from './views/Collaboration/Failure';
 import Review from './components/Review/ReviewFrom';
 import "./App.css"
 import { fetchActions, login } from './redux/actions';
+import DetailsAccount from './views/AccountDetail/DetailsAccount';
 
 
 
@@ -70,6 +71,7 @@ function App() {
                 <Route path='/profile' element={user.tokenUser ? <Profile /> : <Login />} />
                 <Route path='/activity' element={user.tokenUser ? <Activity /> : <Login />} />
                 <Route path='/balanz' element={user.tokenUser ? <Balanz/> : <Login />} />
+                <Route path='/account' element={user.tokenUser ? <DetailsAccount/> : <Login />} />
                 <Route path='/' element={user.tokenUser ? <Landing /> : <Landing />}/>
                 <Route path='/chat' element={user.token ? <ChatAdmin/> : <ChatAdmin/>}/>
             </Routes>
