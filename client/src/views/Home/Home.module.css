@@ -1,29 +1,73 @@
 @import url('https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
 
 .homeContainer {
-
     width: 100%;
     height: max-content;
     min-height: 100vh;
     /* background-color: red; */
 }
 
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+.homeContainer h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .formSection {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    justify-content:space-around;
-    
-    margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .chartSection {
-    display: flex;
-    justify-content: center;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chartSection .chart {
+  width: 48%; /* Distribuir los gráficos en dos columnas */
+}
+
+/* Gráficos */
+.chart {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Formularios */
+.form {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form label {
+  font-weight: bold;
+}
+
+.form input[type='text'],
+.form input[type='email'],
+.form input[type='password'] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form button[type='submit'] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+.form button[type='submit']:hover {
+  background-color: #0056b3;
 }

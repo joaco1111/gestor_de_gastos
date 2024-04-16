@@ -87,4 +87,3 @@ module.exports = router
 // http://localhost:3001/auth/register  ===> para el register
 
 //http://localhost:3001/userUpdate/idUser?datos_query   ====> para el update
-

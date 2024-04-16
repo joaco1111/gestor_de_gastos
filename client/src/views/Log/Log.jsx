@@ -62,25 +62,25 @@ const Log = () => {
     const[form, setForm] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
     });
 
-    const[errors, setErrors] = useState({
+    const [errors, setErrors] = useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
     });
 
-    const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
-        const property = event.target.name;                                     
+    const handleChange = (event) => {
+        const property = event.target.name;
         const value = event.target.value;
-        validate({ ...form, [property]: value }, setErrors, errors);           //Quiero validar los datos ingresados al form, cada vez que ocurra un cambio en los inputs(Por esto llamo la fn validate dentro de handleOnChange). A validate NO le paso como parámetro el estado inicial(form) sino el estado modificado{ ...form, [property]: value }, esto se hace para evitar un "delete" en los valores registrados de los inputs 
+        validate({ ...form, [property]: value }, setErrors, errors);
         setForm({ ...form, [property]: value });
     };
 
     const handleSubmit = async(event) => {
         event.preventDefault();
-        
+
         const newUser = {
             name: form.name,
             email: form.email,

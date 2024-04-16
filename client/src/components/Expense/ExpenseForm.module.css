@@ -1,0 +1,43 @@
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.inputContainer {
+  margin-bottom: 16px;
+}
+
+.label {
+  margin-bottom: 5px;
+  display: block;
+}
+
+.textInput {
+  width: 96%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.selectInput {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.addButton {
+  margin-top: 5px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #0056b3;
+}
