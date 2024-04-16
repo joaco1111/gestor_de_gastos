@@ -1,17 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
 
 .homeContainer {
-<<<<<<< HEAD
-  max-width: 1200px;
-  margin: auto;
-  padding: 20px;
-=======
-
     width: 100%;
     height: max-content;
     min-height: 100vh;
     /* background-color: red; */
->>>>>>> 21334f20f6b4acd9de8ac8362c0598f62f39bb61
 }
 
 .homeContainer h1 {

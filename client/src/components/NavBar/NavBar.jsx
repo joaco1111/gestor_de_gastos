@@ -82,7 +82,7 @@ function NavBar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg  " style={{ backgroundColor: '#ffb703' }}>
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(5px)' }}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
@@ -100,7 +100,7 @@ function NavBar() {
             </li>
             
             <li className="nav-item">
-              <NavLink className="nav-link" to="/collaboration">Colaboracion</NavLink>
+              <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
             </li>
 
             {user.idAccess === 1 && (
@@ -117,33 +117,21 @@ function NavBar() {
            
           </ul>
           <ul className="navbar-nav">
-<<<<<<< HEAD
-            
-=======
 
               {/* foto de perfil del usuario con su nombre  */}
               
-<<<<<<< HEAD
-           {/* <li className="nav-item nav-perfil">
-                {renderProfileContent()} 
-                  nombre del usuario o admin
-                {user.name}
-            </li> */}
->>>>>>> 21334f20f6b4acd9de8ac8362c0598f62f39bb61
-=======
            <li className="nav-item nav-perfil">
                  
                   {/* nombre del usuario o admin */}
                 <h3 className="nav-link" to="#">{renderProfileContent()}{user.name} </h3>
             </li>
->>>>>>> ef1a0c66c54f81882712f6d4c87ca521d431d732
             <li className="nav-item">
             <DropdownButton title="Menú">
               <Dropdown.Item href="">
                 <NavLink className="nav-link" to="/profile">Perfil</NavLink>
               </Dropdown.Item>
               <Dropdown.Item href="#">
-                <NavLink className="nav-link" to="#" onClick={()=> setActivedOffcanvas(true)}>Puntuación</NavLink>
+                <NavLink className="nav-link" to="/review" onClick={()=> setActivedOffcanvas(true)}>Review</NavLink>
               </Dropdown.Item>
               <Dropdown.Item href="#">
                 <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>

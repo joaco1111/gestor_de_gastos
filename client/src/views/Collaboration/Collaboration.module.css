@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-/* .card-donacion-container {
-  margin: 5vh auto;
-=======
 .container {
   padding-top: 50px;
->>>>>>> 21334f20f6b4acd9de8ac8362c0598f62f39bb61
 }
 
 .cardDonacion {
@@ -13,7 +8,8 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: #f8f9fa98;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
   box-shadow: 0 4px 8px rgba(17, 131, 197, 0.1);
 }
 
@@ -41,11 +37,6 @@
   text-align: center;
 }
 
-<<<<<<< HEAD
-.card-donacion button:hover {
-  opacity: 0.7;
-} */
-=======
 .cardDonacionImg img {
   max-width: 80%;
   /* Cambia el tamaño de la imagen según necesites */
@@ -91,4 +82,3 @@
 .cardDonacion button:hover {
   opacity: 0.8;
 }
->>>>>>> 21334f20f6b4acd9de8ac8362c0598f62f39bb61
