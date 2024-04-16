@@ -45,6 +45,20 @@ const CustomModal = ({ onClose, updatedData = {}, handleInputChange, handleUpdat
                     </select>
                 </div>
                 <div style={{ marginBottom: '1rem' }}>
+                    {action?.type === 'ingresos' ? <label style={{ fontWeight: 'bold' }}>Método de cobro:</label> : <label style={{ fontWeight: 'bold' }}>Método de pago:</label>}
+                    <select
+                        name="paymentMethod"
+                        value={updatedData.paymentMethod || ''}
+                        onChange={handleInputChange}
+                        className="form-control"
+                    >
+                        <option value="">Seleccionar</option>
+                        <option value="efectivo/debito">Efectivo/Debito</option>
+                        <option value="transferencia">Transferencia</option>
+                        <option value="tarjeta de crédito">Tarjeta de Crédito</option>
+                    </select>
+                </div>
+                <div style={{ marginBottom: '1rem' }}>
                     <label style={{ fontWeight: 'bold' }}>Descripción:</label>
                     <input
                         type="text"

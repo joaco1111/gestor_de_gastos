@@ -103,7 +103,7 @@ const Categories = () => {
     return (
     <Box m="20px">
         <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Header title="CATEGORIAS" />
+            <Header title="CATEGORIES" subtitle="Edit categories"/>
         </Box>
 
         <Container style={{ marginBottom: '30px', paddingLeft: '15vh'}}>
