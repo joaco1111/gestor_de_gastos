@@ -33,7 +33,7 @@ Con "GastoGenius", gestionar tus finanzas nunca ha sido tan fácil y efectivo.
 -   Ver listado completo de usuarios, comentarios y donaciones.
 -   Banear/Desbanear usuarios.
 
-## Pasarela de pagos:
+### Pasarela de pagos:
 La pasarela de pagos (mercado pago) se encuentra en modo de prueba, lo que le permitirá al usuario simular un pago (colaboración en este caso) sin gastar dinero de verdad.
 Para realizar la prueba es necesario tener en cuenta estos datos:
 
