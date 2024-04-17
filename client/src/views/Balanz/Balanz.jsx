@@ -35,7 +35,7 @@ const Balanz = () => {
         <>
             <NavBar />
             <Box>
-                <Box m="50px">
+                <Box m="50px" textAlign="left">
                     <Typography variant="h4" fontWeight="bold" sx={{ m: "0 0 5px 0" }}>
                         Balance Mensual
                     </Typography>

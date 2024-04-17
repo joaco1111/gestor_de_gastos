@@ -26,26 +26,15 @@ const Account = () => {
           Cuentas
         </Typography>
         <Typography variant='h6' sx={{ fontFamily: 'K2D, sans-serif', fontSize: 20 }}>
-         <CashIcon sx={{ fontSize: 30, color: 'green', mr: 1 }} />Efectivo/Débito: ${accountSummary.cashDebitBalance}
+          <CashIcon sx={{ fontSize: 30, color: 'green', mr: 1 }} />Efectivo/Débito: ${accountSummary.cashDebitBalance}
         </Typography>
         <Typography variant='h6' sx={{ fontFamily: 'K2D, sans-serif', fontSize: 20 }}>
-        <TransferIcon sx={{ fontSize: 30, color: 'blue', mr: 1 }} />Transferencias: ${accountSummary.transferBalance}
+          <TransferIcon sx={{ fontSize: 30, color: 'blue', mr: 1 }} />Transferencias: ${accountSummary.transferBalance}
         </Typography>
         <Typography variant='h6' sx={{ fontFamily: 'K2D, sans-serif', fontSize: 20 }}>
-        <CreditCardIcon sx={{ fontSize: 30, color: 'orange', mr: 1 }}/>Tarjeta de crédito: ${accountSummary.creditCardBalance}
+          <CreditCardIcon sx={{ fontSize: 30, color: 'orange', mr: 1 }}/>Tarjeta de crédito: ${accountSummary.creditCardBalance}
         </Typography>
-       {/* <div>
-          {Object.entries(accountSummary.creditCards).map(([cardId, cardInfo]) => (
-            <Paper key={cardId} elevation={2} style={{ padding: '10px', marginBottom: '10px' }}>
-              <Typography variant="body1">
-                Nombre de la tarjeta: {cardInfo.name}
-              </Typography>
-              <Typography variant="body1">
-                Cuotas: {cardInfo.installments.join(', ')}
-              </Typography>
-            </Paper>
-          ))}
-        </div>  */}
+     
       </Paper>
       </Link>
     </>
