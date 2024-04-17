@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Paper, Typography, Button, ButtonGroup, Box, Grid } from '@mui/material';
 import { fetchActions } from '../../redux/actions';
 import NavBar from '../../components/NavBar/NavBar';
+import { MonetizationOn, TrendingUp, TrendingDown } from "@mui/icons-material";
+
 
 const DetailsAccount = () => {
   const dispatch = useDispatch();
@@ -78,7 +80,7 @@ const DetailsAccount = () => {
             </Box>
           </Grid>
         
-        <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2, alignContent:"center", justifyContent:"center" }}>
+        <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2 }}>
         
           <Grid item xs={12}>
             <ButtonGroup>
@@ -91,22 +93,23 @@ const DetailsAccount = () => {
             {selectedPaymentMethod && selectedPaymentMethod !== 'tarjeta de crédito' && (
               <Box>
                 {/* <Typography variant="h5">{selectedPaymentMethod}</Typography> */}
-                <Typography variant="body1">Saldo Actual: {calculateBalance()}</Typography>
-                <Typography variant="body1">Total Gastos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'gastos').length}</Typography>
-                <Typography variant="body1">Total Ingresos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'ingresos').length}</Typography>
+
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}> <MonetizationOn sx={{ fontSize: 30, color: 'gold', mr: 1, }} />Saldo Actual: ${calculateBalance()}</Typography>
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}><TrendingDown sx={{ fontSize: 30, color: 'red', mr: 1 }} /> Gastos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'gastos').length}</Typography>
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}><TrendingUp sx={{ fontSize: 30, color: 'green', mr: 1 }} /> Ingresos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'ingresos').length}</Typography>
               </Box>
             )}
             {selectedPaymentMethod === 'tarjeta de crédito' && creditCardDetails && (
               <Box>
                 {/* <Typography variant="h5">Tarjeta de Crédito</Typography> */}
-                <Typography variant="body1">Saldo Actual: {calculateBalance()}</Typography>
-                <Typography variant="body1">Total Gastos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'gastos').length}</Typography>
-                <Typography variant="body1">Total Ingresos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'ingresos').length}</Typography>
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}><MonetizationOn sx={{ fontSize: 30, color: 'gold', mr: 1, }} />Saldo Actual: {calculateBalance()}</Typography>
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}><TrendingDown sx={{ fontSize: 30, color: 'red', mr: 1 }} /> Gastos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'gastos').length}</Typography>
+                <Typography variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}><TrendingUp sx={{ fontSize: 30, color: 'green', mr: 1 }} />Ingresos: {actions.filter(action => action.paymentMethod === selectedPaymentMethod && action.type === 'ingresos').length}</Typography>
                 {Object.entries(creditCardDetails).map(([cardId, cardInfo]) => (
                   <div key={cardId}>
-                    <Typography variant="body1">Nombre de la tarjeta: {cardInfo.name}</Typography>
+                    <Typography variant="h7" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}>Tarjeta: {cardInfo.name}</Typography>
                     {cardInfo.installments.map((installment, index) => (
-                      <Typography key={index} variant="body1">{index + 1}: {installment}</Typography>
+                      <Typography key={index} variant="h6" sx={{fontFamily: 'K2D, sans-serif', fontSize: 20}}> Pago de {installment} cuotas</Typography>
                     ))}
                   </div>
                 ))}
