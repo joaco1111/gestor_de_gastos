@@ -9,11 +9,12 @@ const Balance = () => {
     const dispatch = useDispatch();
     const actions = useSelector(state => state.actions);
     const expenses = useSelector(state => state.expenses);
-
+    // console.log(actions);
+    // console.log([actions]);
     useEffect(() => {
         dispatch(fetchActions(1,100));
         
-    }, [dispatch]);
+    }, [dispatch, expenses]);
 
     const totalIncome = useMemo(() => calculateTotalIncome(actions), [actions]);
     const totalExpenses = useMemo(() => calculateTotalExpenses(actions), [actions]);
