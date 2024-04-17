@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchActions, deleteAction } from '../../redux/actions';
 import ActionsPagination from '../Pagination/ActionsPagination';
@@ -6,9 +6,12 @@ import { BiTrash, BiDetail } from 'react-icons/bi';
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
+import jsPDF from 'jspdf';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import './IncomeExpenseLog.css'
 
 const IncomeExpenseLog = () => {
+  const tableRef = useRef(null);
   const dispatch = useDispatch();
   const actions = useSelector(state => state.actions);
   const totalCount = useSelector(state => state.totalCount);
@@ -133,6 +136,34 @@ const IncomeExpenseLog = () => {
     dispatch(fetchActions(page, limitPerPage, filters));
   };
 
+  //funcion para armar el pdf
+  const printTable = () => {
+    const doc = new jsPDF();
+  
+    // Agrega los encabezados de la tabla
+    doc.text('REPORTE DE GESTOR DE GASTOS', 10, 20);
+    doc.text('Tipo', 10, 40);
+    doc.text('Fecha', 40, 40);
+    doc.text('Cantidad', 80, 40);
+    doc.text('Categoría', 120, 40);
+  
+    // Agrega las filas de la tabla
+    tableRef.current.querySelectorAll('tbody tr').forEach((row, index) => {
+      const cells = row.querySelectorAll('td');
+      doc.text(cells[0].innerText, 10, 50 + index * 10);
+      doc.text(cells[1].innerText, 40, 50 + index * 10);
+      doc.text(cells[2].innerText, 80, 50 + index * 10);
+      doc.text(cells[3].innerText, 120, 50 + index * 10);
+      
+    });
+    const img = new Image();
+    img.src = 'https://res.cloudinary.com/dztu2vfru/image/upload/v1713236438/h0nf7w7kte35aghq6t8m.png';
+    doc.addImage(img, 'PNG', 160, 5, 30, 20);
+  
+    // Guarda el PDF en un archivo
+    doc.save('ReporteGDG.pdf');
+  };
+
   return (
     <div className='container'>
       <h2>Tus Movimientos</h2>
@@ -191,7 +222,7 @@ const IncomeExpenseLog = () => {
       ) : (
         <div className='col-sm-12 col-md-12 col-lg-12 my-3' style={{ paddingTop: '20px' }}>
           {Array.isArray(filteredActions) && filteredActions.length > 0 ? (
-            <Table striped bordered hover> {/* Utilizar componente de tabla de Bootstrap */}
+            <Table striped bordered hover ref={tableRef} id='actionsTable'> {/* Utilizar componente de tabla de Bootstrap */}
               <thead>
                 <tr>
                   <th>Tipo</th>
@@ -220,11 +251,25 @@ const IncomeExpenseLog = () => {
                   </tr>
                 ))}
               </tbody>
+              <Button onClick={() => printTable(tableRef, actions)}>Descargar PDF</Button>
+            
+              <ReactHTMLTableToExcel
+              id="botonExportarExcel"
+              className="btn btn-success"
+              table="actionsTable"
+              filename="ReporteGDG"
+              sheet="Reporte"
+              buttonText="Descargar Excel"
+              />
+            
             </Table>
+            
           ) : (
             <Link to={`/home`}><Button className="action-detail-button d-block" variant="primary" size="sm" >Agrega Tus Movimientos</Button></Link>
           )}
+          
         </div>
+        
       )}
       <div className='pagination-container'>
         <ActionsPagination

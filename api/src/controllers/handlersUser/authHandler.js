@@ -43,14 +43,6 @@ const loginHandler = async (req, res) => {
             res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name })
             //res.header('token', token).json({access: true, token, user});
 
-            // Se anexa codigo para envio de correos luego de poder leguearse
-            // await transporter.sendMail({
-            //     from: '"Inicio de sesion satisfactorio" <Gestordepagospf@gmail.com>', // sender address
-            //     to: email, // list of receivers
-            //     subject: "Inicio de sesion satisfactorio en Gestor de Pagos", // Subject line
-            //     html: "<b>Ha iniciado secion de manera exitosa en la web Gestor de gastos</b>", // html body
-            //   });
-
 
         } else {
             res.status(400).send('Usuario o contraseña incorrecta')
