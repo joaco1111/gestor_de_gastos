@@ -1,4 +1,3 @@
-// accountUtils.js
 export const getAccountSummary = (actions) => {
   let cashDebitBalance = 0;
   let transferBalance = 0;
@@ -7,7 +6,17 @@ export const getAccountSummary = (actions) => {
 
   actions.forEach(action => {
     if (action.type === 'ingresos') {
-      cashDebitBalance += action.quantity;
+      if (action.paymentMethod === 'efectivo/debito') {
+        cashDebitBalance += action.quantity;
+      } else if (action.paymentMethod === 'transferencia') {
+        transferBalance += action.quantity;
+      } else if (action.paymentMethod === 'tarjeta de crédito') {
+        creditCardBalance += action.quantity;
+        if (!creditCards[action.creditCardId]) {
+          creditCards[action.creditCardId] = { name: action.creditCard.name, installments: [] }; 
+        }
+        creditCards[action.creditCardId].installments.push(action.cuotas);
+      }
     } else if (action.type === 'gastos') {
       if (action.paymentMethod === 'efectivo/debito') {
         cashDebitBalance -= action.quantity;
@@ -15,11 +24,9 @@ export const getAccountSummary = (actions) => {
         transferBalance -= action.quantity;
       } else if (action.paymentMethod === 'tarjeta de crédito') {
         creditCardBalance -= action.quantity;
-
         if (!creditCards[action.creditCardId]) {
           creditCards[action.creditCardId] = { name: action.creditCard.name, installments: [] }; 
         }
-        
         creditCards[action.creditCardId].installments.push(action.cuotas);
       }
     }
