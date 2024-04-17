@@ -1,0 +1,70 @@
+.container-principal {
+  position: relative; /* Añadido para establecer un contexto de posicionamiento */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+}
+
+.back-link-container {
+  position: absolute;
+  top: 3%; /* Ajuste responsive */
+  left: 20%; /* Ajuste responsive */
+}
+
+.card-container {
+  max-width: 450px;
+  width: 100%;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.action-detail-button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 30%;
+  margin: 0 auto;
+}
+
+
+.card-body {
+  max-height: 700px; 
+  overflow-y: hidden;
+}
+
+
+.form-group label {
+  font-weight: bold;
+}
+
+.form-group input, .form-group p {
+  margin-top: 5px; /* Espacio entre cada campo */
+  padding: 8px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.form-group input[type="text"], .form-group p {
+  width: 100%;
+}
+
+.form-group p {
+  max-height: 100px; 
+  overflow-y: auto;
+}
+
+.action-detail-button{
+  width: 100%;
+  height: 38px; 
+}
+
+
+.back-button button{
+  background-color: transparent; 
+  border: none; 
+  cursor: pointer; 
+  outline: none; 
+}
+

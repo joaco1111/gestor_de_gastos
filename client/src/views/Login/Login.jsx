@@ -1,12 +1,45 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login } from '../../redux/actions';
+import { login, authenticationFromGoogle } from '../../redux/actions';
 import { validate } from '../../utils';
-import style from './Login.module.css';
+import "./login.css"
+import { Container, Form, Button,Row,Col} from 'react-bootstrap';
+import { FaLock, FaUser, FaArrowLeft } from 'react-icons/fa';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+
+
+// datos desde variable de entorno.
+const { 
+    VITE_API_KEY: apiKey,
+    VITE_AUTH_DOMAIN: authDomain,
+    VITE_PROJECT_ID: projectId,
+    VITE_STORAGE_BUCKET: storageBucket,
+    VITE_MESSAGING_SENDER_ID: messagingSenderId,
+    VITE_APP_ID: appId,
+    VITE_MEASUREMENT_ID: measurementId
+} = import.meta.env;
+
+const fireBaseConfig = {
+    apiKey,
+    authDomain,
+    projectId,
+    storageBucket,
+    messagingSenderId,
+    appId,
+    measurementId
+}
+
+// Initialize Firebase
+const app = initializeApp(fireBaseConfig);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
 
 const Login = () => {
     const dispatch = useDispatch();
+    const loginError = useSelector(state => state.loginError);
 
     const [userData, setUserData] = useState({
         email: '',
@@ -18,44 +51,83 @@ const Login = () => {
         password: '',
     });
 
-    const handleChange = (event) => {                                          //Con esta fn logro que el input sea un reflejo del estado
-        const property = event.target.name;                                     
+    const handleChange = (event) => {
+        const property = event.target.name;
         const value = event.target.value;
-        validate({ ...userData, [property]: value }, setErrors, errors);       //Quiero validar los datos ingresados al form, cada vez que ocurra un cambio en los inputs(Por esto llamo la fn validate dentro de handleOnChange). A validate NO le paso como parámetro el estado inicial(form) sino el estado modificado{ ...form, [property]: value }, esto se hace para evitar un "delete" en los valores registrados de los inputs 
+        validate({ ...userData, [property]: value }, setErrors, errors);
         setUserData({ ...userData, [property]: value });
     };
 
     const handleSubmit = async(event) => {
-        event.preventDefault();                                                //Para evitar que al hacer click en Loggin se recargue la página y se me borren los datos ingresados                                                           //Como la fn es asyn hay que poner try - catch
-
+        event.preventDefault();
+        
         const credentials = {
             email: userData.email,
             password: userData.password
         };
-        console.log(credentials);
-        await dispatch(login(credentials));
+
+        dispatch(login(credentials, "login"));
+        // window.location.reload();
+    };
+
+    const handleGoogleSignIn = () => {
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                const user = result.user;
+                const { email, displayName, uid } = user; 
+
+                const credentials = {
+                    email,
+                    displayName,
+                    uid
+                }
+                dispatch(authenticationFromGoogle(credentials))
+                setLoggedIn(true);
+            }).catch((error) => {
+                console.error(error);
+            });
     };
 
     return(
-        <form onSubmit={handleSubmit} className={style['login-container']}>
-            <h1>Login</h1>
-            <div>
-                <label>Email: </label>
-                <input type='email' value={userData.email} onChange={handleChange} name='email'></input>
-                {errors.email && <span>{errors.email}</span>}
+        <div fluid className="container-form">
+            <div className="container-second">
+            <Row>
+                <Col>
+                    
+                    <Form className="login-form" onSubmit={handleSubmit}>
+                        <Link to="/" className="go-back-button">
+                            <FaArrowLeft />  
+                        </Link>
+                        {/* <h1 className="text-center mb-4">Login</h1> */}
+                        {loginError && <p className="error-message">{loginError}</p>}
+                        <Form.Group controlId="formBasicEmail">
+                            <div className='text-login'>Login</div>
+                            <Form.Label className="form-label"><FaUser/> Email:</Form.Label>
+                            <Form.Control type="email" value={userData.email} onChange={handleChange} name="email" className="form-control" />
+                            {errors.email && <p className="error-message">{errors.email}</p>}
+                        </Form.Group>
+                        <Form.Group controlId="formBasicPassword">
+                            <Form.Label className="form-label"><FaLock/> Password:</Form.Label>
+                            <Form.Control type="password" value={userData.password} onChange={handleChange} name="password" className="form-control" />
+                            {errors.password && <p className="error-message">{errors.password}</p>}
+                        </Form.Group>
+                        <Button variant="primary" type="submit" className="submit-button">
+                            Login
+                        </Button>
+                        <Button variant='danger' className="submit-button google" onClick={handleGoogleSignIn}>Sign in with Google</Button>
+                        <div className="mt-3 text-center">
+                            <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
+                        </div>
+                        <div className="mt-3 text-center">
+                            <span className='mr-2'>Don't have an account?</span>
+                            <Link to="/log">Register Now</Link>
+                        </div>
+                    </Form>
+                    
+                </Col>
+            </Row>
             </div>
-            <div>
-                <label>Password: </label>
-                <input type='password' value={userData.password} onChange={handleChange} name='password'></input>
-                {errors.password && <span>{errors.password}</span>}
-            </div>
-            <button type='submit'>Login</button>
-            <div>
-                <Link>¿Forgot password?</Link>
-                <br />
-                <Link to='/log'>Log</Link>
-            </div>
-        </form>
+        </div>
     )
 };
 

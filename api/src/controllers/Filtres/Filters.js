@@ -13,7 +13,7 @@ const filters = async(req, res) => {
 
     try {
         const { page = 1, limit = 10} = req.query;
-        const {data , type, category} = req.body;
+        const {date , type, category} = req.body;
         const idUser = req.userID;
 
         const offset = (page - 1) * limit; //desde donde inicia el paginado
@@ -24,8 +24,8 @@ const filters = async(req, res) => {
         };
 
         //si hay fecha la agrega al objeto condicional
-        if(data){
-           where.data = data 
+        if(date){
+           where.date = date 
         }
          //si hay tipo la agrega al objeto condicional
         if(type){
@@ -40,7 +40,7 @@ const filters = async(req, res) => {
                 where.idCategoryBills = category; 
             }
          }
-         
+
         const resultFilter = await Action.findAndCountAll({
             where: {...where},
             limit,
@@ -48,6 +48,8 @@ const filters = async(req, res) => {
             include: [{model: CategoryBills}, {model: CategoryIncome}],
             
         });
+
+        if(resultFilter.rows.length < 1) return res.status(200).send("No se encontraron resultados que coincidan");
 
 
         return res.status(200).json(resultFilter)

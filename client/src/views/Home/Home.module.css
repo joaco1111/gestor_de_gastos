@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
 
 .homeContainer {
 
     width: 100%;
     height: max-content;
     min-height: 100vh;
+    /* background-color: red; */
 }
 
 h1 {

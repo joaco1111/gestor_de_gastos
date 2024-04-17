@@ -12,17 +12,23 @@ const validate = async (email, password) => {
             return false // Usuario no encontrado
         }
 
+        const idAccess = user.idAccess
+
         const passwordMatch = await bcrypt.compare(password, user.password)
 
         if (passwordMatch) {
             const userForToken = {
                 id: user.id,
-                email: user.email
+                email: user.email,
+                idAccess: idAccess
             }
+
+            
 
             const token = jwt.sign(userForToken, SECRET_KEY)
             return {
                 token,
+                idAccess,
                 user
             }
         } else {
