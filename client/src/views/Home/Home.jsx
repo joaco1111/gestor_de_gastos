@@ -13,7 +13,7 @@ import { fetchActions } from "../../redux/actions";
 import ExpensePieChart from "../../components/Charts/ExpensePieChart";
 import IncomePieChart from "../../components/Charts/IncomePieChart";
 import BalanceMensual from "../../components/Balance/BalanceMensual";
-import ChatAdmin from '../ChatAdmin/ChatAdmin'
+// import ChatAdmin from '../ChatAdmin/ChatAdmin'
 import Account from "../../components/Account/Account";
 import DetailsAccount from "../../views/AccountDetail/DetailsAccount"
 
@@ -61,7 +61,7 @@ const Home = () => {
     return (
         //Grid container es la fila
         //Grid item representa a la columna
-        <div className="content-container" style={{ position: 'relative', top: '80px' }}>
+        <div className="content-container" style={{ position: 'relative', top: '75px' }}>
         <Box>
             <Grid item xs={12}>
                 <NavBar />
@@ -78,55 +78,48 @@ const Home = () => {
            
         </Grid>
 
-        <Grid container spacing={1} justifyContent="center">
-            
-            <Grid item xs={12} sm={6} md={3}>
-                <Box p={3}>
-                    <IncomeForm />
-                </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-                <Box p={3}>
-                    <ExpenseForm/>
-                </Box>
-            </Grid>
-            
-        </Grid>
-        <Grid container spacing={1} justifyContent="center">
-            <Grid item xs={12} sm={6} md={6} lg={3.4}>
-                <Box p={3}>
-                    <ExpensePieChart/>  
-                </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={3.4}>
-                <Box p={3}>
-                    <IncomePieChart/>
-                </Box>
-            </Grid>
-        </Grid>
-
-       
-
         <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} sm={6} md={3}>
-                    <Box p={2}>
-                        <Typography variant="h5">Descripcion Movimientos </Typography>
-                        <MetricasActions title={["Número Gastos", "Total Gastos"]} number={gastos} />
-                        <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
-                    </Box>
-            </Grid>
-        </Grid>
+  <Grid item xs={12} md={6}>
+    <Box p={3} className="form">
+      <IncomeForm />
+    </Box>
+  </Grid>
+  <Grid item xs={12} md={6}>
+    <Box p={3} className="form">
+      <ExpenseForm />
+    </Box>
+  </Grid>
+</Grid>
 
-        {/* <BalanceMensual selectedMonth={currentMonth}/> */}
+<Grid container spacing={2} justifyContent="center">
+  <Grid item xs={12} sm={6} md={6} lg={3}>
+    <Box p={3} className="chart">
+      <ExpensePieChart />  
+    </Box>
+  </Grid>
+  <Grid item xs={12} sm={6} md={6} lg={3}>
+    <Box p={3} className="chart">
+      <IncomePieChart />
+    </Box>
+  </Grid>
+</Grid>
 
-        <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={4}>
-                    <Box p={3}>
-                        <BalanceMensual selectedMonth={currentMonth} /> 
-                    </Box>
-                </Grid>
-        </Grid>
+<Grid container spacing={2} justifyContent="center">
+  <Grid item xs={12} sm={6} md={4}>
+    <Box p={3} className="chart">
+      <BalanceMensual selectedMonth={currentMonth} /> 
+    </Box>
+  </Grid>
+  <Grid item xs={12} sm={6} md={4}>
+    <Box p={3} className="chart">
+      <Account />
+    </Box>
+  </Grid>
+</Grid>
 
+<<<<<<< Updated upstream
+
+=======
         <Grid container spacing={2} justifyContent="center">
                 <Grid item xs={12} sm={6} md={3}>
                     <Box p={3}>
@@ -140,14 +133,16 @@ const Home = () => {
 
 
         
-
+{/* 
+>>>>>>> Stashed changes
         {user.idAccess === 1 ? (
             <ChatAdmin/>
         ) : (
             <Chat/> 
-        )}
+        )} */}
 
     </Box>
+    
 </div>
     )
 
@@ -180,10 +175,9 @@ const Home = () => {
         //                 <MetricasActions title={["Número Gastos", "Total Gastos"]} number={gastos} />
         //                 <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
         //             </div>
-        //         </div>
+        //        </div>
         //     </Box>
-            
-
+      
 }  
 
 

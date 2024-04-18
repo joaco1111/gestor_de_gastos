@@ -6,6 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const Chat = () => {
 
   const token = JSON.parse(localStorage.getItem('loggedNoteAppUser'))?.name;
+  const userId = JSON.parse(localStorage.getItem('loggedNoteAppUser')).id;
 
   const [showChat, setShowChat] = useState(false);
   const [messages, setMessages] = useState(() => {
@@ -21,6 +22,8 @@ const Chat = () => {
   });
 
     useEffect(() => {
+      // Join room when component mounts
+      joinRoom();
 
       socket.on('chat_message', (data) => {
         setMessages((prevMessages) => {
@@ -34,6 +37,12 @@ const Chat = () => {
       socket.disconnect();
     };
   }, [messages]);
+
+  const joinRoom = () => {
+    if (socket) {
+      socket.emit('join_room', `userRoom-${userId}`);
+    }
+  };
 
   const toggleChat = () => {
     setShowChat(!showChat);

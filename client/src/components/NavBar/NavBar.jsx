@@ -1,4 +1,3 @@
-
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import nav from '../../assets/logo-GG.png';
@@ -13,8 +12,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
-
-
+import { Container } from 'react-bootstrap'; // Importa Container de react-bootstrap
 
 const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
 
@@ -82,6 +80,25 @@ function NavBar() {
   }
 
   return (
+<<<<<<< Updated upstream
+    <Container fluid> {/* Usa Container de react-bootstrap */}
+      <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
+        <div className="container-fluid">
+          <NavLink className="navbar-brand" to="/home">
+            <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
+          </NavLink>
+          <button className="navbar-toggler" type="button" onClick={handleToggleMenu}>
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className={`collapse navbar-collapse${isMenuOpen ? ' show' : ''}`} id="navbarNav">
+            <ul className="navbar-nav mx-auto">
+              <li className="nav-item">
+                <NavLink exact className="nav-link" to="/home">Home</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/detailsLog">Movimientos</NavLink>
+              </li>
+=======
     <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/home">
@@ -109,52 +126,74 @@ function NavBar() {
                 </li>
             )}
 
-            {user.idAccess === 1 && (
+            {/* {user.idAccess === 1 && (
               <li className='nav-item'>
                 <NavLink className="nav-link" to='/chat'>ChatAdmin</NavLink>
               </li>
-            )}
+            )} */}
            
           </ul>
           <ul className="navbar-nav">
 
               {/* foto de perfil del usuario con su nombre  */}
+>>>>>>> Stashed changes
               
-           <li className="nav-item nav-perfil">
-                 
-                  {/* nombre del usuario o admin */}
-                <h3 className="nav-link" to="#">{renderProfileContent()}{user.name} </h3>
-            </li>
-            <li className="nav-item">
-            <DropdownButton title="Menú">
-              <Dropdown.Item href="">
-                <NavLink className="nav-link" to="/profile">Perfil</NavLink>
-              </Dropdown.Item>
-              <Dropdown.Item href="#">
-                <NavLink className="nav-link" to="/review" onClick={()=> setActivedOffcanvas(true)}>Review</NavLink>
-              </Dropdown.Item>
-              <Dropdown.Item href="#">
-                <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
-              </Dropdown.Item>
-            </DropdownButton>
-            </li>
-          </ul>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
+              </li>
+
+              {user.idAccess === 1 && (
+                  <li className="nav-item">
+                    <NavLink exact className="nav-link" to="/admin">Admin</NavLink>
+                  </li>
+              )}
+
+              {user.idAccess === 1 && (
+                <li className='nav-item'>
+                  <NavLink className="nav-link" to='/chat'>ChatAdmin</NavLink>
+                </li>
+              )}
+             
+            </ul>
+            <ul className="navbar-nav">
+
+                {/* foto de perfil del usuario con su nombre  */}
+                
+             <li className="nav-item nav-perfil">
+                   
+                    {/* nombre del usuario o admin */}
+                  <h3 className="nav-link" to="#">{renderProfileContent()}{user.name} </h3>
+              </li>
+              <li className="nav-item">
+              <DropdownButton title="Menú">
+                <Dropdown.Item href="">
+                  <NavLink className="nav-link" to="/profile">Perfil</NavLink>
+                </Dropdown.Item>
+                <Dropdown.Item href="#">
+                  <NavLink className="nav-link" to="/review" onClick={()=> setActivedOffcanvas(true)}>Review</NavLink>
+                </Dropdown.Item>
+                <Dropdown.Item href="#">
+                  <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
+                </Dropdown.Item>
+              </DropdownButton>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <Offcanvas show={activedOffcanvas} onHide={()=> handleClose("aplazar")} placement='bottom'>
-      <Offcanvas.Header closeButton>
-        <Offcanvas.Title className='text-center'>Nivel de satisfacción</Offcanvas.Title>
-      </Offcanvas.Header>
-        <Offcanvas.Body>
-          Aca iría las estrellas y un textArea para que el usuario nos deje un comentario
-          <br />
-            <Button variant='success' onClick={()=> setActivedOffcanvas(false)}>Continuar</Button>
-            <Button variant='danger' onClick={()=> setActivedOffcanvas(false)}g>Cancelar</Button>
-        </Offcanvas.Body>
-    </Offcanvas>
-    </nav>
+        <Offcanvas show={activedOffcanvas} onHide={()=> handleClose("aplazar")} placement='bottom'>
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title className='text-center'>Nivel de satisfacción</Offcanvas.Title>
+        </Offcanvas.Header>
+          <Offcanvas.Body>
+            Aca iría las estrellas y un textArea para que el usuario nos deje un comentario
+            <br />
+              <Button variant='success' onClick={()=> setActivedOffcanvas(false)}>Continuar</Button>
+              <Button variant='danger' onClick={()=> setActivedOffcanvas(false)}g>Cancelar</Button>
+          </Offcanvas.Body>
+      </Offcanvas>
+      </nav>
+    </Container>
   );
 }
-
 
 export default NavBar;

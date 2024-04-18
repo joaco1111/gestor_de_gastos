@@ -1,47 +1,101 @@
-import { Card, Form, Container, Row, Col, Button } from 'react-bootstrap';
+import { Card, Form, Container, Row, Col, Button, CardHeader, CardTitle, CardSubtitle } from 'react-bootstrap';
 import './Perfile.css'; 
 import NavBar from "../../components/NavBar/NavBar";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Image from 'react-bootstrap/Image';
+import CloseButton from 'react-bootstrap/CloseButton';
 
-
-const localToken = await JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
-//console.log(localToken);
+const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
 
 const config = {
-      headers: {
-        token: localToken?.tokenUser
-      }
+    headers: {
+      token: localToken?.tokenUser
     }
+};
+
 
 const Profile = () => {
- const [previewImage, setPreviewImage ] = useState(null);
-  
- const [ imagen , setImagen ] = useState('') ;
- 
- // Vista previa de la imagen
- const handleImagePreview = (e) => {
-   const file = e.target.files[0];
-   if (file) {
-     const reader = new FileReader();
-     setImagen(file);
-     reader.onloadend = () => {
-       setPreviewImage(reader.result);
+  const userData = useSelector(state => state.user);
+  const [previewImage, setPreviewImage ] = useState(null);
+  const [actived, setActived] = useState(false)
+  const [imagen, setImagen] = useState('');
+  const [userState, setUserState] = useState({
+    name: "",
+    urlPhoto: null,
+    email: ""
+  })
+  const [message, setMessage] = useState(null); // Definición de setMessage
+
+  const getUser = async()=> {
+    try {
+      const user = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/user/${userData.idUser}`, config);
+      setUserState({
+        name: user.data.name,
+        urlPhoto: user.data.photoProfile,
+        email: user.data.email
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  useEffect(()=> {
+    setTimeout(()=> {
+      setMessage(null);
+    }, 4000)
+  }, [message])
+
+  // Vista previa de la imagen
+  const handleImagePreview = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      setImagen(file);
+
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
       };
+
       reader.readAsDataURL(file);
+
+    } else {
+      setPreviewImage(null)
     }
   };
-  
-  const handleSubmit = async () =>{
-    const fromData = new  FormData();
-      fromData.append( 'image', imagen )
-      try{
-        const  response= await axios.put(`http://localhost:3001/auth/userUpdate/${localToken?.idUser}`,fromData, config)
-        //console.log(response)
-      } catch (error) {
-    console.log('Error enviar foto' , error);
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append('image', imagen);
+    formData.append('type', 'imagen')
+
+    try {
+
+      await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${localToken?.idUser}?type=imagen`, formData, config);
+      setMessage({ message: "Foto de perfil actualizada.", variant: "success" });
+
+    } catch (error) {
+      setMessage({ message: "Error al actualizar la foto de perfil.", variant: "danger" });
+      setPreviewImage(null)
+    }
   }
-}
+
+  const handleButtonProfile = (e) => {
+    if(e.target.value === "Guardar") {
+      handleSubmit(e);
+      return setActived(false)
+    }
+    
+    return setActived(true)
+  }
+
 
   return (
     <Container>
