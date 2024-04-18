@@ -22,9 +22,10 @@ const TableReview = ({review, functionUnlock, functionDelete, variantSuccess = "
                 <tbody>
                     {review.map(rev => (
                         <tr key={rev.id}>
-                            <td>{rev.user.id}</td>
-                            <td>{rev.user.name}</td>
-                            <td>{rev.user.email}</td>
+                            
+                            <td>{rev.user && rev.user.id}</td>
+                            <td>{rev.user && rev.user.name}</td>
+                            <td>{rev.user && rev.user.email}</td>
                             <td>{rev.comment}</td>
                             <td>{rev.ranking}</td>
                             {/* BOTONES */}

@@ -4,21 +4,22 @@ import { useStateGlobal } from "../../zustand/stateGlobal";
 import TableReview from "./tables/TableReview";
 import style from './Review.module.css'
 import LoopIcon from '@mui/icons-material/Loop';
+import { useCategoriesStore } from "../../store/categories";
 
 const Review = ()=> {
   const [actions, setActions] = useState("todos");
 
   //lectura estado global
-   const review = useStateGlobal(state => state.review)
-   const reviewUnlock = useStateGlobal(state => state.reviewUnlock)
-   const error = useStateGlobal(state => state.error)
+   const review = useCategoriesStore(state => state.review)
+   const reviewUnlock = useCategoriesStore(state => state.reviewUnlock)
+   const error = useCategoriesStore(state => state.error)
    //funciones
-   const getReview = useStateGlobal(state => state.getReview);
-   const getReviewUnlock = useStateGlobal(state => state.getReviewUnlock);
-   const unlockReview = useStateGlobal(state => state.unlockReview);
-   const restore = useStateGlobal(state => state.restore);
-   const deleteReviewComponent = useStateGlobal(state => state.delete);
-   const deleteMessageError = useStateGlobal(state => state.deleteMessage);
+   const getReview = useCategoriesStore(state => state.getReview);
+   const getReviewUnlock = useCategoriesStore(state => state.getReviewUnlock);
+   const unlockReview = useCategoriesStore(state => state.unlockReview);
+   const restore = useCategoriesStore(state => state.restore);
+   const deleteReviewComponent = useCategoriesStore(state => state.delete);
+   const deleteMessageError = useCategoriesStore(state => state.deleteMessage);
 
    useEffect(()=> {
     getReview()
@@ -31,6 +32,8 @@ const Review = ()=> {
       deleteMessageError()
     }, 3000)  
    }, [error])
+
+   console.log(review);
 
     return (
         <div className="container">  

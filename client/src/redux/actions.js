@@ -26,7 +26,8 @@ export const login = (credentials, type) => {
         try {
             if(type === "login"){
                 const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
-                // console.log(user);
+                
+                console.log(user);
                 dispatch({ type: LOGIN, payload: user });
                 //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
             }else {

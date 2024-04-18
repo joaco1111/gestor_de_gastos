@@ -6,7 +6,8 @@ const { SECRET_KEY } = process.env;
 const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
 const formidable = require('formidable');
-const {sendEmail, getTemplate} = require("../../config/nodemailer")
+const {sendEmail, getTemplate} = require("../../config/nodemailer");
+const connectRedis = require('../../redis');
 
 const getUser = async (req, res) => {
     try {
@@ -32,13 +33,20 @@ const loginHandler = async (req, res) => {
     const { email, password } = req.body
 
     try {
+        const { token, idAccess, user } = await validate(email, password);
+        
+        const redis = await connectRedis();
+        const resultRedis = JSON.parse(await redis.get(`${user.name}`));
+        if(resultRedis) return res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: resultRedis.id, name: resultRedis.name });
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
         // parametros el email y la passw del front, y luego se envia un token con informacion del user
 
-        const { token, idAccess, user } = await validate(email, password);
 
         if (token) {
+
+            const objUser = {id: user.id, name: user.name};
+            await redis.set(`${user.name}`, JSON.stringify(objUser));
             //respondemos con el token y el acceso
             res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name })
             //res.header('token', token).json({access: true, token, user});

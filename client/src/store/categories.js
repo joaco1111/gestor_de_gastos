@@ -1,6 +1,7 @@
 import  create  from 'zustand';
 import axios from 'axios';
 
+const {VITE_BASE_URL} = import.meta.env;
 //Recupero el token del local Storage
 const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
 //config general, si necesitas otra configuración como params, agregala dentro de tu función
@@ -19,6 +20,55 @@ export const useCategoriesStore = create((set, get) => ({
     deletedCategory: {},        
     incomeError: '',
     billError: '',
+    review: [],
+        reviewUnlock: [],
+        unlock: [],
+        error: null,
+        getReview: async()=> {
+            try {
+                const {data} = await axios.get(`${VITE_BASE_URL}/review`, config);
+                
+                set({review: data})
+            } catch (error) {
+                set({ error: error.message})
+            }
+        },
+        unlockReview: async(id) =>{
+            try{
+                await axios.delete(`${VITE_BASE_URL}/unLockReview/${id}`, config);
+
+          } catch (error) {
+            set({error: error.message})
+          } 
+        },
+        delete: async(id)=> {
+            try {
+                await axios.delete(`${VITE_BASE_URL}/review/${id}`, config);
+
+            } catch (error) {
+                set({error: error.message})
+            }
+        },
+        restore: async(id) => {
+            try {
+                await axios.post(`${VITE_BASE_URL}/restoreReview/${id}`, {},config);
+
+            } catch (error) {
+                set({error: error.message})
+            }
+        },
+        getReviewUnlock:  async()=> {
+            try {
+                const {data} = await axios.get(`${VITE_BASE_URL}/unlockReview`, config);
+                
+                set({reviewUnlock: data})
+            } catch (error) {
+                console.log({ error: error.response.data});
+            }
+        },
+        deleteMessage: ()=> {
+            set({error: null})
+        },
     createCategory: async(categoryType, category) => {
         if(categoryType === 'income') {
             try {

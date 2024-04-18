@@ -1,7 +1,7 @@
 
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import nav from '../../assets/nav.png';
+import nav from '../../assets/logo-GG.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -82,7 +82,7 @@ function NavBar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)', backdropFilter: 'blur(5px)' }}>
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
