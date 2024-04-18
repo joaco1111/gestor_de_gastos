@@ -10,8 +10,10 @@ import Administrador from './views/Administrador/Administrador';
 import Profile from './components/Perfil/Perfile';
 import Failure from './views/Collaboration/Failure';
 import Success from './views/Collaboration/Failure';
+import Review from './components/Review/ReviewFrom';
 import "./App.css"
 import { fetchActions, login } from './redux/actions';
+import DetailsAccount from './views/AccountDetail/DetailsAccount';
 
 
 
@@ -59,6 +61,7 @@ function App() {
                 <Route path='/failure' element={<Failure/>}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/log' element={<Log />}/>
+                <Route path='/review' element={user.tokenUser ? <Review /> : <Login />}/>
                 <Route path='/collaboration' element={user.tokenUser ? <Collaboration /> : <Login />}/>
                 <Route path='/admin/*' element={user.tokenUser ? <Administrador /> : <Login />}/>
                 <Route path='/detailsLog' element={user.tokenUser ? <IncomeExpenseView /> : <Login />}/>
@@ -67,7 +70,7 @@ function App() {
                 <Route path='/users' element={user.tokenUser ? <UserList /> : <Login />} />
                 <Route path='/profile' element={user.tokenUser ? <Profile /> : <Login />} />
                 <Route path='/activity' element={user.tokenUser ? <Activity /> : <Login />} />
-                <Route path='/balanz' element={user.tokenUser ? <Balanz /> : <Login />} />
+                <Route path='/balanz' element={user.tokenUser ? <Balanz/> : <Login />} />
                 <Route path='/' element={user.tokenUser ? <Landing /> : <Landing />}/>
                 <Route path='/chat' element={user.token ? <ChatAdmin/> : <ChatAdmin/>}/>
             </Routes>

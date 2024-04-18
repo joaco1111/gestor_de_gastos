@@ -62,7 +62,9 @@ const BalanceMensual = ({ selectedMonth }) => {
                             Ingresos ${totalIncome}
                         </Typography>
                     </Box>
-                    <LinearProgress variant="determinate" value={incomePercentage} color="success" orientation="vertical" sx={{ height: 10, borderRadius: 5 }} />
+                    {totalIncome > 0 && (
+                        <LinearProgress variant="determinate" value={incomePercentage} color="success" orientation="vertical" sx={{ height: 10, borderRadius: 5 }} />
+                    )}
 
                     <Box display="flex" alignItems="center">
                         <TrendingDown sx={{ fontSize: 30, color: 'red', mr: 1 }} />
@@ -70,7 +72,11 @@ const BalanceMensual = ({ selectedMonth }) => {
                             Gastos ${totalExpenses}
                         </Typography>
                     </Box>
-                    <LinearProgress variant="determinate" value={expensePercentage} color="error" orientation="vertical" sx={{ height: 10, borderRadius: 5 }} />
+
+                    {totalExpenses > 0 && (
+                        <LinearProgress variant="determinate" value={expensePercentage} color="error" orientation="vertical" sx={{ height: 10, borderRadius: 5 }} />
+                    )}
+                    
                     <Divider variant="fullWidth" sx={{ borderColor: 'rgba(0, 0, 0, 1)', my: 2 }} />
                     <Box>
                         <Typography variant='h6' sx={{ fontFamily: 'K2D, sans-serif', color: '(0, 0, 0, 0.54)' }}>

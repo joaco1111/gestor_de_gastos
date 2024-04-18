@@ -9,13 +9,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import Balance from "../../components/Balance/Balance";
 import { Box, Grid, Typography} from "@mui/material";
-// import CalendarComponent from "../../components/Calendar/CalendarComponent";
-// import PieChartC from "../../components/Charts/PieChart"
 import { fetchActions } from "../../redux/actions";
 import ExpensePieChart from "../../components/Charts/ExpensePieChart";
 import IncomePieChart from "../../components/Charts/IncomePieChart";
 import BalanceMensual from "../../components/Balance/BalanceMensual";
 import ChatAdmin from '../ChatAdmin/ChatAdmin'
+import Account from "../../components/Account/Account";
+import DetailsAccount from "../../views/AccountDetail/DetailsAccount"
 
 const localToken =  JSON.parse(window.localStorage.getItem('loggedNoteAppUser')) ;
 const config = {
@@ -45,7 +45,6 @@ const Home = () => {
     const currentMonth = new Date().getMonth();
 
 
-
     useEffect(()=> {
         if(localToken){
             getMetrica("gastos").then(res => setGastos(res));
@@ -62,6 +61,7 @@ const Home = () => {
     return (
         //Grid container es la fila
         //Grid item representa a la columna
+        <div className="content-container" style={{ position: 'relative', top: '80px' }}>
         <Box>
             <Grid item xs={12}>
                 <NavBar />
@@ -117,13 +117,25 @@ const Home = () => {
             </Grid>
         </Grid>
 
+        {/* <BalanceMensual selectedMonth={currentMonth}/> */}
+
         <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <Box p={3}>
                         <BalanceMensual selectedMonth={currentMonth} /> 
                     </Box>
                 </Grid>
         </Grid>
+
+        <Grid container spacing={2} justifyContent="center">
+                <Grid item xs={12} sm={6} md={3}>
+                    <Box p={3}>
+                        <Account/>
+                    </Box>
+                </Grid>
+        </Grid>
+
+      
         
 
 
@@ -136,7 +148,7 @@ const Home = () => {
         )}
 
     </Box>
-
+</div>
     )
 
         // <div className={style.homeContainer}>

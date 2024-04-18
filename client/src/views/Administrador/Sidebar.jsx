@@ -174,7 +174,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
               />
 
               <Item
-                title="Categorías"
+                title="Categories"
                 to="/admin/categories"
                 
                

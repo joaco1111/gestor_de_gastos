@@ -30,9 +30,12 @@ const BalanceBarChart = ({ selectedMonth }) => {
         const totalIncome = calculateTotalIncome(filteredActions);
         const totalExpenses = calculateTotalExpenses(filteredActions);
         const balance = totalIncome - totalExpenses;
-
-        return [{ month: selectedMonth, Ingresos: totalIncome, Gastos: totalExpenses, balance }];
+    
+        const monthIndex = selectedMonth + 1;
+    
+        return [{ month: monthIndex, Ingresos: totalIncome, Gastos: totalExpenses, balance }];
     };
+    
 
     const calculateTotalIncome = (actions) => {
         if (!actions || actions.length === 0) return 0;

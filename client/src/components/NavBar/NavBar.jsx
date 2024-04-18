@@ -1,6 +1,7 @@
+
 import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import nav from '../../assets/nav.png';
+import nav from '../../assets/logo-GG.png';
 import "./navBar.css";
 import {  useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -81,7 +82,7 @@ function NavBar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg  " style={{ backgroundColor: '#ffb703' }}>
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
       <div className="container-fluid">
         <NavLink className="navbar-brand" to="/home">
           <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
@@ -130,7 +131,7 @@ function NavBar() {
                 <NavLink className="nav-link" to="/profile">Perfil</NavLink>
               </Dropdown.Item>
               <Dropdown.Item href="#">
-                <NavLink className="nav-link" to="#" onClick={()=> setActivedOffcanvas(true)}>Puntuación</NavLink>
+                <NavLink className="nav-link" to="/review" onClick={()=> setActivedOffcanvas(true)}>Review</NavLink>
               </Dropdown.Item>
               <Dropdown.Item href="#">
                 <NavLink className="nav-link" to="#" onClick={handleLogout}>Logout</NavLink>
