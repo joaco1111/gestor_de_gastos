@@ -85,7 +85,7 @@ const Landing = () => {
           <div className="col-sm-12 col-md-12 col-lg-12" style={{ backgroundColor: 'black', color: 'white', padding: '20px' }}>
             <img src={Marca} alt="GastoGenius" />
             <div style={{ marginTop: '5px' }}> 
-            <a href="https://github.com/joaco1111/gestor_de_gastos" className="text-white" style={{ textDecoration: 'none' }}>Repositorio</a>
+            <a href="https://github.com/joaco1111/gestor_de_gastos" className="text-white" style={{ textDecoration: 'none' }}>Repositorio de github</a>
           </div>
             </div>
                 <div className="card front-card">
@@ -98,9 +98,10 @@ const Landing = () => {
             <div className="card back-card">
                 <p>Backend Squad</p>
                 <a href="https://www.linkedin.com/in/mariano-velarde-fullstack/" className="text-white" style={{ textDecoration: 'none' }}>Mariano velarde</a>
-                <a href="" className="text-white" style={{ textDecoration: 'none' }}></a>
-                <a href="" className="text-white" style={{ textDecoration: 'none' }}></a>
-                <a href="" className="text-white" style={{ textDecoration: 'none' }}></a>
+                <a href="https://www.linkedin.com/in/leonardo-fleire-morales/" className="text-white" style={{ textDecoration: 'none' }}>Leonardo Fleire</a>
+                <a href="https://www.linkedin.com/in/sebasti%C3%A1n-garcia-7842a6259/" className="text-white" style={{ textDecoration: 'none' }}>Sebastian Alfonso</a>
+                <a href="https://www.linkedin.com/in/ricardosumoza-2136aa240/" className="text-white" style={{ textDecoration: 'none' }}>Ricardo Sumoza
+</a>
             </div>
             <div className="technologies">
             <p>Tecnologias Usadas</p>

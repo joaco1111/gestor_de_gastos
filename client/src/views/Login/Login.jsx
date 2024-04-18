@@ -94,7 +94,7 @@ const Login = () => {
             <Row>
                 <Col>
                     
-                <Form className="login-form border-animation" onSubmit={handleSubmit}>
+                <Form className="login-form" onSubmit={handleSubmit}>
                         <Link to="/" className="go-back-button">
                             <FaArrowLeft />  
                         </Link>
