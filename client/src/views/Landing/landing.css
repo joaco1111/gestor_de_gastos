@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=K2D:ital,wght@0,100;0,400;0,700;1,100;1,400;1,700&display=swap');
 
+body {
+  background-color: rgb(175, 175, 255);
+}
+
 .container-fluid {
     font-family: 'K2D', sans-serif;
     
@@ -10,4 +14,122 @@
 }
 .row{
     font-family: 'K2D', sans-serif;
+}
+
+/*--------------NavBar-----------------*/
+
+.navbar-brand {
+    /* Alinea el texto del navbar en el centro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-collapse {
+    /* Alinea los elementos del navbar en el centro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navbar-nav {
+    /* Alinea los elementos de la lista en el centro */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav-item {
+    /* Alinea los elementos de la lista individualmente */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px; /* Ajusta el margen según sea necesario */
+}
+/*--------------Page-----------------*/
+
+.page {
+  background-color: rgb(175, 175, 255);
+}
+
+/*-------------footer----------------*/
+.footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center; 
+    background-color: black;
+  }
+
+.footer p {
+    color: #555555;
+} 
+
+@media (max-width: 768px) {
+    .card {
+      margin-right: 0;
+      margin-bottom: 20px;
+    }
+  }
+  
+  .card {
+    width: 200px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+}
+  
+  .front-card {
+    background-color: #201b1b;
+  }
+  
+  .back-card {
+    background-color: #201b1b;
+  }
+  
+  .card p {
+    font-weight: bold;
+  }
+  
+  .card a {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .card a:hover {
+    text-decoration: underline;
+  }
+
+  .card a:hover {
+    color: #FF0000 !important;
+  }
+
+  .technologies i {
+    margin-right: 10px;
+    font-size: 24px;
+    color: #494949; 
+  }
+  
+.technologies {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.technology {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.technology span {
+    margin-left: 10px;
+}
+
+.technology:hover {
+  transform: scale(1.1);
 }

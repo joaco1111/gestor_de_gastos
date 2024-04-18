@@ -110,42 +110,42 @@ const Log = () => {
     };
     
     return (
+        <div className='log-container'>
         <div className='container-one'>
-            <div className='container-two'>
-        {loggedIn && <Navigate to="/home" />}
-        <Row >
-            <Col>
-                    
-                <Form onSubmit={handleSubmit} className='log-form'>
-                <Link to="/" className="go-back">
-                        <FaArrowLeft />   
-                    </Link>
-                    <div><h2>Sign Up</h2></div>
-                    <div className="mb-3">
-                        <label className="form-label"><FaUser/> Name:</label>
-                        <input type='text' className="form-control" value={form.name} onChange={handleChange} name='name' />
-                        {errors.name && <span className="text-danger">{errors.name}</span>}
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label"><FaEnvelope /> Email:</label>
-                        <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
-                        {errors.email && <span className="text-danger">{errors.email}</span>}
-                        {logError && <p className="text-danger">{logError}</p>}
-                    </div>
-                    <div className="mb-3">
-                        <label className="form-label"><FaLock/> Password:</label>
-                        <input type='password' className="form-control" value={form.password} onChange={handleChange} name='password' />
-                        {errors.password && <span className="text-danger">{errors.password}</span>}
-                    </div>
-                    <Button type='submit' variant="primary" className="submit" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</Button>
-                    <h6>or</h6>
-                <Button onClick={handleGoogleSignIn} variant='danger' className="submit">Sign in with Google</Button>
+          <div className='container-two'>
+            {loggedIn && <Navigate to="/home" />}
+            <Row>
+              <Col>
+                <Form className="log-form border-animation" onSubmit={handleSubmit}>    
+                  <Link to="/" className="go-back">
+                    <FaArrowLeft />   
+                  </Link>
+                  <div><h2>Sign Up</h2></div>
+                  <div className="mb-3">
+                    <label className="form-label"><FaUser/> Name:</label>
+                    <input type='text' className="form-control" value={form.name} onChange={handleChange} name='name' />
+                    {errors.name && <span className="text-danger">{errors.name}</span>}
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label"><FaEnvelope /> Email:</label>
+                    <input type='email' className="form-control" value={form.email} onChange={handleChange} name='email' />
+                    {errors.email && <span className="text-danger">{errors.email}</span>}
+                    {logError && <p className="text-danger">{logError}</p>}
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label"><FaLock/> Password:</label>
+                    <input type='password' className="form-control" value={form.password} onChange={handleChange} name='password' />
+                    {errors.password && <span className="text-danger">{errors.password}</span>}
+                  </div>
+                  <Button type='submit' variant="primary" className="submit" disabled={!form.name || !form.email || !form.password || errors.name || errors.email || errors.password}>Create User</Button>
+                  <h6>or</h6>
+                  <Button onClick={handleGoogleSignIn} variant='danger' className="submit">Sign in with Google</Button>
                 </Form>
-                
-            </Col>
-        </Row>
+              </Col>
+            </Row>
+          </div>
         </div>
-    </div>
+      </div>
     );
 };
 

@@ -61,6 +61,7 @@ const Home = () => {
     return (
         //Grid container es la fila
         //Grid item representa a la columna
+        <div className="content-container" style={{ position: 'relative', top: '80px' }}>
         <Box>
             <Grid item xs={12}>
                 <NavBar />
@@ -147,7 +148,7 @@ const Home = () => {
         )}
 
     </Box>
-
+</div>
     )
 
         // <div className={style.homeContainer}>
