@@ -135,7 +135,14 @@ const Profile = () => {
                 <Image thumbnail  src={previewImage } alt="Vista previa de la imagen" className="profile-preview-image" />) }
                 <br />
                   {/* boton editar o guardar la imagen */}
-                <Button onClick={handleButtonProfile} variant="primary" value={actived ? "Guardar" : "Editar"} className='w-25  d-inline-block'>{actived ? "Guardar" : "Editar"}</Button>
+                  <Button
+                    onClick={handleButtonProfile}
+                    variant="primary"
+                    value={actived ? "Guardar" : "Editar"}
+                    className='w-25 d-inline-flex                   justify-content-center                  align-items-center'
+                  >
+                    {actived ? "Guardar" : "Editar"}
+                  </Button>
 
               </Form.Group>
 
