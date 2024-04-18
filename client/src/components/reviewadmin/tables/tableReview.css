@@ -1,0 +1,56 @@
+.context{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.card {
+    background-color: rgba(132, 176, 233, 0.616);
+    padding: 15px;
+    width: 40%;
+    position: relative;
+}
+.cardImagen {
+    margin: 18px 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: end;
+
+    text-align: center;
+}
+
+.cardImagen img{
+    width: 6.5rem;
+    border-radius: 20px;
+    height: 5.5rem;
+}
+
+.cardBody{
+    margin: 15px 5px;
+}
+.cardBody span{
+    font-size: medium;
+    font-weight: bold;
+
+}
+.cardBody h4{
+    width: 400px;
+    font-weight: normal;
+}
+
+
+.cardRanking{
+    position: absolute;
+    right: 20px;
+    top: 15px;
+}
+
+.cardControllers{
+    display: flex;
+}
+
+.cardControllers div {
+    padding: 0 15px;
+}
