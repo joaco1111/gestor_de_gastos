@@ -116,7 +116,7 @@ const Log = () => {
             {loggedIn && <Navigate to="/home" />}
             <Row>
               <Col>
-                <Form className="log-form border-animation" onSubmit={handleSubmit}>    
+                <Form className="log-form" onSubmit={handleSubmit}>    
                   <Link to="/" className="go-back">
                     <FaArrowLeft />   
                   </Link>
