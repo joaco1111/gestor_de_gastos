@@ -80,6 +80,7 @@ function NavBar() {
   }
 
   return (
+<<<<<<< Updated upstream
     <Container fluid> {/* Usa Container de react-bootstrap */}
       <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
         <div className="container-fluid">
@@ -97,6 +98,45 @@ function NavBar() {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/detailsLog">Movimientos</NavLink>
               </li>
+=======
+    <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: '#3498db' }}>
+      <div className="container-fluid">
+        <NavLink className="navbar-brand" to="/home">
+          <img src={nav} className="logo" alt="Logo" style={{ maxWidth: '150px', maxHeight: '50px' }} />
+        </NavLink>
+        <button className="navbar-toggler" type="button" onClick={handleToggleMenu}>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={`collapse navbar-collapse${isMenuOpen ? ' show' : ''}`} id="navbarNav">
+          <ul className="navbar-nav mx-auto">
+            <li className="nav-item">
+              <NavLink exact className="nav-link" to="/home">Home</NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/detailsLog">Movimientos</NavLink>
+            </li>
+            
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
+            </li>
+
+            {user.idAccess === 1 && (
+                <li className="nav-item">
+                  <NavLink exact className="nav-link" to="/admin">Admin</NavLink>
+                </li>
+            )}
+
+            {/* {user.idAccess === 1 && (
+              <li className='nav-item'>
+                <NavLink className="nav-link" to='/chat'>ChatAdmin</NavLink>
+              </li>
+            )} */}
+           
+          </ul>
+          <ul className="navbar-nav">
+
+              {/* foto de perfil del usuario con su nombre  */}
+>>>>>>> Stashed changes
               
               <li className="nav-item">
                 <NavLink className="nav-link" to="/collaboration">Donar</NavLink>
