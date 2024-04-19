@@ -48,7 +48,7 @@ export const useCategoriesStore = create((set, get) => ({
     getUser: async(id) => {
         try {
             const userResult = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/user/${id}`, config);
-            console.log(userResult);
+            // console.log(userResult);
             set({user: userResult.data})
         } catch (error) {
             console.error({error: error.message});
