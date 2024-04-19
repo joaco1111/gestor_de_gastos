@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../NavBar/NavBar';
-import { useReviewStore } from './reviewStore';
 import './ReviewForm.css';
-import  ReviewList from './ReviewsList';
+import ReviewList from  './ReviewsList';
+import { useCategoriesStore } from '../../store/categories';
 
-const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
-
-const config = {
-  headers: {
-    token: localToken?.tokenUser
-  }
-};
 
 const ReviewForm = () => {
-  const { addReview } = useReviewStore();
+  
+  const addReview = useCategoriesStore(state => state.addReview);
+  const fetchReviews = useCategoriesStore(state => state.fetchReviews);
   const [nuevoComentario, setNuevoComentario] = useState('');
   const [puntuacion, setPuntuacion] = useState(0);
   const [error, setError] = useState('');
+
+  useEffect(()=>{
+    fetchReviews();
+  },[])
 
   const handleChange = (event) => {
     setNuevoComentario(event.target.value);
@@ -29,39 +27,25 @@ const ReviewForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     if (puntuacion === 0) {
       setError('Por favor, selecciona una puntuación antes de enviar tu comentario.');
+
     } else {
+
       try {
-        const reviewData = { ranking: puntuacion, comment: nuevoComentario };
 
-        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/review`, reviewData, config);
-
-        // Verifica si el comentario ya existe en la lista de reseñas antes de agregarlo
-        if (!addReviewExists(nuevoComentario, response.data)) {
-          addReview(nuevoComentario, puntuacion);
-        }
-
+        await addReview(nuevoComentario, puntuacion);
+        await fetchReviews()
         setNuevoComentario('');
         setPuntuacion(0);
         setError('');
-        console.log('Reseña enviada correctamente:', response.data);
 
-        // Recarga la página automáticamente después de enviar el comentario
-        window.location.reload();
       } catch (error) {
+
         console.error('Error al enviar la reseña:', error);
         setError('Error al enviar la reseña. Por favor, intenta nuevamente.');
       }
-    }
-  };
-
-  // Función para verificar si el comentario ya existe en la lista de reseñas
-  const addReviewExists = (comment, reviewData) => {
-    if (reviewData && reviewData.review) {
-      return reviewData.review.some(review => review.comment === comment);
-    } else {
-      return false;
     }
   };
 
@@ -70,7 +54,7 @@ const ReviewForm = () => {
       <NavBar />
       <div className="main-content" style={{ marginTop: '60px' }}>
         <div className="review-form-container">
-          <h2>Haz tu opinión</h2>
+          <h2>Dejanos tu opinión</h2>
           <div className="new-comment-container">
             <form onSubmit={handleSubmit}>
               <textarea
@@ -102,7 +86,7 @@ const ReviewForm = () => {
           </div>
         </div>
       </div>
-      <ReviewList/>
+      <ReviewList /> 
     </>
   );
 };

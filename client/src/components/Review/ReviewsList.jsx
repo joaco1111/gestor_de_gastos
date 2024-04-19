@@ -1,14 +1,17 @@
 import React, { useEffect } from 'react';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useReviewStore } from './reviewStore';
 import './ReviewsList.css';
+import { useCategoriesStore } from '../../store/categories';
+
 
 const ReviewsList = () => {
-  const { reviews, fetchReviews } = useReviewStore();
+  //nos traemos del estado global zustand reviews y la funcion encargada de hacer fetch a los datos
+  const reviews = useCategoriesStore(state =>  state.reviews);
+  const fetchReviews = useCategoriesStore(state =>  state.fetchReviews);
 
   useEffect(() => {
-    fetchReviews();
+    fetchReviews(); 
   }, []);
 
   const StarRating = ({ rating }) => {
@@ -28,13 +31,13 @@ const ReviewsList = () => {
       <Row>
         <Col>
           <div className="reviews-list-container">
-            <h2>Reseñas</h2>
+            {reviews.length > 0 ? <h2>Comentarios</h2> : ""}
             <ul className="reviews-list">
-              {reviews.map((review, index) => (
-                <li key={index} className="review-item">
+              {reviews.map((review) => (
+                <li key={review.id} className="review-item">
                   <StarRating rating={review.ranking} />
                   <p>Comentario: {review.comment}</p>
-                  <p>Fecha y hora: {new Date(review.createdAt).toLocaleString()}</p>
+                  <p>Fecha y hora: {new Date(review.createdAt).toLocaleString()}</p> 
                 </li>
               ))}
             </ul>
