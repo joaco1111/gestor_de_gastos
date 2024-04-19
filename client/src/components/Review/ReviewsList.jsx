@@ -1,22 +1,14 @@
 import React, { useEffect } from 'react';
 import { BsStarFill, BsStar } from 'react-icons/bs';
 import { Container, Row, Col } from 'react-bootstrap';
-import { useReviewStore } from './reviewStore'; // Importa el store Zustand
+import { useReviewStore } from './reviewStore';
 import './ReviewsList.css';
-
-//const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
-
-// const config = {
-//   headers: {
-//     token: localToken?.tokenUser
-//   }
-// }
 
 const ReviewsList = () => {
   const { reviews, fetchReviews } = useReviewStore();
 
   useEffect(() => {
-    fetchReviews(); 
+    fetchReviews();
   }, []);
 
   const StarRating = ({ rating }) => {
@@ -42,7 +34,7 @@ const ReviewsList = () => {
                 <li key={index} className="review-item">
                   <StarRating rating={review.ranking} />
                   <p>Comentario: {review.comment}</p>
-                  <p>Fecha y hora: {new Date(review.createdAt).toLocaleString()}</p> 
+                  <p>Fecha y hora: {new Date(review.createdAt).toLocaleString()}</p>
                 </li>
               ))}
             </ul>

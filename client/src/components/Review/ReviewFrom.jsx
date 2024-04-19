@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import NavBar from '../NavBar/NavBar';
-import { useReviewStore } from './reviewStore'; // Importa el store Zustand
+import { useReviewStore } from './reviewStore';
 import './ReviewForm.css';
-import ReviewList from  './ReviewsList';
+import  ReviewList from './ReviewsList';
 
 const localToken = JSON.parse(window.localStorage.getItem('loggedNoteAppUser'));
 
@@ -37,15 +37,31 @@ const ReviewForm = () => {
 
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/review`, reviewData, config);
 
-        addReview(nuevoComentario, puntuacion);
+        // Verifica si el comentario ya existe en la lista de reseñas antes de agregarlo
+        if (!addReviewExists(nuevoComentario, response.data)) {
+          addReview(nuevoComentario, puntuacion);
+        }
+
         setNuevoComentario('');
         setPuntuacion(0);
         setError('');
         console.log('Reseña enviada correctamente:', response.data);
+
+        // Recarga la página automáticamente después de enviar el comentario
+        window.location.reload();
       } catch (error) {
         console.error('Error al enviar la reseña:', error);
         setError('Error al enviar la reseña. Por favor, intenta nuevamente.');
       }
+    }
+  };
+
+  // Función para verificar si el comentario ya existe en la lista de reseñas
+  const addReviewExists = (comment, reviewData) => {
+    if (reviewData && reviewData.review) {
+      return reviewData.review.some(review => review.comment === comment);
+    } else {
+      return false;
     }
   };
 
@@ -86,7 +102,7 @@ const ReviewForm = () => {
           </div>
         </div>
       </div>
-      <ReviewList />
+      <ReviewList/>
     </>
   );
 };

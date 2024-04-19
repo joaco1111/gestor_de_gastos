@@ -3,11 +3,19 @@ import { useNavigate, Link } from 'react-router-dom';
 import landingfoto from "../../assets/backlanding.jpg";
 import Sliders from "../../components/slide/Sliders.jsx";
 import Marca from "../../assets/title.pf.jpg";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHtml5, faCss3Alt, faJs, faNodeJs, faReact, faBootstrap } from '@fortawesome/free-brands-svg-icons';
+import React, { useState } from 'react';
 import "./landing.css";
 
 const Landing = () => {
+
+    const [exampleState, setExampleState] = useState('initialValue');
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const handleToggleMenu = () => {
+      setIsMenuOpen(!isMenuOpen);
+    };
+
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -21,34 +29,32 @@ const Landing = () => {
     return(
         <>
 <div className="container-fluid overflow-hidden" style={{ backgroundColor: '#03045E', height: 'auto', fontFamily: 'Arial' }}>
-            <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#03045E', color: 'white' }}>
-                <div className="container">
-                    <Link to="/" className="navbar-brand" style={{ color: 'white' }}>GastoGenius</Link> 
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav mr-auto">
-                            <li className="nav-item">
-                                <ScrollLink to="como-funciona" smooth={true} duration={500} className="nav-link text-white">¿Cómo funciona?</ScrollLink>
-                            </li>
-                            {/* <li className="nav-item">
-                                <Link to="/about" className="nav-link text-white">Acerca de</Link> 
-                            </li>
-                            <li className="nav-item">
-                                <Link to="/contact" className="nav-link text-white">Contacto</Link> 
-                            </li> */}
-                        </ul>
-                        <div>
-                            <ul className="navbar-nav">
-                                <li className="nav-item">
-                                    <Link to="/login" className="nav-link text-white">Login</Link> 
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+<nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: '#03045E', color: 'white' }}>
+      <div className="container">
+        <Link to="/" className="navbar-brand" style={{ color: 'white' }}>GastoGenius</Link>
+        <button className="navbar-toggler" type="button" onClick={handleToggleMenu}>
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className={`collapse navbar-collapse${isMenuOpen ? ' show' : ''}`} id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <ScrollLink to="como-funciona" smooth={true} duration={500} className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>¿Cómo funciona?</ScrollLink>
+            </li>
+            {/* <li className="nav-item">
+                <Link to="/about" className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>Acerca de</Link>
+            </li>
+            <li className="nav-item">
+                <Link to="/contact" className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>Contacto</Link>
+            </li> */}
+          </ul>
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <Link to="/login" className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>Login</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
             <div className="row" style={{ backgroundColor: '#B3E5FC', backgroundImage: `url(${landingfoto})`, backgroundSize: 'cover', backgroundRepeat:'no-repeat', color: 'white', minHeight: '100vh', display: 'flex', alignItems:"center" }}>
                 <div className="col-sm-12 col-md-6 col-lg-6 mx-auto">
@@ -104,26 +110,54 @@ const Landing = () => {
 </a>
             </div>
             <div className="technologies">
-            <p>Tecnologias Usadas</p>
-            <div className="technology">
-                <FontAwesomeIcon icon={faHtml5} /> <span>HTML</span>
-            </div>
-            <div className="technology">
-                <FontAwesomeIcon icon={faJs} /> <span>JavaScript</span>
-            </div>
-            <div className="technology">
-                <FontAwesomeIcon icon={faCss3Alt} /> <span>CSS</span>
-            </div>
-            <div className="technology">
-                <FontAwesomeIcon icon={faNodeJs} /> <span>Node.js</span>
-            </div>
-            <div className="technology">
-                <FontAwesomeIcon icon={faReact} /> <span>React.js</span>
-            </div>
-            <div className="technology">
-                <FontAwesomeIcon icon={faBootstrap} /> <span>Bootstrap</span>
-            </div>
+    <p>Tecnologias Usadas</p>
+    <div className="technology-container">
+        <div className="technology">
+            <img src="https://imgs.search.brave.com/m9mf5csO1lewpnxjgU0jvpdnkyk0LLovGh3BqJnL5qo/rs:fit:500:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMtMDAuaWNvbmR1/Y2suY29tL2Fzc2V0/cy4wMC9zZXF1ZWxp/emUtaWNvbi00NDN4/NTEyLXBqa2Rnc3U1/LnBuZw" alt="Sequelize" />
+            <span>Sequelize</span>
         </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/javascript.png" alt="JavaScript" />
+            <span>JavaScript</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/react-native.png" alt="React.js" />
+            <span>React.js</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/html-5.png" alt="HTML" />
+            <span>HTML</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/nodejs.png" alt="Node.js" />
+            <span>Node.js</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/express.png" alt="Express" />
+            <span>Express</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/material-ui.png" alt="Material UI" />
+            <span>Material UI</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/bootstrap.png" alt="Bootstrap" />
+            <span>Bootstrap</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/redis.png" alt="Redis" />
+            <span>Redis</span>
+        </div>
+        <div className="technology">
+            <img src="https://img.icons8.com/color/48/000000/css-filetype.png" alt="CSS" />
+            <span>CSS</span>
+        </div>
+    </div>
+
+
+</div>
+
+
             </div>
         </>
     )

@@ -153,17 +153,6 @@ function NavBar() {
             </ul>
           </div>
         </div>
-        <Offcanvas show={activedOffcanvas} onHide={()=> handleClose("aplazar")} placement='bottom'>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title className='text-center'>Nivel de satisfacción</Offcanvas.Title>
-        </Offcanvas.Header>
-          <Offcanvas.Body>
-            Aca iría las estrellas y un textArea para que el usuario nos deje un comentario
-            <br />
-              <Button variant='success' onClick={()=> setActivedOffcanvas(false)}>Continuar</Button>
-              <Button variant='danger' onClick={()=> setActivedOffcanvas(false)}g>Cancelar</Button>
-          </Offcanvas.Body>
-      </Offcanvas>
       </nav>
     </Container>
   );
