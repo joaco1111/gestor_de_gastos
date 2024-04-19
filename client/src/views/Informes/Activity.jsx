@@ -51,54 +51,49 @@ const Activity = () => {
   };
 
   return (
-    <>
-     <NavBar/>
-     <Box>
-        <Box m="50px">
-          <Typography variant="h4" fontWeight="bold" sx={{ m: "0 0 5px 0" }}>
-            Actividad
-          </Typography>
-          <Typography variant="h5">
-            Visualiza tus ingresos y gastos
-          </Typography>
-        </Box>
+    <div className="content-container" style={{ position: 'relative', top: '100px' }}>
+      <NavBar />
+      <Typography variant="h4" fontWeight="bold" sx={{ m: "0 0 5px 0" }}>Actividad</Typography>
 
-        <Paper elevation={3} sx={{ margin: 2, borderRadius: 6, padding: 2, alignContent:"center", justifyContent:"center" }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+        <Paper elevation={3} sx={{ borderRadius: 6, padding: 2, maxWidth: '700px', width: '100%' , backgroundColor: '#d3e1fc'}}>
+          <Box m="50px">
+            <Typography variant="h5">
+              Visualiza tus ingresos y gastos
+            </Typography>
+          </Box>
+
           <ButtonGroup>
             <Button onClick={handleShowIncome} variant={showIncome ? "contained" : "outlined"}>Ingresos</Button>
             <Button onClick={handleShowExpense} variant={!showIncome ? "contained" : "outlined"}>Gastos</Button>
           </ButtonGroup>
 
           <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={12} sm={6} md={5}> 
-                <Box p={3}>
-                {showIncome ? <IncomePieChart actions={actions} /> : <ExpensePieChart actions={actions}/>}
-                </Box>
+            <Grid item xs={12} sm={6} md={7}>
+              <Box p={3}>
+                {showIncome ? <IncomePieChart actions={actions} /> : <ExpensePieChart actions={actions} />}
+              </Box>
             </Grid>
-            <Grid item xs={12} sm={6} md={3}> 
-                <Box p={3}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box p={3}>
                 <List>
-                {categoryData
-                    .sort((a, b) => a.categoryName.localeCompare(b.categoryName)) // Ordenar alfabéticamente
+                  {categoryData
+                    .sort((a, b) => a.categoryName.localeCompare(b.categoryName))
                     .map((category, index) => (
-                    <ListItem key={index}>
-                        <ListItemText 
-                            primary={category.categoryName.charAt(0).toUpperCase() + category.categoryName.slice(1)} 
-                            secondary={`$ ${category.total} ( ${category.percentage.toFixed(2)}%)`} // Muestra el porcentaje
+                      <ListItem key={index}>
+                        <ListItemText
+                          primary={category.categoryName.charAt(0).toUpperCase() + category.categoryName.slice(1)}
+                          secondary={`$ ${category.total} ( ${category.percentage.toFixed(2)}%)`}
                         />
-                    </ListItem>
+                      </ListItem>
                     ))}
                 </List>
-
-
-                </Box>
+              </Box>
             </Grid>
-            </Grid>
-
-
+          </Grid>
         </Paper>
-     </Box>
-    </>
+      </Box>
+    </div>
   );
 };
 

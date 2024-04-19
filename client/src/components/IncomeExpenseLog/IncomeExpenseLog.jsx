@@ -169,6 +169,7 @@ const IncomeExpenseLog = () => {
   };
 
   return (
+    
     <div className='container'>
       <h2>Tus Movimientos</h2>
 
@@ -255,19 +256,18 @@ const IncomeExpenseLog = () => {
                   </tr>
                 ))}
               </tbody>
-              <Button onClick={() => printTable(tableRef, actions)}>Descargar PDF</Button>
-            
-              <ReactHTMLTableToExcel
-              id="botonExportarExcel"
-              className="btn btn-success"
-              table="actionsTable"
-              filename="ReporteGDG"
-              sheet="Reporte"
-              buttonText="Descargar Excel"
-              />
-            
+              <div className="button-container">
+                <Button onClick={() => printTable(tableRef, actions)}>Descargar PDF</Button>
+                <ReactHTMLTableToExcel
+                  id="botonExportarExcel"
+                  className="btn btn-success"
+                  table="actionsTable"
+                  filename="ReporteGDG"
+                  sheet="Reporte"
+                  buttonText="Descargar Excel"
+                />
+              </div>
             </Table>
-            
           ) : (
             <Link to={`/home`}><Button className="action-detail-button d-block" variant="primary" size="sm" >Agrega Tus Movimientos</Button></Link>
           )}

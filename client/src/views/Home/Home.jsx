@@ -94,12 +94,12 @@ const Home = () => {
 <Grid container spacing={2} justifyContent="center">
   <Grid item xs={12} sm={6} md={6} lg={3}>
     <Box p={3} className="chart">
-      <ExpensePieChart />  
+      <IncomePieChart />  
     </Box>
   </Grid>
   <Grid item xs={12} sm={6} md={6} lg={3}>
     <Box p={3} className="chart">
-      <IncomePieChart />
+      <ExpensePieChart />
     </Box>
   </Grid>
 </Grid>
