@@ -64,55 +64,59 @@ const IncomeExpenseLog = () => {
 
   // Función para aplicar los filtros
   const applyFilters = (data, filters) => {
+  if (!Array.isArray(data)) {
+    return [];
+  }
+  
+  // Si no hay ningún filtro aplicado, mostrar todos los datos
+  if (Object.values(filters).every(value => value === '')) {
+    return data.filter(action => !action.pending); // Filtrar los gastos con pending en false
+  }
 
-    if (!Array.isArray(data)) {
-      // console.error('data no es un array:', data);
-      return [];
-    }
-    // Si no hay ningún filtro aplicado, mostrar todos los datos
-    if (Object.values(filters).every(value => value === '')) {
-      return data;
-    }
+  // Aplica los filtros
+  let filteredData = [...data]; // Copia los datos para no modificar el array original
   
-    // Aplica los filtros
-    let filteredData = [...data]; // Copia los datos para no modificar el array original
-    
-    // Verificar si los filtros están definidos
-    if (!filters) return filteredData;
-  
-    // Filtrar por día
-    if (filters.date) {
-      filteredData = filteredData.filter(action => {
-        const actionDate = new Date(action.date);
-        const filterDate = new Date(filters.date);
-        return (
-          actionDate.getFullYear() === filterDate.getFullYear() &&
-          actionDate.getMonth() === filterDate.getMonth() &&
-          actionDate.getDate() === filterDate.getDate()
-        );
-      });
-    }
-  
-    // Filtrar por tipo
-    if (filters.type) {
-      filteredData = filteredData.filter(action => action.type === filters.type);
-    }
-  
-    // Filtrar por categoría (gasto o ingreso)
-    if (filters.category && filters.category !== 'Todos') {
-      filteredData = filteredData.filter(action => {
-        if (filters.type === 'gastos') {
-          return action.categoryBill && action.categoryBill.name === filters.category;
-        } else if (filters.type === 'ingresos') {
-          return action.categoryIncome && action.categoryIncome.name === filters.category;
-        }
-        return true; // Si no se selecciona ninguna categoría, no se filtra
-      });
-    }
-  
-    // Retorna los datos filtrados
-    return filteredData;
-  };
+  // Verificar si los filtros están definidos
+  if (!filters) return filteredData;
+
+  // Filtrar por día
+  if (filters.date) {
+    filteredData = filteredData.filter(action => {
+      const actionDate = new Date(action.date);
+      const filterDate = new Date(filters.date);
+      return (
+        actionDate.getFullYear() === filterDate.getFullYear() &&
+        actionDate.getMonth() === filterDate.getMonth() &&
+        actionDate.getDate() === filterDate.getDate()
+      );
+    });
+  }
+
+  // Filtrar por tipo
+  if (filters.type) {
+    filteredData = filteredData.filter(action => action.type === filters.type);
+  }
+
+  // Filtrar por categoría (gasto o ingreso)
+  if (filters.category && filters.category !== 'Todos') {
+    filteredData = filteredData.filter(action => {
+      if (filters.type === 'gastos') {
+        return action.categoryBill && action.categoryBill.name === filters.category;
+      } else if (filters.type === 'ingresos') {
+        return action.categoryIncome && action.categoryIncome.name === filters.category;
+      }
+      return true; // Si no se selecciona ninguna categoría, no se filtra
+    });
+  }
+
+  // Filtrar los gastos con pending en false
+  if (filters.type === 'gastos') {
+    filteredData = filteredData.filter(action => !action.pending);
+  }
+
+  // Retorna los datos filtrados
+  return filteredData;
+};
   
   const filteredActions = applyFilters(actions, filters);
   const getCategoryOptions = (type) => {

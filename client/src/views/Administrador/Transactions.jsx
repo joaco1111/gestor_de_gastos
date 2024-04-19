@@ -1,25 +1,51 @@
+import useSWR from 'swr';
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchTransactions } from "../../redux/actions";
 import { Table, Form } from 'react-bootstrap';
 import { Box } from "@mui/material";
-import Header from "./Header";
+import Header from './Header'
+import ActionsPagination from '../../components/Pagination/ActionsPagination';
+
+const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
+
+var config = {};
+if (loggedUserJSON) {
+    const token = JSON.parse(loggedUserJSON);
+    config.headers = {
+        token: token.tokenUser,
+    };
+}
+
+const fetcher = async (url) => {
+  const response = await fetch(url, config);
+  
+  if (!response.ok) {
+    throw new Error('No se encontraron transacciones que coincidan con la búsqueda.');
+  }
+  
+  return response.json();
+};
+
+export const useTransactions = (page = 1, limit = 10, search = "", orderBy, orderDirection) => {
+  const url = `${import.meta.env.VITE_BASE_URL}/collaboration?page=${page}&limit=${limit}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}`;
+
+  const { data, error } = useSWR(url, fetcher);
+
+  console.log(data)
+
+  return {
+      transactions: data,
+      isLoading: !error && !data,
+      isError: error
+  };
+};
 
 const Transactions = () => {
-  const dispatch = useDispatch();
-  const transactions = useSelector(state => state.transactions);
-
-  console.log(transactions);
-
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
-  const [orderDirection, setOrderDirection] = useState('DESC');
+  const [orderDirection, setOrderDirection] = useState('');
   const [orderBy, setOrderBy] = useState('');
 
-  useEffect(() => {
-    dispatch(fetchTransactions(page, limit, search, orderBy, orderDirection));
-  }, [dispatch, page, limit, search, orderBy, orderDirection]);
+  const { transactions, isLoading, isError } = useTransactions(page, 10, search, orderBy, orderDirection);
 
   const handleSearchChange = (event) => {
     setSearch(event.target.value);
@@ -35,12 +61,19 @@ const Transactions = () => {
     setOrderDirection(value);
   };
 
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+
   const renderTransactions = () => {
+    if (isLoading) return <div>Cargando...</div>;
+    if (isError) return <div className='text-center'>No se encontraron transacciones que coincidan con la búsqueda <br /> o <br />Ocurrio un error al cargar las transacciones.</div>;
+
     return (
       <div className='container'>
         <Form className="d-flex align-items-end" role="search">
           <Form.Group className="me-3 mb-3">
-            <Form.Control className="form-control my-2" placeholder='Buscar Usuario...' type='text' onChange={handleSearchChange}/>
+            <Form.Control className="form-control my-2" placeholder='Buscar Usuario...' type='text' value={search} onChange={handleSearchChange}/>
           </Form.Group>
           <Form.Group className="me-3 mb-4">
             <label htmlFor="orderBy" className="form-label">Ordenar por:</label>
@@ -69,7 +102,7 @@ const Transactions = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions && transactions.map(transaction => (
+            {transactions && transactions.collaborations && transactions.collaborations.map(transaction => (
               <tr key={transaction.transactionId}>
                 <td>{transaction.transactionId}</td>
                 <td>{transaction.name}</td>
@@ -79,6 +112,14 @@ const Transactions = () => {
             ))}
           </tbody>
         </Table>
+        <div className='pagination-container'>
+          <ActionsPagination
+            currentPage={page}
+            totalCount={transactions ? transactions.count : 0}
+            limitPerPage={10}
+            onPageChange={handlePageChange}
+          />
+        </div>
       </div>
     );
   };

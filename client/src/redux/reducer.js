@@ -79,17 +79,20 @@ const rootReducer = (state = initialState, action) => {
                 loginError: action.payload
             };
         case DELETE_ACTION:
-            const updatedActions = state.actions.filter(actionItem => actionItem.id !== action.payload);
+            const updatedActionsDelete = state.actions.filter(actionItem => actionItem.id !== action.payload);
             return {
                 ...state,
-                actions: updatedActions,
+                actions: updatedActionsDelete,
                 totalCount: state.totalCount - 1
             };
         case UPDATE_ACTION:
+            const updatedActionsUpdate = state.actions.map(actionItem => 
+                actionItem.id === action.payload.id ? action.payload : actionItem
+            );
             return {
                 ...state,
-                actions: state.actions.map(actionItem => actionItem.id === action.payload.id ? action.payload : actionItem),
-                actionDetail: action.payload.id === state.actionDetail.id ? action.payload : state.actionDetail
+                actions: updatedActionsUpdate,
+                actionDetail: state.actionDetail && state.actionDetail.id === action.payload.id ? action.payload : state.actionDetail
             };
         case UPDATE_ACTION_ERROR:
             return {
