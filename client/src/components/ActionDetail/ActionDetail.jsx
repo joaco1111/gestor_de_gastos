@@ -43,8 +43,10 @@ const ActionDetail = () => {
   let fechaFormateada = fecha.getUTCFullYear() + '-' + String(fecha.getUTCMonth() + 1).padStart(2, '0') + '-' + String(fecha.getUTCDate()).padStart(2, '0');
   
   const handleUpdate = async () => {
+    const { pending, ...updatedDataWithoutPending } = updatedData;
+    const updatedDataWithPending = { ...updatedDataWithoutPending, pending: true };
     // Usa el 'id' de 'useParams', no de 'updatedData'
-    await dispatch(updateAction(id, updatedData));
+    await dispatch(updateAction(id, updatedDataWithoutPending));
     dispatch(fetchActionDetail(id));
     closeModal();
     setShowModalHome(true);           //Después de que se complete la actualización se muestra el Modal con el mensaje de éxito

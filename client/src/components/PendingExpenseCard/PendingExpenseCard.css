@@ -1,0 +1,12 @@
+.pending-expense-card {
+    min-width: 300px;
+    margin: 2rem;
+}
+
+.pending-expense-card .card-body .btn-danger {
+    margin-right: 5px;
+}
+
+.pending-expense-card .card-body .btn-success {
+    margin-left: 5px;
+}

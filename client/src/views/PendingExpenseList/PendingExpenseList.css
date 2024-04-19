@@ -1,0 +1,10 @@
+.pending-expense {
+    margin-top: 100px;
+}
+
+.pending-expense-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}

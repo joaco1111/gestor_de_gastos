@@ -30,6 +30,11 @@ module.exports = (sequelize) => {
     },
     paymentMethod: {
       type: DataTypes.STRING
+    },
+    pending: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
  
 }, { timestamps: false })

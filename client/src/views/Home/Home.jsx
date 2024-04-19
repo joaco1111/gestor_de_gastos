@@ -117,32 +117,14 @@ const Home = () => {
   </Grid>
 </Grid>
 
-<<<<<<< Updated upstream
 
-=======
-        <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={3}>
-                    <Box p={3}>
-                        <Account/>
-                    </Box>
-                </Grid>
-        </Grid>
-
-      
-        
-
-
-        
-{/* 
->>>>>>> Stashed changes
-        {user.idAccess === 1 ? (
+        {/* {user.idAccess === 1 ? (
             <ChatAdmin/>
         ) : (
             <Chat/> 
         )} */}
 
     </Box>
-    
 </div>
     )
 
@@ -175,9 +157,10 @@ const Home = () => {
         //                 <MetricasActions title={["Número Gastos", "Total Gastos"]} number={gastos} />
         //                 <MetricasActions title={["Número Ingresos", "Total Ingresos"]} number={ingresos} />
         //             </div>
-        //        </div>
+        //         </div>
         //     </Box>
-      
+            
+
 }  
 
 
