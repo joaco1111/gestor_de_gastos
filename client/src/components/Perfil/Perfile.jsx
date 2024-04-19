@@ -27,7 +27,7 @@ const Profile = () => {
     email: ""
   })
 
-  console.log(userData);
+  
   const [message, setMessage] = useState(null); // Definición de setMessage
   
   const getUser = async()=> {
@@ -79,8 +79,9 @@ const Profile = () => {
     formData.append('image', imagen);
 
     try {
-      console.log(userData);
+      
       await axios.put(`${import.meta.env.VITE_BASE_URL}/auth/userUpdate/${userData.idUser}?type=imagen`, formData, config);
+      
       setMessage({ message: "Foto de perfil actualizada.", variant: "success" });
 
     } catch (error) {

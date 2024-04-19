@@ -3,7 +3,7 @@ import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login, authenticationFromGoogle } from '../../redux/actions';
 import { validate } from '../../utils';
-import './login.css';
+import './Login.css';
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
 import { FaLock, FaUser, FaArrowLeft } from 'react-icons/fa';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";

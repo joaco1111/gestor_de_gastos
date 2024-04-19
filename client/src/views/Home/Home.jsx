@@ -117,15 +117,6 @@ const Home = () => {
   </Grid>
 </Grid>
 
-        <Grid container spacing={2} justifyContent="center">
-                <Grid item xs={12} sm={6} md={3}>
-                    <Box p={3}>
-                        <Account/>
-                    </Box>
-                </Grid>
-        </Grid>
-
-      
         
 
 
