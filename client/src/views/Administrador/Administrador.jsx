@@ -30,10 +30,18 @@ const Administrador  = () => {
     const dispatch = useDispatch();
     const {idUser} = useSelector(state => state.user); 
     const getUserZustand = useCategoriesStore(state => state.getUser);
-    
+
+    const getPetition = async() => {
+        try {
+            await dispatch(getUsers(""));
+            await getUserZustand(idUser);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     useEffect(() => {
-        dispatch(getUsers(""));
-        getUserZustand(idUser);
+        getPetition();
     }, []);
     return( 
         // <ColorModeContext.Provider  value={colorMode}>
