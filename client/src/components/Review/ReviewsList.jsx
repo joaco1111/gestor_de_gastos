@@ -6,7 +6,6 @@ import { useCategoriesStore } from '../../store/categories';
 
 
 const ReviewsList = () => {
-  //nos traemos del estado global zustand reviews y la funcion encargada de hacer fetch a los datos
   const reviews = useCategoriesStore(state =>  state.reviews);
   const fetchReviews = useCategoriesStore(state =>  state.fetchReviews);
 
