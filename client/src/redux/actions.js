@@ -257,8 +257,12 @@ export const fetchActionDetail = (id) => {
       try {
 
         if(loggedUserJSON) {
+
+            if (data && data.pending === undefined) {
+                data.pending = false; // o true, dependiendo de tu lógica
+            }
   
-        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
+            const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
         
   
             dispatch({

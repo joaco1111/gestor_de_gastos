@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { Collaboration, Log, Login, Home, Landing, Activity, Balanz } from './views';
+import { Collaboration, Log, Login, Home, Landing, Activity, Balanz, PendingExpenseList } from './views';
 // import ChatAdmin from './views/ChatAdmin/ChatAdmin';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
@@ -31,6 +31,7 @@ function App() {
             //navigate('/home'); 
             if(location.pathname === '/login' || location.pathname === '/log' ) navigate('/home');
             if(location.pathname === '/detailsLog') navigate('/detailsLog');
+            if(location.pathname === '/expensePending') navigate('/expensePending');
             if(location.pathname === '/collaboration') navigate('/collaboration');   
             if(location.pathname === '/admin/*') navigate('/admin/*');                                                                           
         }
@@ -61,6 +62,7 @@ function App() {
                 <Route path='/failure' element={<Failure/>}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/log' element={<Log />}/>
+                <Route path='/expensePending' element={user.tokenUser ? <PendingExpenseList /> : <Login />}/>
                 <Route path='/review' element={user.tokenUser ? <Review /> : <Login />}/>
                 <Route path='/collaboration' element={user.tokenUser ? <Collaboration /> : <Login />}/>
                 <Route path='/admin/*' element={user.tokenUser ? <Administrador /> : <Login />}/>

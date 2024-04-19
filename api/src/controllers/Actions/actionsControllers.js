@@ -2,7 +2,7 @@ const { Action, CategoryBills, CategoryIncome, CreditCard} = require('../../db.j
 
 const createActions = async (req, res) => {
   try {
-    const { type, quantity, date, description = "", idCategory, cuotas, creditCardName, paymentMethod, creditCardId } = req.body;
+    const { type, quantity, date, description = "", idCategory, cuotas, creditCardName, paymentMethod, creditCardId, pending } = req.body;
     const idUser = req.userID;
 
     const typeCategory = {}
@@ -53,6 +53,7 @@ const createActions = async (req, res) => {
       creditCardName,
       paymentMethod,
       creditCardId: creditcardFound.id,
+      pending,
       ...typeCategory,
       idUser: idUser
     })
@@ -68,7 +69,7 @@ const createActions = async (req, res) => {
 
 const getActions = async (req, res) => {
   try {
-    const { page = 1, limit = 5, date, type, category, orderBy, orderDirection } = req.query;
+    const { page = 1, limit = 5, date, type, category, orderBy, orderDirection, pending } = req.query;
     const idUser = req.userID;
     console.log(idUser);
     const offset = (page - 1) * limit;
@@ -77,6 +78,10 @@ const getActions = async (req, res) => {
     const where = {
       "idUser": idUser,
     };
+
+    if (pending !== undefined) {
+      where.pending = pending === 'true';
+    }
 
     if (date) {
       where.date = date;
@@ -176,6 +181,7 @@ const getActions = async (req, res) => {
   const updateAction = async (req, res) => {
     try {
       const { id } = req.params;
+      const { pending } = req.body;
       const action = await Action.findByPk(id);
   
       if (!action) {
@@ -214,6 +220,10 @@ const getActions = async (req, res) => {
         }
   
         data = { creditCardId, ...data };
+      }
+
+      if (pending !== undefined) {
+        data.pending = pending;
       }
   
       const updateAction = await action.update(data);

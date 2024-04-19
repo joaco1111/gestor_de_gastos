@@ -2,6 +2,9 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
 const CustomModal = ({ onClose, updatedData = {}, handleInputChange, handleUpdate, action, incomeCategories, expenseCategories }) => {
+    if (updatedData.pending === undefined) {
+        updatedData.pending = true;
+    }
     return (
         <Modal show={true} onHide={onClose} centered style={{ maxWidth: '350px', margin: '0 auto', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <Modal.Header>

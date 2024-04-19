@@ -71,6 +71,7 @@ const IncomeForm = () => {
 
     const formData = {
       ...values,
+      pending: false,
       creditCardName: values.paymentMethod !== 'tarjeta de crédito' ? '' : values.creditCardName,
       cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas
     };

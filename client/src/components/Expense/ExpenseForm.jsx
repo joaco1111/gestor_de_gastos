@@ -21,17 +21,17 @@ const ExpenseForm = () => {
     cuotas:''
   });
 
+  const [pending, setPending] = useState(true); // Estado separado para pending
+
+  const isDateValid = (dateString) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(dateString);
+    return selectedDate <= currentDate;
+  };
+
   const handleClose = () => {
     setShow(false);
-    setExpense({       
-      quantity: '',
-      date: '',
-      idCategory: '',
-      description: '',
-      paymentMethod:'',
-      creditCardName: '',
-      cuotas:''
-    });
+    resetExpense(); // Resetear el estado del gasto
   };
   
   const handleShow = () => setShow(true);
@@ -49,8 +49,7 @@ const ExpenseForm = () => {
       .positive('La cantidad debe ser un número positivo')
       .typeError('La cantidad debe ser un número'),
     date: Yup.date()
-      .required('La fecha es requerida')
-      .max(new Date(), 'La fecha no puede ser posterior a la actual'),
+      .required('La fecha es requerida'),
     idCategory: Yup.string().required('La categoría es requerida'),
     description: Yup.string()
       .max(80, 'Máximo 80 caracteres'),
@@ -65,34 +64,59 @@ const ExpenseForm = () => {
     })
   });
   
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     console.log('Datos del formulario:', values)
     const formData = {
-      ...values,
-      creditCardName: values.paymentMethod !== 'tarjeta de crédito' ? '' : values.creditCardName,
-      cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas
+        ...values,
+        creditCardName: values.paymentMethod !== 'tarjeta de crédito' ? '' : values.creditCardName,
+        cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas,
+        pending: pending
     };
-  
 
-    dispatch(addExpenseIncome(formData));
-    dispatch(fetchActions(1,100))
-    resetForm();
+    try {
+        const expenseData = await dispatch(addExpenseIncome(formData));
+        dispatch(fetchActions(1,100))
+        resetForm();
 
-    setExpense({                                 
-      quantity: values.quantity,
-      date: values.date,
-      idCategory: values.idCategory,
-      description: values.description,
-      paymentmethod: values.paymentmethod,
-      creditCardName: values.creditCardName,
-      cuotas: values.cuotas 
-    });
+        if (pending) { // Si el gasto está pendiente
+          let pendingExpenses = JSON.parse(localStorage.getItem('pendingExpenses')) || [];
+          pendingExpenses.push(expenseData); // Asume que expenseData es el gasto que acabas de agregar
+          localStorage.setItem('pendingExpenses', JSON.stringify(pendingExpenses));
+        }
+
+        setExpense({ // Actualizar el estado del gasto solo si se guardó correctamente                                
+            quantity: values.quantity,
+            date: values.date,
+            idCategory: values.idCategory,
+            description: values.description,
+            paymentMethod: values.paymentMethod,
+            creditCardName: values.creditCardName,
+            cuotas: values.cuotas,
+            pending: pending // Usar el estado de pending
+        });
+
+        console.log('Respuesta del servidor al agregar gasto o ingreso:', expenseData);
+    } catch (error) {
+        console.error('Error al agregar gasto o ingreso:', error);
+    }
   };
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  
+
+  const resetExpense = () => {
+    setExpense({
+      quantity: '',
+      date: '',
+      idCategory: '',
+      description: '',
+      paymentMethod:'',
+      creditCardName: '',
+      cuotas:''
+    });
+    setPending(true); // Resetear el estado de pending
+  };
 
   return (
     <div>
@@ -218,7 +242,19 @@ const ExpenseForm = () => {
                     <ErrorMessage name="description" component="div" className="invalid-feedback" />
                 </Form.Group>
 
-                <Button variant="primary" size="sm" type="submit" onClick={handleShow}>Añadir</Button>
+                <Button variant="primary" size="sm" type="submit" onClick={() => setPending(true)}>Pendiente</Button> <br /> <br />
+                <Button 
+                  variant="primary" 
+                  size="sm" 
+                  type="submit" 
+                  onClick={() => setPending(false)} 
+                  disabled={!pending && !isDateValid(values.date)}
+                >
+                  Agregar
+                </Button>
+                {!pending && !isDateValid(values.date) && (
+                  <div className="invalid-feedback">No se admiten fechas posteriores al día de hoy</div>
+                )}
               </Form>
             )}
           </Formik>
