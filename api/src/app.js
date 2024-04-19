@@ -3,12 +3,14 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
+const responseTime  = require('response-time');
 require('./db.js');
 
 const app = express();
 
 app.name = 'API';
 
+app.use(responseTime());
 app.use('/uploads', express.static('uploads'))
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParser.json({ limit: '50mb' }));
