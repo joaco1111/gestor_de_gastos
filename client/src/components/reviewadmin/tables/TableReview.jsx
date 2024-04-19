@@ -2,7 +2,7 @@ import { Table, Button} from 'react-bootstrap';
 import SpeakerNotesOffIcon from '@mui/icons-material/SpeakerNotesOff';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 
-const TableReview = ({review, functionUnlock, functionDelete, variantSuccess = "success", variantDanger = "success"})=> {
+const TableReview = ({review, functionUnlock, functionDelete, variantSuccess = "success", variantDanger = "success", message})=> {
 
     return (
         <>
@@ -31,12 +31,14 @@ const TableReview = ({review, functionUnlock, functionDelete, variantSuccess = "
                             {/* BOTONES */}
                             <td>
                               <Button variant={variantSuccess} onClick={()=> functionUnlock(rev.id)}>
+                                {message}
                                 <SpeakerNotesOffIcon/>
                               </Button>
                             </td>
                             {/* BOTONES */}
                             <td>
                               <Button variant={variantDanger} onClick={()=> functionDelete(rev.id)}>
+                                Eliminar
                                 <DeleteForeverIcon/>
                               </Button>
                             </td>

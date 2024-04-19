@@ -36,7 +36,7 @@ const loginHandler = async (req, res) => {
         const { token, idAccess, user } = await validate(email, password);
         
         const redis = await connectRedis();
-        const resultRedis = JSON.parse(await redis.get(`${user.name}`));
+        const resultRedis = JSON.parse(await redis.get(`${user.name}-${idAccess}`));
         if(resultRedis) return res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: resultRedis.id, name: resultRedis.name });
 
         // con la funcion "validate" se verifica si esta registrado o no, pasando por 
@@ -46,7 +46,7 @@ const loginHandler = async (req, res) => {
         if (token) {
 
             const objUser = {id: user.id, name: user.name};
-            await redis.set(`${user.name}`, JSON.stringify(objUser));
+            await redis.set(`${user.name}-${idAccess}`, JSON.stringify(objUser));
             //respondemos con el token y el acceso
             res.status(200).json({ tokenUser: token, email: user.email, password: password, idAccess, idUser: user.id, name: user.name })
             //res.header('token', token).json({access: true, token, user});

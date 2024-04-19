@@ -6,6 +6,7 @@ import axios from 'axios';
 //token del local Storage
 const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
 //config general, si necesitas otra configuración como params, agregala dentro de tu función
+
 var config = {}
 if(loggedUserJSON){
     const token = JSON.parse(loggedUserJSON);

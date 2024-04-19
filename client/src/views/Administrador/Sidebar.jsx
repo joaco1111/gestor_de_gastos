@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import 'react-pro-sidebar/dist/css/styles.css';
 import { Box, IconButton, Typography, useTheme } from '@mui/material'
@@ -19,6 +19,8 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import InsertCommentIcon from '@mui/icons-material/InsertComment';
 import adminprofile from "../../assets/profileadmin.svg"
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { useSelector } from "react-redux";
+import { useCategoriesStore } from "../../store/categories";
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -39,13 +41,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     );
   };
   
-  const Sidebar = () => {
+const Sidebar = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const user = useSelector(state => state.user);
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [selected, setSelected] = useState("Dashboard");
     const navigate = useNavigate();
-  
+    const userZustand = useCategoriesStore(state => state.user);
+  // console.log(userZustand);
     return (
       <Box
         sx={{
@@ -103,7 +107,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                     alt="profile-user"
                     width="100px"
                     height="100px"
-                    src={adminprofile}
+                    src={userZustand !== null ? userZustand.photoProfile : adminprofile}
                     style={{ cursor: "pointer", borderRadius: "50%" }}
                   />
                 </Box>
@@ -114,7 +118,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
                     fontWeight="bold"
                     sx={{ m: "10px 0 0 0" }}
                   >
-                    Admin
+                    {user.name}
                   </Typography>
                   <Typography variant="h5" color={colors.greenAccent[500]}>
                     Administrador
