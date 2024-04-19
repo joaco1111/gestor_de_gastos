@@ -75,8 +75,9 @@ const ActionDetail = () => {
   };
 
   return (
-    <div>
+    <>
       <NavBar/>
+    <div className="content-container" style={{ position: 'relative', top: '170px' }}>
       {isModalOpen && (
         <Modal 
         onClose={closeModal} 
@@ -145,6 +146,7 @@ const ActionDetail = () => {
       </div>
       <ModalHome show={showModalHome} handleClose={() => setShowModalHome(false)} />
     </div>
+    </>
   );
 };
 

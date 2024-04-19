@@ -1,70 +1,88 @@
 .container-principal {
-  position: relative; /* Añadido para establecer un contexto de posicionamiento */
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 50px;
+  height: 100vh;
 }
 
-.back-link-container {
-  position: absolute;
-  top: 3%; /* Ajuste responsive */
-  left: 20%; /* Ajuste responsive */
+.back-button button {
+  background-color: rgb(52, 152, 219) !important;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  width: 50px; 
+  height: 50px; 
+  cursor: pointer;
+  outline: none; 
+  transition: background-color 0.3s;
+}
+
+.back-button button:hover {
+  background-color: rgb(29, 96, 141) !important;
+  color:rgb(255, 255, 255)
 }
 
 .card-container {
-  max-width: 450px;
+  max-width: 400px;
   width: 100%;
+  text-align: center;
 }
 
 .card {
   border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+  height: auto;
+  width: 400px;
 }
-
-.action-detail-button {
-  font-size: 1.2rem;
-  font-weight: bold;
-  width: 30%;
-  margin: 0 auto;
-}
-
 
 .card-body {
-  max-height: 700px; 
-  overflow-y: hidden;
+  padding: 30px;
 }
 
+.form-group {
+  margin-bottom: 20px;
+}
 
 .form-group label {
+  display: block;
+  margin-bottom: 5px;
   font-weight: bold;
-}
-
-.form-group input, .form-group p {
-  margin-top: 5px; /* Espacio entre cada campo */
-  padding: 8px;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
 }
 
 .form-group input[type="text"], .form-group p {
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
 }
 
-.form-group p {
-  max-height: 100px; 
-  overflow-y: auto;
-}
-
-.action-detail-button{
+.action-detail-button {
+  font-size: 1rem;
+  font-weight: bold;
   width: 100%;
-  height: 38px; 
+  height: 50px;
+  border-radius: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-detail-button:hover {
+  background-color: #0056b3;
+}
+
+.back-button button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }
 
 
-.back-button button{
-  background-color: transparent; 
-  border: none; 
-  cursor: pointer; 
-  outline: none; 
-}
 
+.text-center {
+  text-align: center;
+}

@@ -32,12 +32,12 @@ const Landing = () => {
                             <li className="nav-item">
                                 <ScrollLink to="como-funciona" smooth={true} duration={500} className="nav-link text-white">¿Cómo funciona?</ScrollLink>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <Link to="/about" className="nav-link text-white">Acerca de</Link> 
                             </li>
                             <li className="nav-item">
                                 <Link to="/contact" className="nav-link text-white">Contacto</Link> 
-                            </li>
+                            </li> */}
                         </ul>
                         <div>
                             <ul className="navbar-nav">
