@@ -35,8 +35,8 @@ const ReviewForm = () => {
 
       try {
 
-        addReview(nuevoComentario, puntuacion);
-        fetchReviews()
+        await addReview(nuevoComentario, puntuacion);
+        await fetchReviews()
         setNuevoComentario('');
         setPuntuacion(0);
         setError('');
