@@ -40,12 +40,6 @@ const Landing = () => {
             <li className="nav-item">
               <ScrollLink to="como-funciona" smooth={true} duration={500} className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>¿Cómo funciona?</ScrollLink>
             </li>
-            {/* <li className="nav-item">
-                <Link to="/about" className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>Acerca de</Link>
-            </li>
-            <li className="nav-item">
-                <Link to="/contact" className="nav-link text-white" onClick={() => setIsMenuOpen(false)}>Contacto</Link>
-            </li> */}
           </ul>
           <ul className="navbar-nav">
             <li className="nav-item">

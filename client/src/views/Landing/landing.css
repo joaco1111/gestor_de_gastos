@@ -28,8 +28,9 @@ body {
 .navbar-collapse {
     /* Alinea los elementos del navbar en el centro */
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
+    width: 100%;
 }
 
 .navbar-nav {
