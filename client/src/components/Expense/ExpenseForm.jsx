@@ -242,7 +242,7 @@ const ExpenseForm = () => {
                     <ErrorMessage name="description" component="div" className="invalid-feedback" />
                 </Form.Group>
 
-                <Button variant="primary" size="sm" type="submit" onClick={() => setPending(true)}>Pendiente</Button> <br /> <br />
+                <Button variant="primary" size="sm" type="submit" onClick={() => setPending(true)}>Gasto Futuro</Button> <br /> <br />
                 <Button 
                   variant="primary" 
                   size="sm" 

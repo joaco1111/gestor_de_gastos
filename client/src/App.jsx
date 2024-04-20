@@ -94,6 +94,7 @@ function App() {
                 <Route path='/failure' element={<Failure/>}/>
                 <Route path='/login' element={<Login />}/>
                 <Route path='/log' element={<Log />}/>
+                <Route path='/expensePending' element={user.tokenUser ? <PendingExpenseList /> : <Login />}/>
                 <Route path='/review' element={user.tokenUser ? <Review /> : <Login />}/>
                 <Route path='/collaboration' element={user.tokenUser ? <Collaboration /> : <Login />}/>
                 <Route path='/admin/*' element={user.tokenUser ? <Administrador /> : <Login />}/>
