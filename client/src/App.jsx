@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { Collaboration, Log, Login, Home, Landing, Activity, Balanz } from './views';
+import { Collaboration, Log, Login, Home, Landing, Activity, Balanz, PendingExpenseList } from './views';
 // import ChatAdmin from './views/ChatAdmin/ChatAdmin';
 import IncomeExpenseView from './views/IncomeExpenseView/IncomeExpenseView';
 import UserList from './components/UserList/UserList';
@@ -104,6 +104,7 @@ function App() {
                 <Route path='/profile' element={user.tokenUser ? <Profile /> : <Login />} />
                 <Route path='/activity' element={user.tokenUser ? <Activity /> : <Login />} />
                 <Route path='/balanz' element={user.tokenUser ? <Balanz/> : <Login />} />
+                <Route path='/expensePending' element={user.tokenUser ? <PendingExpenseList/> : <Login />} />
                 <Route path='/account' element={user.tokenUser ? <DetailsAccount/> : <Login />} />
                 <Route path='/' element={user.tokenUser ? <Landing /> : <Landing />}/>
                 {/* <Route path='/chat' element={user.token ? <ChatAdmin/> : <ChatAdmin/>}/> */}
