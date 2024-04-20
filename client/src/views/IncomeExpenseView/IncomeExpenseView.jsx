@@ -8,7 +8,7 @@ import NavBar from "../../components/NavBar/NavBar";
 const IncomeExpenseView = () => {
 
     return(
-        <div>
+        <div className="content-container" style={{ position: 'relative', top: '90px' }}>
             <NavBar/>
             <div className="content-container" style={{ position: 'relative', top: '90px' }}>
             <IncomeExpenseLog />

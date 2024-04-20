@@ -132,7 +132,15 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, orderBy) => {
     return async function(dispatch) {
         try {
-            if(loggedUserJSON) {
+
+            const infoUser = window.localStorage.getItem('loggedNoteAppUser');
+            const token = JSON.parse(infoUser);
+
+            config["headers"] = {
+                token: token.tokenUser,
+            }
+            console.log('es este', infoUser);
+            if(infoUser) {
                 const params = { page, limit, ...filters };
                 
                 if (orderDirection) {
@@ -255,12 +263,8 @@ export const fetchActionDetail = (id) => {
       try {
 
         if(loggedUserJSON) {
-
-            if (data && data.pending === undefined) {
-                data.pending = false; // o true, dependiendo de tu lógica
-            }
   
-            const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
+        const response = await axios.put(`${import.meta.env.VITE_BASE_URL}/actions/${id}`, data, config);
         
   
             dispatch({
@@ -331,4 +335,3 @@ export const fetchTransactions = (page = 1, limit = 10, search = "", orderBy, or
       }
     };
 };
-
