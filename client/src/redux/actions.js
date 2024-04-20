@@ -6,6 +6,7 @@ import axios from 'axios';
 //token del local Storage
 const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
 //config general, si necesitas otra configuración como params, agregala dentro de tu función
+
 var config = {}
 if(loggedUserJSON){
     const token = JSON.parse(loggedUserJSON);
@@ -26,7 +27,8 @@ export const login = (credentials, type) => {
         try {
             if(type === "login"){
                 const user = (await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/login`, credentials)).data;
-                // console.log(user);
+                
+                console.log(user);
                 dispatch({ type: LOGIN, payload: user });
                 //dispatch({ type: CLEAN_ACTIONS, payload: { actions: [], totalCount: 0 } });
             }else {
@@ -144,12 +146,10 @@ export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, 
                     ...config,
                     params
                 };
-
-                console.log('Configuración de la solicitud:', configuration);
                 
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/actions`, configuration);
                 
-                console.log('Respuesta del servidor:', response.data);
+                // console.log('Respuesta del servidor:', response.data);
                 
     
                 const { rows, count } = response.data;

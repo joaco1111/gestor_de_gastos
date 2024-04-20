@@ -14,7 +14,8 @@
     max-width: 400px;
     width: 380px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: rgba(0, 255, 191, 0.5);
+    backdrop-filter: blur(5px);
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     padding: 40px;
@@ -25,6 +26,15 @@
     margin-bottom: 15px;
   }
 
+   /* Animación de borde */
+@keyframes borderAnimation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
-
-
+/* Estilo del borde animado */
+.border-animation {
+  border: 2px solid #007bff;
+  animation: borderAnimation 3s infinite;
+}

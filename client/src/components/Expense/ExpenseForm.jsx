@@ -75,7 +75,7 @@ const ExpenseForm = () => {
 
     try {
         const expenseData = await dispatch(addExpenseIncome(formData));
-        dispatch(fetchActions(1,100))
+        await dispatch(fetchActions(1,100))
         resetForm();
 
         if (pending) { // Si el gasto está pendiente

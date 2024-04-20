@@ -16,20 +16,32 @@ import Users from "./Users"
 // import Calendar from "./Calendar"
 // import Geography from "./geo/Geography.jsx";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../../redux/actions.js";
 import Transactions from "./Transactions.jsx";
 import Categories from "./Categories.jsx";
 import ReviewAdmin from "./Review.jsx";
+import { useCategoriesStore } from "../../store/categories.js";
 
 
 
 const Administrador  = () => {
     const [theme, colorMode] = useMode()
     const dispatch = useDispatch();
+    const {idUser} = useSelector(state => state.user); 
+    const getUserZustand = useCategoriesStore(state => state.getUser);
+
+    const getPetition = async() => {
+        try {
+            await dispatch(getUsers(""));
+            await getUserZustand(idUser);
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
 
     useEffect(() => {
-        dispatch(getUsers(""));
+        getPetition();
     }, []);
     return( 
         // <ColorModeContext.Provider  value={colorMode}>

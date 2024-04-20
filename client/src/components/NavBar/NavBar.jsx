@@ -121,13 +121,15 @@ function NavBar() {
                   </li>
               )}
 
-              {user.idAccess === 1 && (
+              {/* {user.idAccess === 1 && (
                 <li className='nav-item'>
                   <NavLink className="nav-link" to='/chat'>ChatAdmin</NavLink>
                 </li>
-              )}
+              )} */}
              
             </ul>
+    
+         
             <ul className="navbar-nav">
 
                 {/* foto de perfil del usuario con su nombre  */}

@@ -128,7 +128,7 @@ const getUnlockReview = async(req, res)=> {
             include: User
         })
 
-        if(result.length < 1) return res.status(400).send("No se encontraron comentarios bloqueados.")
+        if(result.length < 1) return res.status(200).json([])
         return res.status(200).json(result);
 
     } catch (error) {

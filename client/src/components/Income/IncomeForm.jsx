@@ -66,7 +66,7 @@ const IncomeForm = () => {
     })
   });
   
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async(values, { resetForm }) => {
     console.log('Datos del formulario INGRESOS:', values)
 
     const formData = {
@@ -76,8 +76,8 @@ const IncomeForm = () => {
       cuotas: values.paymentMethod !== 'tarjeta de crédito' ? null : values.cuotas
     };
 
-    dispatch(addExpenseIncome(formData));
-    dispatch(fetchActions(1,100))
+    await dispatch(addExpenseIncome(formData));
+    await dispatch(fetchActions())
     resetForm();
 
     setIncome({                                 

@@ -6,6 +6,7 @@ import { useCategoriesStore } from '../../store/categories';
 
 
 const ReviewsList = () => {
+
   const reviews = useCategoriesStore(state =>  state.reviews);
   const fetchReviews = useCategoriesStore(state =>  state.fetchReviews);
 

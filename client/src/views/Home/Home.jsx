@@ -117,8 +117,12 @@ const Home = () => {
   </Grid>
 </Grid>
 
+        
 
-        {/* {user.idAccess === 1 ? (
+
+        
+{/* 
+        {user.idAccess === 1 ? (
             <ChatAdmin/>
         ) : (
             <Chat/> 
