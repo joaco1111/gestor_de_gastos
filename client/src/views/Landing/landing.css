@@ -82,6 +82,7 @@ body {
   
   .front-card {
     background-color: #201b1b;
+    width: 150px;
   }
   
   .back-card {
@@ -107,33 +108,38 @@ body {
     color: #9cd5fc !important;
   }
 
-  .technologies i {
-    margin-right: 10px;
-    font-size: 24px;
-    color: #494949; 
-  }
-.technologies p {
-  color:#8a8a8a;
-}
-  
-.technologies {
+  .technologies {
     padding: 10px;
     display: flex;
     flex-direction: column;
+    align-items: center; /* Centra las tecnologías horizontalmente */
+}
+
+.technology-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tecnologías se envuelvan en filas */
+    justify-content: center; /* Centra las tecnologías horizontalmente */
+    margin-top: 10px; /* Agrega un espacio entre la descripción y las tecnologías */
 }
 
 .technology {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  transition: transform 0.3s ease;
-  color:#8a8a8a;
+    display: flex;
+    align-items: center;
+    margin: 0 10px 10px 10px; /* Espacio alrededor de cada tecnología */
+    transition: transform 0.3s ease;
+    color: #8a8a8a;
+}
+
+.technology img {
+    width: 30px; /* Ajusta el tamaño de la imagen */
+    height: 30px; /* Ajusta el tamaño de la imagen */
+    margin-right: 8px; /* Espacio entre el icono y el texto */
 }
 
 .technology span {
-    margin-left: 10px;
+    margin-left: 8px; /* Espacio entre el icono y el texto */
 }
 
 .technology:hover {
-  transform: scale(1.1);
+    transform: scale(1.1);
 }
