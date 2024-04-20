@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login, authenticationFromGoogle } from '../../redux/actions';
+import { login, authenticationFromGoogle, fetchActions } from '../../redux/actions';
 import { validate } from '../../utils';
 import './Login.css';
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
@@ -66,7 +66,8 @@ const Login = () => {
             password: userData.password
         };
 
-        dispatch(login(credentials, "login"));
+        await dispatch(login(credentials, "login"));
+        await dispatch(fetchActions());
         // window.location.reload();
     };
 
@@ -94,7 +95,7 @@ const Login = () => {
             <Row>
                 <Col>
                     
-                <Form className="login-form" onSubmit={handleSubmit}>
+                    <Form className="login-form" onSubmit={handleSubmit}>
                         <Link to="/" className="go-back-button">
                             <FaArrowLeft />  
                         </Link>
@@ -105,17 +106,16 @@ const Login = () => {
                             <Form.Label className="form-label"><FaUser/> Email:</Form.Label>
                             <Form.Control type="email" value={userData.email} onChange={handleChange} name="email" className="form-control" />
                             {errors.email && <p className="error-message">{errors.email}</p>}
-                         </Form.Group>
+                        </Form.Group>
                         <Form.Group controlId="formBasicPassword">
                             <Form.Label className="form-label"><FaLock/> Password:</Form.Label>
                             <Form.Control type="password" value={userData.password} onChange={handleChange} name="password" className="form-control" />
                             {errors.password && <p className="error-message">{errors.password}</p>}
                         </Form.Group>
-                        <div>
-                            <Button variant="primary" type="submit" className="submit-button">Login</Button>
-                            <Button variant='danger' id="google-button" className="submit-button google" onClick={handleGoogleSignIn}>Sign in with Google</Button>
-                        </div>
-
+                        <Button variant="primary" type="submit" className="submit-button">
+                            Login
+                        </Button>
+                        <Button variant='danger' className="submit-button google" onClick={handleGoogleSignIn}>Sign in with Google</Button>
                         <div className="mt-3 text-center">
                             <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
                         </div>

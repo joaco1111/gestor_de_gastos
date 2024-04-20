@@ -10,9 +10,11 @@ const PendingExpenseList = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(5);
 
-    const actions = useSelector(state => state.actions);
+    // Obteniendo el estado de las acciones pendientes
+    const pendingExpenses = useSelector(state => state.actions.filter(action => action.type === 'gastos' && action.pending === true));
 
     useEffect(() => {
+        // Cargar las acciones pendientes al montar el componente
         dispatch(fetchActions(page, limit, { pending: true }))
           .then((response) => {
 
@@ -23,23 +25,37 @@ const PendingExpenseList = () => {
     }, [dispatch, page, limit]);
 
     const handleDelete = (id) => {
-        dispatch(deleteAction(id));
+        // Eliminar una acción
+        dispatch(deleteAction(id))
+          .then(() => {
+            // Recargar las acciones pendientes después de eliminar
+            dispatch(fetchActions(page, limit, { pending: true }));
+          })
+          .catch((error) => {
+            console.error('Error al eliminar acción:', error);
+          });
     };
-
+    
     const handleMarkPaid = (id) => {
-        const actionToUpdate = actions.find(action => action.id === id);
+        // Marcar una acción como pagada
+        const actionToUpdate = pendingExpenses.find(action => action.id === id);
         if (actionToUpdate) {
             const updatedAction = { ...actionToUpdate, pending: false };
-            dispatch(updateAction(id, updatedAction)); // Llama a updateAction con el id y los datos actualizados
+            dispatch(updateAction(id, updatedAction)) // Llama a updateAction con el id y los datos actualizados
+              .then(() => {
+                // Recargar las acciones pendientes después de marcar como pagado
+                dispatch(fetchActions(page, limit, { pending: true }));
+              })
+              .catch((error) => {
+                console.error('Error al marcar acción como pagada:', error);
+              });
         } else {
             console.error('Error: no se encontró la acción con el id dado');
         }
     };
 
-    const pendingExpenses = actions.filter(action => action.type === 'gastos' && action.pending === true);
-
     return (
-        <div className='pending-expense'>
+        <div className="content-container" style={{ position: 'relative', top: '90px' }}>
             <NavBar />
             <h2>Gastos Pendientes</h2>
             <div className="pending-expense-list">
