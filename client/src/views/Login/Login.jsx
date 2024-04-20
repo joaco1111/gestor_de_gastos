@@ -116,9 +116,9 @@ const Login = () => {
                             Login
                         </Button>
                         <Button variant='danger' className="submit-button google" onClick={handleGoogleSignIn}>Sign in with Google</Button>
-                        <div className="mt-3 text-center">
+                        {/* <div className="mt-3 text-center">
                             <Link to="/forgot-password" className="mr-2">Forgot password?</Link>
-                        </div>
+                        </div> */}
                         <div className="mt-3 text-center">
                             <span className='mr-2'>Don't have an account?</span>
                             <Link to="/log">Register Now</Link>
