@@ -130,7 +130,15 @@ export const getCategoryIncome = () => {
 export const fetchActions = (page = 1, limit = 5, filters = {}, orderDirection, orderBy) => {
     return async function(dispatch) {
         try {
-            if(loggedUserJSON) {
+
+            const infoUser = window.localStorage.getItem('loggedNoteAppUser');
+            const token = JSON.parse(infoUser);
+
+            config["headers"] = {
+                token: token.tokenUser,
+            }
+            console.log('es este', infoUser);
+            if(infoUser) {
                 const params = { page, limit, ...filters };
                 
                 if (orderDirection) {

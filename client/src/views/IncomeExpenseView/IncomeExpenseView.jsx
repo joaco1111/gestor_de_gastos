@@ -6,7 +6,7 @@ import NavBar from "../../components/NavBar/NavBar";
 
 
 const IncomeExpenseView = () => {
-
+    
     return(
         <div>
             <NavBar/>

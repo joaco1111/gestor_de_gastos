@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch} from 'react-redux';
 import { Link } from 'react-router-dom';
-import { login, authenticationFromGoogle } from '../../redux/actions';
+import { login, authenticationFromGoogle, fetchActions } from '../../redux/actions';
 import { validate } from '../../utils';
 import './login.css';
 import { Container, Form, Button,Row,Col} from 'react-bootstrap';
@@ -66,7 +66,8 @@ const Login = () => {
             password: userData.password
         };
 
-        dispatch(login(credentials, "login"));
+        await dispatch(login(credentials, "login"));
+        await dispatch(fetchActions());
         // window.location.reload();
     };
 

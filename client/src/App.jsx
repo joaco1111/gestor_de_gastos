@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { Collaboration, Log, Login, Home, Landing, Activity, Balanz } from './views';
@@ -22,11 +22,24 @@ function App() {
     const dispatch = useDispatch();
     const location = useLocation();
 
-    const user = useSelector(state => state.user);
+    const [currentPage, setCurrentPage] = useState(1); // Inicializar currentPage en 1
+    const limitPerPage = 5;
+    const loading = useSelector(state => state.loading);
+    const [filters, setFilters] = useState({
+      date: '',
+      type: '',
+      category: '',
+    });
+    const [orderDirection, setOrderDirection] = useState('DESC');
+    const [orderBy, setOrderBy] = useState('');
 
-    useEffect(() => {                                                                 //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
-        if (user.tokenUser) {     
-                                                                    //Me dirige a /home con el 1er click en el botón Loggin
+    const user = useSelector(state => state.user);
+    console.log('este es el user', user);
+    
+    useEffect(() => {    
+        console.log('ahora', user);                                                             //useEffect maneja el efecto secundario, la fn(1er argumento del hook) se ejecuta después de que el componente se haya renderizado por primera vez y después de cada actualización del estado access
+        if (user.tokenUser) {  
+            console.log(user);                                              //Me dirige a /home con el 1er click en el botón Loggin
             window.localStorage.setItem('loggedNoteAppUser', JSON.stringify(user));   
             //navigate('/home'); 
             if(location.pathname === '/login' || location.pathname === '/log' ) navigate('/home');
@@ -37,7 +50,7 @@ function App() {
     }, [user]);
 
     //Uso otro efecto que sólo sea para leer la localStorage y hacer que se actualice el estado global(user) para conservar sesión
-    useEffect(() => {
+    useEffect(async() => {
         const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser');
         if(loggedUserJSON) {
             const user = JSON.parse(loggedUserJSON);
@@ -48,11 +61,31 @@ function App() {
             };
             
             if(user.tokenUser) {
-                dispatch(login(credentials, "login"));
-                dispatch(fetchActions())
+                await dispatch(login(credentials, "login"));
+                //await dispatch(fetchActions('', ''))
             }                                               //Actualizo el user del estado global
         }
     }, []);
+
+    useEffect(() => {
+        // Función asincrónica para cargar acciones del usuario
+        const loadUserActions = async () => {
+            // Si el usuario tiene un token válido
+            if (user.tokenUser) {
+                // Intenta obtener las acciones del usuario
+                try {
+                    // Despacha la acción para cargar las acciones del usuario
+                    await dispatch(fetchActions(currentPage, limitPerPage, filters, orderDirection, orderBy));
+                } catch (error) {
+                    // Manejo de errores, puedes mostrar un mensaje de error o realizar alguna otra acción
+                    console.error("Error al cargar las acciones del usuario:", error);
+                }
+            }
+        };
+
+        // Llama a la función para cargar las acciones del usuario
+        loadUserActions();
+    }, [dispatch, user.tokenUser]); // Dependencias del efecto
 
     return (
         <div>
